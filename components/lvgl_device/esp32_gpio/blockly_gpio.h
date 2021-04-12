@@ -2,73 +2,73 @@
 #define BLOCKLY_GPIO_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
-/*********************
- *      INCLUDES
- *********************/
+    /*********************
+     *      INCLUDES
+     *********************/
 
 #include "driver/gpio.h"
 #include "../lvgl_device.h"
 
-/*********************
- *      DEFINES
- *********************/
+    /*********************
+     *      DEFINES
+     *********************/
 
 #define GPIO_SEND_NUM 12
 #define GPIO_RECV_NUM 4
 
-/**********************
- *      TYPEDEFS
- **********************/
+    /**********************
+     *      TYPEDEFS
+     **********************/
 
-typedef enum
-{
-    LOW = 0,
-    HIGH
-}gpio_action_t;
+    typedef enum
+    {
+        LV_8MS_GPIO_LOW = 0,
+        LV_8MS_GPIO_HIGH
+    } lv_8ms_gpio_level_t;
 
-typedef enum
-{ 
-    OUTPUT = 0,
-    OUTPUT_OD,
-    INPUT_PULLUP,
-    INPUT_PULLDOWN,
-    INPUT_FLOATING
-}gpio_pinmode_t;
+    typedef enum
+    {
+        LV_8MS_GPIO_OUT = 0,
+        LV_8MS_GPIO_OUT_OD,
+        LV_8MS_GPIO_IN_UP,
+        LV_8MS_GPIO_IN_DOWN,
+        LV_8MS_GPIO_IN_FLOATING
+    } lv_8ms_gpio_dir_t;
 
-typedef enum
-{
-    PINMODE = 0,
-    DIGITALREAD,
-    DIGITALWRITE
-}gpio_func;
+    typedef enum
+    {
+        PINMODE = 0,
+        DIGITALREAD,
+        DIGITALWRITE
+    } gpio_func;
 
-typedef struct 
-{
-    unsigned char ID;
-    gpio_num_t gpio_num;
-    gpio_pinmode_t mode;
-    gpio_action_t level;
-}device_gpio;
+    typedef struct
+    {
+        unsigned char ID;
+        gpio_num_t gpio_num;
+        lv_8ms_gpio_dir_t mode;
+        lv_8ms_gpio_level_t level;
+    } device_gpio;
 
-/**********************
- * GLOBAL PROTOTYPES
- **********************/
+    /**********************
+     * GLOBAL PROTOTYPES
+     **********************/
 
-QueueHandle_t gpioQueueSend;
-QueueHandle_t gpioQueueReceive;
+    QueueHandle_t gpioQueueSend;
+    QueueHandle_t gpioQueueReceive;
 
-/**********************
- *      MACROS
- **********************/
+    /**********************
+     *      MACROS
+     **********************/
 
-void pinMode(gpio_num_t gpio_num, gpio_pinmode_t mode);
-char digitalRead(gpio_num_t gpio_num);
-void digitalWrite(gpio_num_t gpio_num, gpio_action_t level);
-void pinInit(void);
-void pinLoop(void);
-
+    void lv_8ms_gpio_init(gpio_num_t gpio_num, lv_8ms_gpio_dir_t mode);
+    char lv_8ms_gpio_read(gpio_num_t gpio_num);
+    void lv_8ms_gpio_write(gpio_num_t gpio_num, lv_8ms_gpio_level_t level);
+    void lv_8ms_gpio_setup(void);
+    void lv_8ms_gpio_loop(void);
 
 #ifdef __cplusplus
 } /* extern "C" */

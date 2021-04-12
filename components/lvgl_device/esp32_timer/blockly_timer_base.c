@@ -10,17 +10,17 @@
 * @return 定时器句柄
 */
 
-esp_timer_handle_t* __timerBegin(char *name, esp_timer_cb_t call_back)
+esp_timer_handle_t *__lv_8ms_timer_init(char *name, esp_timer_cb_t call_back)
 {
-    esp_timer_handle_t* timer_handle;
-    esp_timer_create_args_t timer_config = 
-    {
-        .callback = call_back, //设置回调函数
-        .arg = NULL, //不携带参数
-        .name = name//定时器名字
-    };
-    ESP_LOGI(TAG, "TIMERBEGIN!%d",xPortGetFreeHeapSize());
-    timer_handle = (esp_timer_handle_t*)gc_malloc(&gc, sizeof(esp_timer_handle_t));
+    esp_timer_handle_t *timer_handle;
+    esp_timer_create_args_t timer_config =
+        {
+            .callback = call_back, //设置回调函数
+            .arg = NULL,           //不携带参数
+            .name = name           //定时器名字
+        };
+    ESP_LOGI(TAG, "TIMERBEGIN!%d", xPortGetFreeHeapSize());
+    timer_handle = (esp_timer_handle_t *)gc_malloc(&gc, sizeof(esp_timer_handle_t));
     ESP_LOGI(TAG, "TIMERBEGIN!");
     esp_timer_create(&timer_config, timer_handle);
     ESP_LOGI(TAG, "TIMERBEGIN!");
@@ -34,7 +34,7 @@ esp_timer_handle_t* __timerBegin(char *name, esp_timer_cb_t call_back)
 * @param mode 定时器模式，有周期和单次，详见 @ref timer_mode
 */
 
-void __timerAlarmEnable(esp_timer_handle_t* timer_handle, uint64_t timeout_us, timer_mode mode)
+void __lv_8ms_timer_start(esp_timer_handle_t *timer_handle, uint64_t timeout_us, timer_mode mode)
 {
     if (mode)
         ESP_ERROR_CHECK(esp_timer_start_periodic(*timer_handle, timeout_us));

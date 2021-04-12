@@ -1,36 +1,36 @@
 #include "blockly_gpio_base.h"
 
-#define TAG "GPIO_BASE" // log输出的标签
+#define TAG "GPIO_BASE" // log tag
 
 /**
  * @brief Initializes the GPIO peripheral .
  * @param gpio_num Specifies the pins. This parameter can be a value of @ref gpio_num_t.
- * @param mode Specifies the operating mode for the selected pins. This parameter can be a value of @ref gpio_pinmode_t.
+ * @param mode Specifies the operating mode for the selected pins. This parameter can be a value of @ref lv_8ms_gpio_dir_t.
  */
 
-void __pinMode(gpio_num_t gpio_num, gpio_pinmode_t mode)
+void __lv_8ms_gpio_init(gpio_num_t gpio_num, lv_8ms_gpio_dir_t mode)
 {
-    
+
     gpio_pad_select_gpio(gpio_num);
     switch (mode)
     {
-    case OUTPUT:
+    case LV_8MS_GPIO_OUT:
         ESP_ERROR_CHECK(gpio_set_direction(gpio_num, GPIO_MODE_OUTPUT));
         break;
-    case OUTPUT_OD:
+    case LV_8MS_GPIO_OUT_OD:
         ESP_ERROR_CHECK(gpio_set_direction(gpio_num, GPIO_MODE_OUTPUT_OD));
         break;
-    case INPUT_PULLUP:
+    case LV_8MS_GPIO_IN_UP:
         ESP_ERROR_CHECK(gpio_set_direction(gpio_num, GPIO_MODE_INPUT));
-        ESP_ERROR_CHECK(gpio_set_pull_mode(gpio_num,GPIO_PULLUP_ONLY));
+        ESP_ERROR_CHECK(gpio_set_pull_mode(gpio_num, GPIO_PULLUP_ONLY));
         break;
-    case INPUT_PULLDOWN:
+    case LV_8MS_GPIO_IN_DOWN:
         ESP_ERROR_CHECK(gpio_set_direction(gpio_num, GPIO_MODE_INPUT));
-        ESP_ERROR_CHECK(gpio_set_pull_mode(gpio_num,GPIO_PULLDOWN_ONLY));
+        ESP_ERROR_CHECK(gpio_set_pull_mode(gpio_num, GPIO_PULLDOWN_ONLY));
         break;
-    case INPUT_FLOATING:
+    case LV_8MS_GPIO_IN_FLOATING:
         ESP_ERROR_CHECK(gpio_set_direction(gpio_num, GPIO_MODE_INPUT));
-        ESP_ERROR_CHECK(gpio_set_pull_mode(gpio_num,GPIO_FLOATING));
+        ESP_ERROR_CHECK(gpio_set_pull_mode(gpio_num, GPIO_FLOATING));
         break;
     default:
         break;
@@ -46,9 +46,9 @@ void __pinMode(gpio_num_t gpio_num, gpio_pinmode_t mode)
  *   @arg HIGH: High level.
  */
 
-gpio_action_t __digitalRead(gpio_num_t gpio_num)
+lv_8ms_gpio_level_t __lv_8ms_gpio_read(gpio_num_t gpio_num)
 {
-    gpio_action_t action = gpio_get_level(gpio_num);
+    lv_8ms_gpio_level_t action = gpio_get_level(gpio_num);
     ESP_LOGI(TAG, "action:%d\n", action);
     return action;
 }
@@ -62,8 +62,8 @@ gpio_action_t __digitalRead(gpio_num_t gpio_num)
  *   @arg HIGH: High level.
  */
 
-void __digitalWrite(gpio_num_t gpio_num, gpio_action_t level)
+void __lv_8ms_gpio_write(gpio_num_t gpio_num, lv_8ms_gpio_level_t level)
 {
     ESP_ERROR_CHECK(gpio_set_level(gpio_num, level));
-    ESP_LOGI(TAG, "num:%d level:%d\n",gpio_num, level);
+    ESP_LOGI(TAG, "num:%d level:%d\n", gpio_num, level);
 }

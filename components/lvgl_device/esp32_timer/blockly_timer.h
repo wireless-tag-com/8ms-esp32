@@ -2,51 +2,52 @@
 #define BLOCKLY_TIMER_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
-/*********************
- *      INCLUDES
- *********************/
+    /*********************
+     *      INCLUDES
+     *********************/
 
 #include "esp_timer.h"
 #include "../lvgl_device.h"
 
-/*********************
- *      DEFINES
- *********************/
+    /*********************
+     *      DEFINES
+     *********************/
 
-#define TIMER_SEND_NUM  4
+#define TIMER_SEND_NUM 4
 
-/**********************
- *      TYPEDEFS
- **********************/
-typedef enum 
-{
-    once = 0,
-    periodic
+    /**********************
+     *      TYPEDEFS
+     **********************/
+    typedef enum
+    {
+        once = 0,
+        periodic
 
-}timer_mode;
+    } timer_mode;
 
-typedef struct 
-{
-    esp_timer_cb_t callback;
-    uint64_t timeout_us;
-    timer_mode mode;
-}device_timer;
+    typedef struct
+    {
+        esp_timer_cb_t callback;
+        uint64_t timeout_us;
+        timer_mode mode;
+    } device_timer;
 
-/**********************
- * GLOBAL PROTOTYPES
- **********************/
+    /**********************
+     * GLOBAL PROTOTYPES
+     **********************/
 
-QueueHandle_t timerQueueSend;
+    QueueHandle_t timerQueueSend;
 
-/**********************
- *      MACROS
- **********************/
+    /**********************
+     *      MACROS
+     **********************/
 
-void timerBegin(uint64_t timeout_us, timer_mode mode, esp_timer_cb_t call_back);
-void timerInit(void);
-void timerLoop(void);
+    void lv_8ms_timer_init(uint64_t timeout_us, timer_mode mode, esp_timer_cb_t call_back);
+    void lv_8ms_timer_setup(void);
+    void lv_8ms_timer_loop(void);
 
 #ifdef __cplusplus
 } /* extern "C" */

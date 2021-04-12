@@ -160,7 +160,6 @@ void guiTask(void *pvParameter)
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
 
-    printf("init 8ms\n");
     lv_8ms_init();
 
     lv_qm_ui_entry();

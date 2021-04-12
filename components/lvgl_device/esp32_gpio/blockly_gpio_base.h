@@ -2,40 +2,34 @@
 #define BLOCK_GPIO_BASE_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
-/*********************
- *      INCLUDES
- *********************/
+    /*********************
+     *      INCLUDES
+     *********************/
 
 #include "blockly_gpio.h"
 
+    /*********************
+     *      DEFINES
+     *********************/
 
-/*********************
- *      DEFINES
- *********************/
+    /**********************
+     *      TYPEDEFS
+     **********************/
 
+    /**********************
+     * GLOBAL PROTOTYPES
+     **********************/
 
+    /**********************
+     *      MACROS
+     **********************/
 
-/**********************
- *      TYPEDEFS
- **********************/
-
-
-
-/**********************
- * GLOBAL PROTOTYPES
- **********************/
-
-
-
-/**********************
- *      MACROS
- **********************/
-
-void __pinMode(gpio_num_t gpio_num, gpio_pinmode_t mode);
-gpio_action_t __digitalRead(gpio_num_t gpio_num);
-void __digitalWrite(gpio_num_t gpio_num, gpio_action_t level);
+    void __lv_8ms_gpio_init(gpio_num_t gpio_num, lv_8ms_gpio_dir_t mode);
+    lv_8ms_gpio_level_t __lv_8ms_gpio_read(gpio_num_t gpio_num);
+    void __lv_8ms_gpio_write(gpio_num_t gpio_num, lv_8ms_gpio_level_t level);
 
 #ifdef __cplusplus
 } /* extern "C" */

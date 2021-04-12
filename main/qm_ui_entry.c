@@ -91,25 +91,25 @@ void lvgl_blockly_loop()
 void lvgl_device_init(void)
 {
 #ifdef ESP32_GPIO
-    pinInit();
+    lv_8ms_gpio_setup();
 #endif
 #ifdef ESP32_TIMER
-    timerInit();
+    lv_8ms_timer_setup();
 #endif
 #ifdef ESP32_UART
-    serialInit();
+    lv_8ms_uart_setup();
 #endif
 }
 
 void lvgl_device_loop(void)
 {
 #ifdef ESP32_GPIO
-    pinLoop();
+    lv_8ms_gpio_loop();
 #endif
 #ifdef ESP32_TIMER
-    timerLoop();
+    lv_8ms_timer_loop();
 #endif
 #ifdef ESP32_UART
-    serialLoop();
+    lv_8ms_uart_loop();
 #endif
 }

@@ -2,61 +2,61 @@
 #define BLOCKLY_UART_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
-/*********************
- *      INCLUDES
- *********************/
+    /*********************
+     *      INCLUDES
+     *********************/
 
 #include "driver/uart.h"
 #include "../lvgl_device.h"
 
-/*********************
- *      DEFINES
- *********************/
+    /*********************
+     *      DEFINES
+     *********************/
 
-#define TIMER_SEND_NUM  4
-#define TIMER_RECV_NUM  4
+#define TIMER_SEND_NUM 4
+#define TIMER_RECV_NUM 4
 
-/**********************
- *      TYPEDEFS
- **********************/
+    /**********************
+     *      TYPEDEFS
+     **********************/
 
-typedef enum
-{
-    SERIALBEGIN = 0,
-    SERIALREAD,
-    SERIALWRITE,
-}uart_func;
+    typedef enum
+    {
+        SERIALBEGIN = 0,
+        SERIALREAD,
+        SERIALWRITE,
+    } uart_func;
 
-typedef struct 
-{
-    uart_func ID;
-    uart_port_t uart_num;
-    int tx_io_num;
-    int rx_io_num;
-    int baud_rate;
-    char* msg;
-}device_uart;
+    typedef struct
+    {
+        uart_func ID;
+        uart_port_t uart_num;
+        int tx_io_num;
+        int rx_io_num;
+        int baud_rate;
+        char *msg;
+    } device_uart;
 
+    /**********************
+     * GLOBAL PROTOTYPES
+     **********************/
 
-/**********************
- * GLOBAL PROTOTYPES
- **********************/
+    QueueHandle_t uartQueueSend;
+    QueueHandle_t uartQueueReceive;
 
-QueueHandle_t uartQueueSend;
-QueueHandle_t uartQueueReceive;
+    /**********************
+     *      MACROS
+     **********************/
 
-/**********************
- *      MACROS
- **********************/
-
-void serialBegin(uart_port_t uart_num, int tx_io_num, int rx_io_num, int baud_rate);
-char* serialRead(uart_port_t uart_num);
-void serialWrite(uart_port_t uart_num, char* msg);
-void serialPrintf(uart_port_t uart_num, char* msg, ...);
-void serialInit(void);
-void serialLoop(void);
+    void lv_8ms_uart_init(uart_port_t uart_num, int tx_io_num, int rx_io_num, int baud_rate);
+    char *lv_8ms_uart_read(uart_port_t uart_num);
+    void lv_8ms_uart_write(uart_port_t uart_num, char *msg);
+    void lv_8ms_uart_printf(uart_port_t uart_num, char *msg, ...);
+    void lv_8ms_uart_setup(void);
+    void lv_8ms_uart_loop(void);
 
 #ifdef __cplusplus
 } /* extern "C" */
