@@ -19,11 +19,11 @@ extern "C" {
 
 /*Testing of dependencies*/
 #if LV_USE_BTN == 0
-#error "lv_cb: lv_btn is required. Enable it in lv_conf.h (LV_USE_BTN  1) "
+#error "lv_cb: lv_btn is required. Enable it in lv_conf.h (LV_USE_BTN 1)"
 #endif
 
 #if LV_USE_LABEL == 0
-#error "lv_cb: lv_label is required. Enable it in lv_conf.h (LV_USE_LABEL  1) "
+#error "lv_cb: lv_label is required. Enable it in lv_conf.h (LV_USE_LABEL 1)"
 #endif
 
 #include "../lv_core/lv_obj.h"
@@ -92,29 +92,20 @@ void lv_checkbox_set_text_static(lv_obj_t * cb, const char * txt);
  * @param cb pointer to a check box object
  * @param checked true: make the check box checked; false: make it unchecked
  */
-static inline void lv_checkbox_set_checked(lv_obj_t * cb, bool checked)
-{
-    lv_btn_set_state(cb, checked ? LV_BTN_STATE_CHECKED_RELEASED : LV_BTN_STATE_RELEASED);
-}
+void lv_checkbox_set_checked(lv_obj_t * cb, bool checked);
 
 /**
  * Make the check box inactive (disabled)
  * @param cb pointer to a check box object
  */
-static inline void lv_checkbox_set_disabled(lv_obj_t * cb)
-{
-    lv_btn_set_state(cb, LV_BTN_STATE_DISABLED);
-}
+void lv_checkbox_set_disabled(lv_obj_t * cb);
 
 /**
  * Set the state of a check box
  * @param cb pointer to a check box object
  * @param state the new state of the check box (from lv_btn_state_t enum)
  */
-static inline void lv_checkbox_set_state(lv_obj_t * cb, lv_btn_state_t state)
-{
-    lv_btn_set_state(cb, state);
-}
+void lv_checkbox_set_state(lv_obj_t * cb, lv_btn_state_t state);
 /*=====================
  * Getter functions
  *====================*/

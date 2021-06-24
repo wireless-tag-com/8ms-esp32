@@ -1,4 +1,0 @@
-# esp32 http_request
-
-COMPONENT_SRCDIRS := . 
-COMPONENT_ADD_INCLUDEDIRS := .

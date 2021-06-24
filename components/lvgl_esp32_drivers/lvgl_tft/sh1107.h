@@ -15,14 +15,18 @@ extern "C" {
  *********************/
 #include <stdbool.h>
 
+#ifdef LV_LVGL_H_INCLUDE_SIMPLE
+#include "lvgl.h"
+#else
 #include "lvgl/lvgl.h"
+#endif
 #include "../lvgl_helpers.h"
 
 /*********************
  *      DEFINES
  *********************/
-#define SH1107_DC   CONFIG_LVGL_DISP_PIN_DC
-#define SH1107_RST  CONFIG_LVGL_DISP_PIN_RST
+#define SH1107_DC   CONFIG_LV_DISP_PIN_DC
+#define SH1107_RST  CONFIG_LV_DISP_PIN_RST
 
 /**********************
  *      TYPEDEFS

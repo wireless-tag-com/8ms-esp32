@@ -14,19 +14,23 @@ extern "C" {
  *********************/
 #include <stdint.h>
 #include <stdbool.h>
+#ifdef LV_LVGL_H_INCLUDE_SIMPLE
+#include "lvgl.h"
+#else
 #include "lvgl/lvgl.h"
+#endif
 
-#if defined (CONFIG_LVGL_TOUCH_CONTROLLER_XPT2046)
+#if defined (CONFIG_LV_TOUCH_CONTROLLER_XPT2046)
 #include "xpt2046.h"
-#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT6X06)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_FT6X06)
 #include "ft6x36.h"
-#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_STMPE610)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_STMPE610)
 #include "stmpe610.h"
-#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_ADCRAW)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_ADCRAW)
 #include "adcraw.h"
-#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_FT81X)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_FT81X)
 #include "FT81x.h"
-#elif defined (CONFIG_LVGL_TOUCH_CONTROLLER_RA8875)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_RA8875)
 #include "ra8875_touch.h"
 #endif
 

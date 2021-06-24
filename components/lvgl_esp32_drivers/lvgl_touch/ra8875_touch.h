@@ -15,19 +15,23 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
+#ifdef LV_LVGL_H_INCLUDE_SIMPLE
+#include "lvgl.h"
+#else
 #include "lvgl/lvgl.h"
+#endif
 
 /*********************
  *      DEFINES
  *********************/
 
-#define RA8875_X_MIN       CONFIG_LVGL_TOUCH_X_MIN
-#define RA8875_Y_MIN       CONFIG_LVGL_TOUCH_Y_MIN
-#define RA8875_X_MAX       CONFIG_LVGL_TOUCH_X_MAX
-#define RA8875_Y_MAX       CONFIG_LVGL_TOUCH_Y_MAX
-#define RA8875_X_INV       CONFIG_LVGL_TOUCH_INVERT_X
-#define RA8875_Y_INV       CONFIG_LVGL_TOUCH_INVERT_Y
-#define RA8875_XY_SWAP     CONFIG_LVGL_TOUCH_XY_SWAP
+#define RA8875_X_MIN       CONFIG_LV_TOUCH_X_MIN
+#define RA8875_Y_MIN       CONFIG_LV_TOUCH_Y_MIN
+#define RA8875_X_MAX       CONFIG_LV_TOUCH_X_MAX
+#define RA8875_Y_MAX       CONFIG_LV_TOUCH_Y_MAX
+#define RA8875_X_INV       CONFIG_LV_TOUCH_INVERT_X
+#define RA8875_Y_INV       CONFIG_LV_TOUCH_INVERT_Y
+#define RA8875_XY_SWAP     CONFIG_LV_TOUCH_XY_SWAP
 
 /**********************
  *      TYPEDEFS

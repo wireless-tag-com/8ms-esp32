@@ -3,7 +3,7 @@
 /*******************************************************************************
  * Size: 16 px
  * Bpp: 4
- * Opts: --font /home/lyj/8ms/aliph.ttf -r 0x20-0x7F --symbols 启明 --size 16 --format lvgl --bpp 4 --no-compress -o ali_font_16.c
+ * Opts: --font /Users/xiabin/work/hardware/hmi/hmi_template/aliph.ttf -r 0x20-0x7F --symbols 启明 --size 16 --format lvgl --bpp 4 --no-compress -o ali_font_16.c
  ******************************************************************************/
 
 #ifndef ALI_FONT_16
@@ -1491,17 +1491,8 @@ lv_font_t ali_font_16 = {
     .get_glyph_bitmap = lv_font_get_bitmap_fmt_txt,    /*Function pointer to get glyph's bitmap*/
     .line_height = 17,          /*The maximum line height required by the font*/
     .base_line = 4,             /*Baseline measured from the bottom of the line*/
-#if !(LVGL_VERSION_MAJOR == 6 && LVGL_VERSION_MINOR == 0)
-    .subpx = LV_FONT_SUBPX_NONE,
-#endif
-#if LV_VERSION_CHECK(7, 4, 0)
-    .underline_position = -1,
-    .underline_thickness = 1,
-#endif
     .dsc = &font_dsc           /*The custom font data. Will be accessed by `get_glyph_bitmap/dsc` */
 };
-
-
 
 #endif /*#if ALI_FONT_16*/
 

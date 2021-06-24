@@ -15,12 +15,16 @@ extern "C" {
  *********************/
 #include <stdbool.h>
 
+#ifdef LV_LVGL_H_INCLUDE_SIMPLE
+#include "lvgl.h"
+#else
 #include "lvgl/lvgl.h"
+#endif
 
 /*********************
  *      DEFINES
  *********************/
-#define RA8875_RST  CONFIG_LVGL_DISP_PIN_RST
+#define RA8875_RST  CONFIG_LV_DISP_PIN_RST
 
 // System & Configuration Registers
 #define RA8875_REG_PWRR   (0x01)     // Power and Display Control Register (PWRR)

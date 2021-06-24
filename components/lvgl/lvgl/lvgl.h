@@ -2,7 +2,7 @@
  * @file lvgl.h
  * Include all LittleV GL related headers
  */
- 
+#include "sdkconfig.h"
 #ifndef LVGL_H
 #define LVGL_H
 
@@ -10,13 +10,12 @@
 extern "C" {
 #endif
 
-
 /***************************
  * CURRENT VERSION OF LVGL
  ***************************/
-#define LVGL_VERSION_MAJOR   7
-#define LVGL_VERSION_MINOR   5
-#define LVGL_VERSION_PATCH   0
+#define LVGL_VERSION_MAJOR 7
+#define LVGL_VERSION_MINOR 11
+#define LVGL_VERSION_PATCH 0
 #define LVGL_VERSION_INFO ""
 
 /*********************
@@ -77,12 +76,11 @@ extern "C" {
 #include "src/lv_widgets/lv_spinner.h"
 #include "src/lv_widgets/lv_calendar.h"
 #include "src/lv_widgets/lv_spinbox.h"
+#include "src/lv_widgets/lv_8ms_effect.h"
 
 #include "src/lv_draw/lv_img_cache.h"
 
 #include "src/lv_api_map.h"
-
-//#define LV_BUILD_TEST 1
 
 /*********************
  *      DEFINES
@@ -123,6 +121,29 @@ extern "C" {
  * */
 #define LV_VERSION_CHECK(x,y,z) (x == LVGL_VERSION_MAJOR && (y < LVGL_VERSION_MINOR || (y == LVGL_VERSION_MINOR && z <= LVGL_VERSION_PATCH)))
 
+/**
+ * Wrapper functions for VERSION macros
+ */
+
+static inline int lv_version_major(void)
+{
+    return LVGL_VERSION_MAJOR;
+}
+
+static inline int lv_version_minor(void)
+{
+    return LVGL_VERSION_MINOR;
+}
+
+static inline int lv_version_patch(void)
+{
+    return LVGL_VERSION_PATCH;
+}
+
+static inline const char *lv_version_info(void)
+{
+    return LVGL_VERSION_INFO;
+}
 
 #ifdef __cplusplus
 }

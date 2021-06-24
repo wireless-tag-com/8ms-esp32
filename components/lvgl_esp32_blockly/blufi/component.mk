@@ -1,4 +1,0 @@
-# esp32 blufi 
-
-COMPONENT_SRCDIRS := . 
-COMPONENT_ADD_INCLUDEDIRS := .

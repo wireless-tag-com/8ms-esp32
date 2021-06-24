@@ -15,19 +15,23 @@ extern "C" {
  *********************/
 #include <stdbool.h>
 
+#ifdef LV_LVGL_H_INCLUDE_SIMPLE
+#include "lvgl.h"
+#else
 #include "lvgl/lvgl.h"
+#endif
 #include "../lvgl_helpers.h"
 
 /*********************
  *      DEFINES
  *********************/
-#define ILI9486_DC   CONFIG_LVGL_DISP_PIN_DC
-#define ILI9486_RST  CONFIG_LVGL_DISP_PIN_RST
-#define ILI9486_BCKL CONFIG_LVGL_DISP_PIN_BCKL
+#define ILI9486_DC   CONFIG_LV_DISP_PIN_DC
+#define ILI9486_RST  CONFIG_LV_DISP_PIN_RST
+#define ILI9486_BCKL CONFIG_LV_DISP_PIN_BCKL
 
-#define ILI9486_ENABLE_BACKLIGHT_CONTROL CONFIG_LVGL_ENABLE_BACKLIGHT_CONTROL
+#define ILI9486_ENABLE_BACKLIGHT_CONTROL CONFIG_LV_ENABLE_BACKLIGHT_CONTROL
 
-#if CONFIG_LVGL_BACKLIGHT_ACTIVE_LVL
+#if CONFIG_LV_BACKLIGHT_ACTIVE_LVL
   #define ILI9486_BCKL_ACTIVE_LVL 1
 #else
   #define ILI9486_BCKL_ACTIVE_LVL 0

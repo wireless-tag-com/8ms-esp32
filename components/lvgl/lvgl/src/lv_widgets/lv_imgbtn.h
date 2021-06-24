@@ -19,7 +19,7 @@ extern "C" {
 
 /*Testing of dependencies*/
 #if LV_USE_BTN == 0
-#error "lv_imgbtn: lv_btn is required. Enable it in lv_conf.h (LV_USE_BTN  1) "
+#error "lv_imgbtn: lv_btn is required. Enable it in lv_conf.h (LV_USE_BTN 1)"
 #endif
 
 #include "../lv_core/lv_obj.h"
@@ -99,6 +99,19 @@ void lv_imgbtn_set_src_tiled(lv_obj_t * imgbtn, lv_btn_state_t state, const void
 #endif
 
 /**
+ * Set the state of the image button
+ * @param imgbtn pointer to an image button object
+ * @param state the new state of the button (from lv_btn_state_t enum)
+ */
+void lv_imgbtn_set_state(lv_obj_t * imgbtn, lv_btn_state_t state);
+
+/**
+ * Toggle the state of the image button (ON->OFF, OFF->ON)
+ * @param imgbtn pointer to a image button object
+ */
+void lv_imgbtn_toggle(lv_obj_t * imgbtn);
+
+/**
  * Enable the toggled states. On release the button will change from/to toggled state.
  * @param imgbtn pointer to an image button object
  * @param tgl true: enable toggled states, false: disable
@@ -108,32 +121,13 @@ static inline void lv_imgbtn_set_checkable(lv_obj_t * imgbtn, bool tgl)
     lv_btn_set_checkable(imgbtn, tgl);
 }
 
-/**
- * Set the state of the image button
- * @param imgbtn pointer to an image button object
- * @param state the new state of the button (from lv_btn_state_t enum)
- */
-static inline void lv_imgbtn_set_state(lv_obj_t * imgbtn, lv_btn_state_t state)
-{
-    lv_btn_set_state(imgbtn, state);
-}
-
-/**
- * Toggle the state of the image button (ON->OFF, OFF->ON)
- * @param imgbtn pointer to a image button object
- */
-static inline void lv_imgbtn_toggle(lv_obj_t * imgbtn)
-{
-    lv_btn_toggle(imgbtn);
-}
-
 /*=====================
  * Getter functions
  *====================*/
 
 #if LV_IMGBTN_TILED == 0
 /**
- * Get the images in a  given state
+ * Get the images in a given state
  * @param imgbtn pointer to an image button object
  * @param state the state where to get the image (from `lv_btn_state_t`) `
  * @return pointer to an image source (a C array or path to a file)

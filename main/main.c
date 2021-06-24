@@ -19,14 +19,15 @@
 #include "freertos/semphr.h"
 #include "esp_system.h"
 #include "driver/gpio.h"
+#include "driver/uart.h"
 #include "nvs_flash.h"
 
 /* Littlevgl specific */
 #include "lvgl/lvgl.h"
 #include "lvgl_helpers.h"
 #include "qm_ui_entry.h"
+#include "wtctrl.h"
 
-/* blockly specific*/
 /*********************
  *      DEFINES
  *********************/
@@ -55,45 +56,19 @@ static void user_nvs_init()
     ESP_ERROR_CHECK(ret);
 }
 
-
-void blocklyTask(void *pvParameter)
-{
-    lvgl_blockly_init();
-    while (1)
-    {
-        lvgl_blockly_loop();
-        vTaskDelay(100 / portTICK_PERIOD_MS);
-    }
-    //A task should NEVER return
-    vTaskDelete(NULL);
-}
-
-void deviceTask(void *pvParameter)
-{
-    lvgl_device_init();
-    while (1)
-    {
-        lvgl_device_loop();
-        // vTaskDelay(10 / portTICK_PERIOD_MS);
-    }
-    vTaskDelete(NULL);
-}
-
 void app_main()
 {
-
     user_nvs_init();
-    //If you want to use a task to create the graphic, you NEED to create a Pinned task
-    //Otherwise there can be problem such as memory corruption and so on
-    xTaskCreatePinnedToCore(deviceTask, "device", 4096 * 2, NULL, 0, NULL, 0);
-    xTaskCreatePinnedToCore(blocklyTask, "blockly", 4096 * 2, NULL, 0, NULL, 1);
     xTaskCreatePinnedToCore(guiTask, "gui", 4096 * 2, NULL, 0, NULL, 1);
+
+#ifdef LV_8MS_UART_CTRL
+    lv_8ms_uart_ctrl_init(UART_NUM_0);
+#endif
 }
 
 static void lv_tick_task(void *arg)
 {
     (void)arg;
-
     lv_tick_inc(LV_TICK_PERIOD_MS);
 }
 
@@ -145,7 +120,7 @@ void guiTask(void *pvParameter)
     disp_drv.buffer = &disp_buf;
     lv_disp_drv_register(&disp_drv);
 
-#if CONFIG_LVGL_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
+#if CONFIG_LV_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
     lv_indev_drv_t indev_drv;
     lv_indev_drv_init(&indev_drv);
     indev_drv.read_cb = touch_driver_read;
