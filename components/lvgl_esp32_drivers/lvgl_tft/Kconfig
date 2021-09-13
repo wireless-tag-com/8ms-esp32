@@ -73,7 +73,29 @@ menu "LVGL TFT Display controller"
             select LV_TFT_DISPLAY_CONTROLLER_ST7796S
             select LV_TFT_DISPLAY_PROTOCOL_SPI
     endchoice
+    
+    choice WT_SCREEN
+        prompt "Select borad"
+        default WT_SC_SPI
+        help
+            Select screen type
 
+        config WT_SC_SPI
+            bool "SPI"
+        config WT_SC_8080
+            bool "8080"
+        choice WT_BOARD
+            prompt "Select borad"
+            depends on WT_SC_8080
+            default WT154_S2MI1
+            config WT154_S2MI1
+                bool "WT154_S2MI1"
+            config WT_86_32_3ZW1
+                bool "WT_86_32_3ZW1"
+            config WT280_S2MI1
+                bool "WT280_S2MI1"
+        endchoice
+    endchoice
     # START of helper symbols.
     #
     # Display controller symbols,
@@ -270,6 +292,7 @@ menu "LVGL TFT Display controller"
     # END of helper symbols
 
     choice
+        depends on WT_SC_SPI
         prompt "Select predefined board pinouts" if LV_PREDEFINED_DISPLAY_NONE || LV_PREDEFINED_DISPLAY_ERTFT0356
         default LV_PREDEFINED_PINS_NONE
         help
@@ -289,6 +312,7 @@ menu "LVGL TFT Display controller"
 
     # Select one of the available display controllers.
     choice
+    depends on WT_SC_SPI
     prompt "Select a display controller model." if LV_PREDEFINED_DISPLAY_NONE
         help
         Select the controller for your display.
@@ -481,6 +505,7 @@ menu "LVGL TFT Display controller"
     endchoice
 
     choice
+        depends on WT_SC_SPI
         prompt "TFT SPI Bus." if LV_TFT_DISPLAY_PROTOCOL_SPI && \
             !LV_PREDEFINED_DISPLAY_TTGO
         default LV_TFT_DISPLAY_SPI_VSPI if LV_PREDEFINED_DISPLAY_TTGO && \
@@ -498,6 +523,7 @@ menu "LVGL TFT Display controller"
     endchoice
 
     choice
+        depends on WT_SC_SPI
         prompt "TFT Data Transfer Mode" if LV_TFT_DISPLAY_PROTOCOL_SPI
         default LV_TFT_DISPLAY_SPI_TRANS_MODE_SIO
         help
@@ -512,6 +538,7 @@ menu "LVGL TFT Display controller"
     endchoice
 
     choice
+        depends on WT_SC_SPI
         prompt "TFT SPI Duplex Mode" if LV_TFT_DISPLAY_PROTOCOL_SPI
         default LV_TFT_DISPLAY_SPI_FULL_DUPLEX if LV_PREDEFINED_DISPLAY_RPI_RA8875 || LV_TFT_DISPLAY_CONTROLLER_FT81X
         default LV_TFT_DISPLAY_SPI_HALF_DUPLEX
@@ -538,6 +565,7 @@ menu "LVGL TFT Display controller"
     endchoice
 
     config LV_TFT_USE_CUSTOM_SPI_CLK_DIVIDER
+        depends on WT_SC_SPI
         bool "Use custom SPI clock frequency." if LV_TFT_DISPLAY_PROTOCOL_SPI
         default n
         help
@@ -788,7 +816,7 @@ menu "LVGL TFT Display controller"
 
     # menu will be visible only when LV_PREDEFINED_DISPLAY_NONE is y
     menu "Display Pin Assignments"
-    visible if LV_PREDEFINED_DISPLAY_NONE || LV_PREDEFINED_DISPLAY_RPI_MPI3501 || LV_PREDEFINED_PINS_TKOALA
+    visible if WT_SC_SPI && LV_PREDEFINED_DISPLAY_NONE || LV_PREDEFINED_DISPLAY_RPI_MPI3501 || LV_PREDEFINED_PINS_TKOALA 
 
         config LV_DISP_SPI_MOSI
             int "GPIO for MOSI (Master Out Slave In)" if LV_TFT_DISPLAY_PROTOCOL_SPI

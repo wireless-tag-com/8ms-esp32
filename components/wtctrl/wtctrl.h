@@ -20,5 +20,5 @@ enum {
 char *wtctrl_json_parse(const char *json_str);
 void lv_8ms_uart_ctrl_init(int uart_num);
 int lv_8ms_is_wtctrl_init(void);
-
+void lv_8ms_report(const char *report);
 #endif //__WTCTRL_H

@@ -124,6 +124,8 @@ void lvgl_driver_init(void)
         DISP_I2C_SPEED_HZ);
     
     disp_driver_init();
+#elif defined (CONFIG_WT_SC_8080)
+
 #else
 #error "No protocol defined for display controller"
 #endif
