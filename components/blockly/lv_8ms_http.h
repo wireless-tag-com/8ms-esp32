@@ -11,9 +11,9 @@ typedef int (*_8ms_http_cb_t)(char* data);
 void lv_8ms_httprequest(const char* url,const char* port,const char* path);
 
 /**
- * @brief 设置http回调函数
+ * @brief 设置http响应回调函数
  * 
- * @param cb 回调函数指针
+ * @param cb 响应回调函数指针
  */
 void lv_8ms_set_http_cb(_8ms_http_cb_t cb);
 #endif

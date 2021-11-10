@@ -106,18 +106,18 @@ int lv_8ms_gpio_set_dir(int pin, int dir);
 int lv_8ms_gpio_get_dir(int pin, int *dir);
 
 /**
- * @brief 从GPIO引脚读取数据
+ * @brief 读取GPIO引脚电平
  * 
- * @param pin 选择要读取数据的引脚号
- * @return int 读取的字节数
+ * @param pin  选择要读取电平的引脚号
+ * @return int 读取的电平数据
  */
 int lv_8ms_gpio_read(int pin);
 
 /**
- * @brief 向GPIO引脚写入数据
+ * @brief 设置GPIO引脚电平
  * 
- * @param pin   选择要写入数据的引脚号
- * @param value 将要写入的数据
+ * @param pin   选择要设置电平的引脚号
+ * @param value 要设置的电平
  * @return int  写入的字节数
  */
 int lv_8ms_gpio_write(int pin, int value);
