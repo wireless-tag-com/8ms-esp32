@@ -118,7 +118,7 @@ int lv_8ms_gpio_read(int pin);
  * 
  * @param pin   选择要设置电平的引脚号
  * @param value 要设置的电平
- * @return int  写入的字节数
+ * @return int  
  */
 int lv_8ms_gpio_write(int pin, int value);
 
