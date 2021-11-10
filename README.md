@@ -11,5 +11,3 @@ please refr to https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.3/ge
 idf.py build
 
 
-
-
