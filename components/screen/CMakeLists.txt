@@ -13,11 +13,8 @@ set(SCREEN_DIR "controller_driver/ili9341"
             "controller_driver/ssd1322"
             )
 
-#idf_component_register(SRC_DIRS "${SCREEN_DIR}" "screen_utility" "interface_driver" "."
-idf_component_register(
+idf_component_register(SRC_DIRS "${SCREEN_DIR}" "screen_utility" "interface_driver" "."
                         INCLUDE_DIRS "${SCREEN_DIR}" "interface_driver" "."
                         PRIV_INCLUDE_DIRS "screen_utility"
                         REQUIRES bus
                         )
-                        target_link_libraries(${COMPONENT_LIB} INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/libscreen.a")
-

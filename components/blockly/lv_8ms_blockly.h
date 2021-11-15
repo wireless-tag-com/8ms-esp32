@@ -5,4 +5,5 @@
 #include "lv_8ms_event.h"
 #include "lv_8ms_wifi.h"
 #include "lv_8ms_http.h"
+#include "storage_8ms_nvs.h"
 #endif

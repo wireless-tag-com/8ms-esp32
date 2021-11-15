@@ -14,7 +14,6 @@ lv_obj_t *lv_8ms_get_screen(char *name);
 lv_obj_t *lv_8ms_get_widget(char *w_name);
 const char *lv_8ms_get_obj_name(lv_obj_t *obj);
 int lv_8ms_gpio_app_init(void);
-void lv_8ms_uart_app_init(int uart_num);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

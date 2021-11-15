@@ -78,6 +78,7 @@ extern "C" {
 #include "src/lv_widgets/lv_spinbox.h"
 #include "src/lv_widgets/lv_8ms_effect.h"
 #include "src/lv_widgets/lv_clock.h"
+#include "src/lv_widgets/lv_board.h"
 
 #include "src/lv_draw/lv_img_cache.h"
 

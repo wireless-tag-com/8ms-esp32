@@ -4,7 +4,7 @@
 #include "lvgl.h"
 #include "esp_err.h"
 #include "screen_driver.h"
-#include "lcd_touch.h"
+
 #ifdef __cplusplus
 extern "C"
 {

@@ -205,6 +205,25 @@ extern void lv_8ms_init(void);
 #define LCD_DRIVER SCREEN_CONTROLLER_ILI9488
 #define SC_DIR SCR_DIR_RLTB
 
+#elif defined CONFIG_WT_86_32_3ZW2
+
+#define LCD_WR_SCK 39
+#define LCD_RS_DC 38
+#define LCD_CS -1
+#define LCD_RST 37
+#define LCD_BL 0
+#define LCD_D0 36
+#define LCD_D1 35
+#define LCD_D2 34
+#define LCD_D3 33
+#define LCD_D4 21
+#define LCD_D5 18
+#define LCD_D6 17
+#define LCD_D7 16
+#define SWAP_DATA 1
+#define LCD_DRIVER SCREEN_CONTROLLER_ST7796
+#define SC_DIR SCR_DIR_RLTB
+
 #elif defined CONFIG_WT280_S2MI1
 #define LCD_WR_SCK 12
 #define LCD_RS_DC 11
@@ -222,6 +241,25 @@ extern void lv_8ms_init(void);
 #define SWAP_DATA 1
 #define LCD_DRIVER SCREEN_CONTROLLER_ST7789
 #define SC_DIR SCR_DIR_LRTB
+
+#elif defined CONFIG_LCD01TG_A_SP
+#define LCD_WR_SCK 12
+#define LCD_RS_DC 11
+#define LCD_CS 10
+#define LCD_RST 8
+#define LCD_BL 42
+#define LCD_RD 15
+#define LCD_D0 35
+#define LCD_D1 36
+#define LCD_D2 37
+#define LCD_D3 34
+#define LCD_D4 33
+#define LCD_D5 21
+#define LCD_D6 14
+#define LCD_D7 13
+#define SWAP_DATA 0
+#define LCD_DRIVER SCREEN_CONTROLLER_ILI9341
+#define SC_DIR SCR_DIR_TBLR
 #endif
 
 #define MAX_LOGO_TIME 20 // Duration of logo display
@@ -233,7 +271,7 @@ static scr_driver_t g_lcd;
 void app_main(void)
 {
     esp_err_t ret = ESP_OK;
-    #ifdef CONFIG_WT154_S2MI1
+    #if (defined CONFIG_WT154_S2MI1) || defined (CONFIG_LCD01TG_A_SP)
     gpio_reset_pin(LCD_RD);
     gpio_set_direction(LCD_RD, GPIO_MODE_OUTPUT);
     gpio_set_level(LCD_RD, 1);

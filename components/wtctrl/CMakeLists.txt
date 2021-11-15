@@ -1,6 +1,4 @@
-file(GLOB SOURCES *.c)
-
-idf_component_register(SRCS ${SOURCES}
+idf_component_register(
                        INCLUDE_DIRS .
-                       REQUIRES bus touch_panel lvgl json blockly mqtt)
-                       target_link_libraries(${COMPONENT_LIB} INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/libwtctrl.a")
+                       REQUIRES bus touch_panel mqtt lvgl json blockly)
+target_link_libraries(${COMPONENT_LIB} INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/libwtctrl.a")

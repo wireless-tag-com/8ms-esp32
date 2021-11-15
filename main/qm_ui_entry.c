@@ -105,38 +105,30 @@ void lv_qm_ui_loop(void)
     blockly_loop();
 #endif
 }
-#ifndef LV_8MS_PRESET_UART_QUEUE
-void lv_8ms_uart_queue_ana(uint8_t* data,int size){   
-    printf("ana:%s\n",wtctrl_json_parse((char *)data));
+#ifndef LV_8MS_PRESET_UART_QUEUE_0
+void lv_8ms_uart_queue_ana_0(uint8_t* data,int size){   
+    printf("UART-0\ndata:%s\nlength:%d\n",data,size);
 }
 #endif
+
+#ifndef LV_8MS_PRESET_UART_QUEUE_1
+void lv_8ms_uart_queue_ana_1(uint8_t* data,int size){   
+    printf("UART-1\ndata:%s\nlength:%d\n",data,size);
+}
+#endif
+
+#ifndef LV_8MS_PRESET_UART_QUEUE_2
+void lv_8ms_uart_queue_ana_2(uint8_t* data,int size){   
+    printf("UART-2\ndata:%s\nlength:%d\n",data,size);
+}
+#endif
+
 #ifndef CUSTOM_MQTT_PARSE
 void lv_8ms_mqtt_received(const char* data)
 {
     printf("custom:%s\n",data);
 }
 #endif
-/**
- * @brief 
- * @param 
- * @return 
- */
-void cb_1(lv_obj_t* obj,lv_event_t event)
-{
-    if (event==LV_EVENT_CLICKED)
-    {
-        lv_8ms_httprequest("api.8ms.xyz","80","/weather/");
-    }
-    
-}
-void cb_2(lv_obj_t* obj,lv_event_t event)
-{
-    if (event==LV_EVENT_CLICKED)
-    {
-        lv_8ms_httprequest("api.8ms.xyz","80","/common/time");
-        lv_8ms_report("{\"test\":\"test\"}");
-    }
-}
 void s1_test()
 {
     printf("%d,%d\n",s1->coords.x1,s1->coords.y1);
@@ -145,37 +137,7 @@ void lv_qm_ui_entry(void)
 {
     LV_FONT_DECLARE(ali_font_16);
     main_screen = lv_obj_create(NULL, NULL);
-    lv_obj_set_style_local_bg_color(main_screen,NULL,LV_STATE_DEFAULT,LV_COLOR_WHITE);
-    lv_obj_t* label=lv_label_create(main_screen,NULL);
-    lv_label_set_text(label,"Hello world");
-    lv_obj_align(label,NULL,LV_ALIGN_CENTER,0,0);
     lv_scr_load(main_screen);
-    p2=lv_switch_create(main_screen,NULL);
-    lv_obj_align(p2,NULL,LV_ALIGN_IN_BOTTOM_LEFT,0,0);
-    s1=lv_switch_create(main_screen,NULL);
-    lv_obj_align(s1,NULL,LV_ALIGN_IN_BOTTOM_RIGHT,0,0);
-    init_function();
-
-    //lv_8ms_gpio_app_init();
-    lv_8ms_wifi_connect("test","12345678",3);
-    
-    
-    //lv_8ms_httprequest("api.8ms.xyz","80","/weather/");
-    btn1=lv_btn_create(main_screen,NULL);
-    lv_obj_align(btn1,NULL,LV_ALIGN_IN_TOP_LEFT,0,0);
-    lv_obj_set_event_cb(btn1,cb_1);
-    btn2=lv_btn_create(main_screen,NULL);
-    lv_obj_align(btn1,NULL,LV_ALIGN_IN_TOP_RIGHT,0,0);
-    lv_obj_set_event_cb(btn2,cb_2);
-    lv_8ms_uart_ctrl_init(0);
-    //lv_8ms_uart_app_init(0);
-    lv_8ms_slide_in(s1,LV_8MS_TOP,800);
-    lv_8ms_slide_in(p2,LV_8MS_TOP,800);
-    lv_8ms_slide_in(btn1,LV_8MS_RIGHT,800);
-    lv_8ms_slide_in(btn2,LV_8MS_LEFT,800);
-    //lv_task_create(s1_test,10,LV_TASK_PRIO_HIGHEST,NULL);
-    //printf("%d,%d\n",LV_HOR_RES,LV_VER_RES_MAX);
-
 }
 lv_obj_t *lv_8ms_get_screen(char *name)
 {
