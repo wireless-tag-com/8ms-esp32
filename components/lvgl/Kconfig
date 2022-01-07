@@ -1,4 +1,8 @@
 menu "LVGL configuration"
+    config LV_ATTRIBUTE_FAST_MEM_USE_IRAM
+        bool "Set IRAM as LV_ATTRIBUTE_FAST_MEM"
+        help
+            Set this option to configure IRAM as LV_ATTRIBUTE_FAST_MEM
 
     menu "Font usage"
         menu "Enable built-in fonts"

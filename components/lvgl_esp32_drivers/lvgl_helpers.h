@@ -74,7 +74,7 @@ extern "C" {
 #elif defined (CONFIG_LV_TFT_DISPLAY_CONTROLLER_UC8151D)
 #define DISP_BUF_SIZE ((LV_VER_RES_MAX * LV_VER_RES_MAX) / 8) // 2888 bytes
 #elif defined (CONFIG_WT_SC_8080)
-#define DISP_BUF_SIZE 0
+#define DISP_BUF_SIZE 320*40
 #else
 #error "No display controller selected"
 #endif

@@ -35,6 +35,9 @@ extern "C" {
 
 #include "src/lv_core/lv_refr.h"
 #include "src/lv_core/lv_disp.h"
+#include "src/lv_core/qmsd_type.h"
+#include "src/lv_core/qmsd_msgque.h"
+#include "src/lv_core/qmsd_lang.h"
 
 #include "src/lv_themes/lv_theme.h"
 
@@ -76,9 +79,10 @@ extern "C" {
 #include "src/lv_widgets/lv_spinner.h"
 #include "src/lv_widgets/lv_calendar.h"
 #include "src/lv_widgets/lv_spinbox.h"
-#include "src/lv_widgets/lv_8ms_effect.h"
+#include "src/lv_widgets/qmsd_effect.h"
 #include "src/lv_widgets/lv_clock.h"
 #include "src/lv_widgets/lv_board.h"
+#include "src/lv_widgets/qmsd_menu.h"
 
 #include "src/lv_draw/lv_img_cache.h"
 

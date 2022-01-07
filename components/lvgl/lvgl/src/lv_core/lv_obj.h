@@ -29,6 +29,8 @@ extern "C" {
 #include "../lv_draw/lv_draw_img.h"
 
 #include "cJSON.h"
+#include "qmsd_type.h"
+
 /*********************
  *      DEFINES
  *********************/
@@ -104,6 +106,8 @@ enum {
     LV_EVENT_APPLY,  /**< "Ok", "Apply" or similar specific button has clicked*/
     LV_EVENT_CANCEL, /**< "Close", "Cancel" or similar specific button has clicked*/
     LV_EVENT_DELETE, /**< Object is being deleted */
+    LV_EVENT_SCREEN_CREATE,
+    LV_EVENT_SCREEN_DELETE,
     _LV_EVENT_LAST /** Number of events*/
 };
 typedef uint8_t lv_event_t; /**< Type of event being sent to the object. */
@@ -193,11 +197,12 @@ enum {
 };
 
 typedef uint8_t lv_state_t;
+
 /*
- * 8ms ctrl callback
+ * qmsd ctrl callback
  */
-typedef char *(*lv_obj_8ms_ctrl_cb)(struct _lv_obj_t *obj, cJSON *root);
-typedef int (*lv_obj_8ms_event_cb)(struct _lv_obj_t *obj, lv_event_t event);
+typedef char *(*lv_obj_qmsd_ctrl_cb)(struct _lv_obj_t *obj, const qmsd_ctrl_type type, const cJSON *attr);
+typedef int (*lv_obj_qmsd_event_cb)(struct _lv_obj_t *obj, lv_event_t event);
 
 typedef struct _lv_obj_t {
     struct _lv_obj_t * parent; /**< Pointer to the parent object*/
@@ -208,7 +213,7 @@ typedef struct _lv_obj_t {
     lv_event_cb_t event_cb; /**< Event callback function */
     lv_signal_cb_t signal_cb; /**< Object type specific signal function*/
     lv_design_cb_t design_cb; /**< Object type specific design function*/
-    lv_obj_8ms_ctrl_cb ctrl_cb;
+    lv_obj_qmsd_ctrl_cb ctrl_cb;
 
     void * ext_attr;            /**< Object type specific extended data*/
     lv_style_list_t style_list;
@@ -1486,21 +1491,31 @@ bool lv_debug_check_obj_type(const lv_obj_t * obj, const char * obj_type);
 bool lv_debug_check_obj_valid(const lv_obj_t * obj);
 
 /**
- * Set a an 8ms ctrl handler function for an object.
+ * Set a an qmsd ctrl handler function for an object.
  * Used by the user to react on event which happens with the object.
  * @param obj pointer to an object
  * @param ctrl_cb the new event function
  */
-void lv_obj_8ms_set_ctrl_cb(lv_obj_t * obj, lv_obj_8ms_ctrl_cb ctrl_cb);
-char *lv_obj_8ms_call_ctrl_cb(lv_obj_t * obj, cJSON *root);
+void lv_obj_qmsd_set_ctrl_cb(lv_obj_t * obj, lv_obj_qmsd_ctrl_cb ctrl_cb);
+char *lv_obj_qmsd_call_ctrl_cb(lv_obj_t * obj, const qmsd_ctrl_type type, const cJSON *attr);
 
 /**
- * Set a an 8ms event cb function.
+ * Set a an qmsd event cb function.
  * @param event_cb the new event function
  */
-void lv_obj_8ms_set_event_cb(lv_obj_8ms_event_cb event_cb);
-int lv_obj_8ms_call_event_cb(lv_obj_t *obj, lv_event_t event);
+void lv_obj_qmsd_set_event_cb(lv_obj_qmsd_event_cb event_cb);
+int lv_obj_qmsd_call_event_cb(lv_obj_t *obj, lv_event_t event);
 
+/**
+ * @brief Check cJSON and fill the code
+ * 
+ * @param item cjson obj to be checked
+ * @param code code buffer to be filled
+ * @param type The type cJSON obj should be
+ * @return true 
+ * @return false 
+ */
+bool qmsd_cjson_check(cJSON * item,int* code ,int type);
 /**********************
  *      MACROS
  **********************/

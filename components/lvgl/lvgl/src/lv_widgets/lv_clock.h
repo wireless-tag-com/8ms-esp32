@@ -43,8 +43,8 @@ extern "C" {
 
     enum 
     {
-        LV_8MS_CLOCK_SMOOTH,
-        LV_8MS_CLOCK_TIK,
+        QMSD_CLOCK_SMOOTH,
+        QMSD_CLOCK_TIK,
     };
     lv_obj_t* lv_clock_create(lv_obj_t* par, const lv_obj_t* copy);
     void lv_clock_set_time(lv_obj_t* obj, int hour, int min, int sec);

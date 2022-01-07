@@ -14,7 +14,7 @@
 /* clang-format off */
 
 #include <stdint.h>
-
+#include "sdkconfig.h"
 #include "esp_attr.h"
 /*====================
    Graphical settings
@@ -358,8 +358,11 @@ typedef void * lv_img_decoder_user_data_t;
 
 /* Prefix performance critical functions to place them into a faster memory (e.g RAM)
  * Uses 15-20 kB extra memory */
-#define LV_ATTRIBUTE_FAST_MEM
-
+#ifdef CONFIG_QMSD_PERFORMANCE_MODE
+#define LV_ATTRIBUTE_FAST_MEM IRAM_ATTR
+#else
+#define LV_ATTRIBUTE_FAST_MEM 
+#endif
 /* Export integer constant to binding.
  * This macro is used with constants in the form of LV_<CONST> that
  * should also appear on lvgl binding API such as Micropython
@@ -378,10 +381,11 @@ typedef void * lv_img_decoder_user_data_t;
 
 /* 1: use a custom tick source.
  * It removes the need to manually update the tick with `lv_tick_inc`) */
-#define LV_TICK_CUSTOM     0
+#define LV_TICK_CUSTOM     1
 #if LV_TICK_CUSTOM == 1
-#define LV_TICK_CUSTOM_INCLUDE  "Arduino.h"         /*Header for the system time function*/
-#define LV_TICK_CUSTOM_SYS_TIME_EXPR (millis())     /*Expression evaluating to current system time in ms*/
+#define LV_TICK_CUSTOM_INCLUDE  <stdint.h>         /*Header for the system time function*/
+uint32_t custom_tick_get();
+#define LV_TICK_CUSTOM_SYS_TIME_EXPR (custom_tick_get())     /*Expression evaluating to current system time in ms*/
 #endif   /*LV_TICK_CUSTOM*/
 
 typedef void * lv_disp_drv_user_data_t;             /*Type of user data in the display driver*/

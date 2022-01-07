@@ -73,10 +73,54 @@ menu "LVGL TFT Display controller"
             select LV_TFT_DISPLAY_CONTROLLER_ST7796S
             select LV_TFT_DISPLAY_PROTOCOL_SPI
     endchoice
-    
+    choice WT_BOARD
+            prompt "Select borad"
+            default WT32_SC01_LANDSCAPE
+            config WT32_SC01_LANDSCAPE
+                bool "WT32_SC01_LANDSCAPE"
+                select LV_TFT_DISPLAY_CONTROLLER_ST7796S
+                select LV_TFT_DISPLAY_PROTOCOL_SPI
+            config WT32_SC01_PORTRAIT
+                bool "WT32_SC01_PORTRAIT"
+                select LV_TFT_DISPLAY_CONTROLLER_ST7796S
+                select LV_TFT_DISPLAY_PROTOCOL_SPI
+            config WT154_S2MI1
+                bool "WT154_S2MI1"
+                select LCD_DRIVER_SCREEN_CONTROLLER_ST7789
+                select SCR_DIR_LRTB
+            config WT154_C3SI1
+                bool "WT154_C3SI1"
+                select LV_TFT_DISPLAY_CONTROLLER_ST7789
+                select LV_TFT_DISPLAY_PROTOCOL_SPI
+            config WT_86_32_3ZW0
+                bool "WT_86_32_3ZW0"
+                select LCD_DRIVER_SCREEN_CONTROLLER_ILI9488
+                select SCR_DIR_RLTB
+            config WT_86_32_3ZW1
+                bool "WT_86_32_3ZW1"
+                select LCD_DRIVER_SCREEN_CONTROLLER_ST7796
+                select SCR_DIR_RLTB
+            config WT280_S2MI1
+                bool "WT280_S2MI1"
+                select LCD_DRIVER_SCREEN_CONTROLLER_ST7789
+                select SCR_DIR_LRTB
+            config WT280_S2MT1
+                bool "WT280_S2MT1"
+                select LCD_DRIVER_SCREEN_CONTROLLER_ST7789
+                select SCR_DIR_LRTB
+            config LCD01TG_A_SP
+                bool "LCD01TG_A_SP"
+                select LCD_DRIVER_SCREEN_CONTROLLER_ILI9341
+                select SCR_DIR_TBLR
+            config CUSTOM_LCD
+                bool "CUSTOM_LCD"
+            
+    endchoice
     choice WT_SCREEN
-        prompt "Select borad"
-        default WT_SC_SPI
+        prompt "Select screen bus"
+        #depends on CUSTOM_LCD
+        default WT_SC_SPI if (WT32_SC01_LANDSCAPE || WT32_SC01_PORTRAIT)
+        default WT_SC_8080
         help
             Select screen type
 
@@ -84,22 +128,157 @@ menu "LVGL TFT Display controller"
             bool "SPI"
         config WT_SC_8080
             bool "8080"
-        choice WT_BOARD
-            prompt "Select borad"
-            depends on WT_SC_8080
-            default WT154_S2MI1
-            config WT154_S2MI1
-                bool "WT154_S2MI1"
-            config WT_86_32_3ZW1
-                bool "WT_86_32_3ZW1"
-            config WT_86_32_3ZW2
-                bool "WT_86_32_3ZW2"
-            config WT280_S2MI1
-                bool "WT280_S2MI1"
-            config LCD01TG_A_SP
-                bool "LCD01TG_A_SP"
-        endchoice
     endchoice
+    config QMSD_PERFORMANCE_MODE
+        bool "Enable performance mode"
+        help
+            Enable performance mode with screen.
+    choice SCREEN_IC
+        prompt "Select screen driver"
+        depends on CUSTOM_LCD
+        help
+            Select display configuration
+
+        config PRE_SCREEN_CONTROLLER_ILI9341
+            bool "ILI9341"
+            select LCD_DRIVER_SCREEN_CONTROLLER_ILI9341
+        config PRE_SCREEN_CONTROLLER_ILI9806
+            bool "ILI9806"
+            select LCD_DRIVER_SCREEN_CONTROLLER_ILI9806
+        config PRE_SCREEN_CONTROLLER_ILI9488
+            bool "ILI9488"
+            select LCD_DRIVER_SCREEN_CONTROLLER_ILI9488
+        config PRE_SCREEN_CONTROLLER_ILI9486
+            bool "ILI9486"
+            select LCD_DRIVER_SCREEN_CONTROLLER_ILI9486
+        config PRE_SCREEN_CONTROLLER_NT35510
+            bool "NT35510"
+            select LCD_DRIVER_SCREEN_CONTROLLER_NT35510
+        config PRE_SCREEN_CONTROLLER_RM68120
+            bool "RM68120"
+            select LCD_DRIVER_SCREEN_CONTROLLER_RM68120
+        config PRE_SCREEN_CONTROLLER_ST7789
+            bool "ST7789"
+            select LCD_DRIVER_SCREEN_CONTROLLER_ST7789
+        config PRE_SCREEN_CONTROLLER_ST7796
+            bool "ST7796"
+            select LCD_DRIVER_SCREEN_CONTROLLER_ST7796
+        config PRE_SCREEN_CONTROLLER_SSD1351
+            bool "SSD1351"
+            select LCD_DRIVER_SCREEN_CONTROLLER_SSD1351
+    endchoice
+    
+# Start of screen components ic list
+
+    config LCD_DRIVER_SCREEN_CONTROLLER_ILI9341
+        bool
+
+    config LCD_DRIVER_SCREEN_CONTROLLER_ILI9806
+        bool
+
+    config LCD_DRIVER_SCREEN_CONTROLLER_ILI9488
+        bool
+
+    config LCD_DRIVER_SCREEN_CONTROLLER_ILI9486
+        bool
+        
+    config LCD_DRIVER_SCREEN_CONTROLLER_NT35510
+        bool
+
+    config LCD_DRIVER_SCREEN_CONTROLLER_RM68120
+        bool
+    
+    config LCD_DRIVER_SCREEN_CONTROLLER_ST7789
+        bool
+
+    config LCD_DRIVER_SCREEN_CONTROLLER_ST7796
+        bool
+    
+    config LCD_DRIVER_SCREEN_CONTROLLER_SSD1351
+        bool
+
+# end of screen components ic list
+    choice SCREEN_DIRECTION
+    #visible if WT_SC_8080 && CUSTOM_LCD
+        prompt "Select screen direction"
+        depends on WT_SC_8080 && CUSTOM_LCD
+        help
+            Select display configuration
+
+        config PRE_SCR_DIR_LRTB
+            bool "SCR_DIR_LRTB"
+            select SCR_DIR_LRTB
+        config PRE_SCR_DIR_LRBT
+            bool "SCR_DIR_LRBT"
+            select SCR_DIR_LRBT
+        config PRE_SCR_DIR_RLTB
+            bool "SCR_DIR_RLTB"
+            select SCR_DIR_RLTB
+        config PRE_SCR_DIR_RLBT
+            bool "SCR_DIR_RLBT"
+            select SCR_DIR_RLBT
+        config PRE_SCR_DIR_TBLR
+            bool "SCR_DIR_TBLR"
+            select SCR_DIR_TBLR
+        config PRE_SCR_DIR_BTLR
+            bool "SCR_DIR_BTLR"
+            select SCR_DIR_BTLR
+        config PRE_SCR_DIR_TBRL
+            bool "SCR_DIR_TBRL"
+            select SCR_DIR_TBRL
+        config PRE_SCR_DIR_BTRL
+            bool "SCR_DIR_BTRL"
+            select SCR_DIR_BTRL
+        config PRE_SCR_DIR_MAX
+            bool "SCR_DIR_MAX"
+            select SCR_DIR_MAX
+        config PRE_SCR_MIRROR_X
+            bool "SCR_MIRROR_X"
+            select SCR_MIRROR_X
+        config PRE_SCR_MIRROR_Y
+            bool "SCR_MIRROR_Y"
+            select SCR_MIRROR_Y
+        config PRE_SCR_SWAP_XY
+            bool "SCR_SWAP_XY"
+            select SCR_SWAP_XY
+    endchoice
+
+        config SCR_DIR_LRTB
+            bool
+
+        config SCR_DIR_LRBT
+            bool
+        
+        config SCR_DIR_RLTB
+            bool
+        
+        config SCR_DIR_RLBT
+            bool
+        
+        config SCR_DIR_TBLR
+            bool
+        
+        config SCR_DIR_BTLR
+            bool
+        
+        config SCR_DIR_TBRL
+            bool
+        
+        config SCR_DIR_BTRL
+            bool
+        
+        config SCR_DIR_MAX
+            bool
+        
+        config SCR_MIRROR_X
+            bool
+        
+        config SCR_MIRROR_Y
+            bool
+        
+        config SCR_SWAP_XY
+            bool
+
     # START of helper symbols.
     #
     # Display controller symbols,
@@ -835,7 +1014,7 @@ menu "LVGL TFT Display controller"
             default 23 if LV_PREDEFINED_PINS_TKOALA
             default 19 if LV_PREDEFINED_DISPLAY_TTGO
             default 19 if LV_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
-            default 13 if LV_PREDEFINED_DISPLAY_WT32_SC01
+            default 13 if LV_PREDEFINED_DISPLAY_WT32_SC01 || WT32_SC01_LANDSCAPE || WT32_SC01_PORTRAIT
             default 13
 
             help
@@ -904,7 +1083,7 @@ menu "LVGL TFT Display controller"
             default 18 if LV_PREDEFINED_PINS_TKOALA
             default 18 if LV_PREDEFINED_DISPLAY_TTGO
             default 21 if LV_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
-            default 14 if LV_PREDEFINED_DISPLAY_WT32_SC01
+            default 14 if LV_PREDEFINED_DISPLAY_WT32_SC01 || WT32_SC01_LANDSCAPE || WT32_SC01_PORTRAIT
             default 14
 
             help
@@ -932,7 +1111,7 @@ menu "LVGL TFT Display controller"
             default 26 if LV_PREDEFINED_DISPLAY_ATAG
             default 5 if LV_PREDEFINED_DISPLAY_TTGO
             default 12 if LV_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
-            default 15 if LV_PREDEFINED_DISPLAY_WT32_SC01
+            default 15 if LV_PREDEFINED_DISPLAY_WT32_SC01 || WT32_SC01_LANDSCAPE || WT32_SC01_PORTRAIT
             default 15
 
             help
@@ -956,7 +1135,7 @@ menu "LVGL TFT Display controller"
             default 27 if LV_PREDEFINED_DISPLAY_M5STACK || LV_PREDEFINED_DISPLAY_M5STICK
             default 23 if LV_PREDEFINED_DISPLAY_M5STICKC
             default 21 if LV_PREDEFINED_DISPLAY_WROVER4
-            default 21 if LV_PREDEFINED_DISPLAY_WT32_SC01
+            default 21 if LV_PREDEFINED_DISPLAY_WT32_SC01 || WT32_SC01_LANDSCAPE || WT32_SC01_PORTRAIT
             default 33 if LV_PREDEFINED_DISPLAY_ADA_FEATHERWING
             default 0 if LV_PREDEFINED_PINS_TKOALA
             default 17 if LV_PREDEFINED_DISPLAY_ATAG
@@ -982,7 +1161,7 @@ menu "LVGL TFT Display controller"
             default 16 if LV_PREDEFINED_DISPLAY_ATAG
             default 23 if LV_PREDEFINED_DISPLAY_TTGO
             default 33 if LV_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
-            default 22 if LV_PREDEFINED_DISPLAY_WT32_SC01
+            default 22 if LV_PREDEFINED_DISPLAY_WT32_SC01 || WT32_SC01_LANDSCAPE || WT32_SC01_PORTRAIT
             default 4
 
             help
@@ -1008,7 +1187,7 @@ menu "LVGL TFT Display controller"
             default y if LV_PREDEFINED_DISPLAY_ERTFT0356
             default y if LV_PREDEFINED_DISPLAY_TTGO
             default y if LV_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
-            default y if LV_PREDEFINED_DISPLAY_WT32_SC01
+            default y if LV_PREDEFINED_DISPLAY_WT32_SC01 || WT32_SC01_LANDSCAPE || WT32_SC01_PORTRAIT
             help
                 Enable controlling the display backlight using an GPIO
 
@@ -1019,7 +1198,7 @@ menu "LVGL TFT Display controller"
             default y if LV_PREDEFINED_DISPLAY_ERTFT0356
             default y if LV_PREDEFINED_DISPLAY_TTGO
             default y if LV_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
-            default y if LV_PREDEFINED_DISPLAY_WT32_SC01
+            default y if LV_PREDEFINED_DISPLAY_WT32_SC01 || WT32_SC01_LANDSCAPE || WT32_SC01_PORTRAIT
             help
                 Some backlights are turned on with a high signal, others held low.
                 If enabled, a value of 1 will be sent to the display to enable the backlight,
@@ -1040,7 +1219,7 @@ menu "LVGL TFT Display controller"
             default 0  if LV_PREDEFINED_PINS_TKOALA
             default 4 if LV_PREDEFINED_DISPLAY_TTGO
             default 2 if LV_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
-            default 23 if LV_PREDEFINED_DISPLAY_WT32_SC01
+            default 23 if LV_PREDEFINED_DISPLAY_WT32_SC01 || WT32_SC01_LANDSCAPE || WT32_SC01_PORTRAIT
             default 27
 
             help
@@ -1067,6 +1246,164 @@ menu "LVGL TFT Display controller"
 
             help
             Configure the I2C SCL pin here.
+
+    endmenu
+    menu "Screen Pin Assignments"
+    visible if WT_SC_8080 && CUSTOM_LCD
+
+        config LCD_WR_SCK
+            int "LCD_WR_SCK"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 12 if WT154_S2MI1
+            default 39 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 12 if WT280_S2MI1 || WT280_S2MT1
+            default 12 if LCD01TG_A_SP
+            default 0
+
+        config LCD_RS_DC
+            int "LCD_RS_DC"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 11 if WT154_S2MI1
+            default 38 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 11 if WT280_S2MI1 || WT280_S2MT1
+            default 11 if LCD01TG_A_SP
+            default 0
+
+        config LCD_CS
+            int "LCD_CS"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 10 if WT154_S2MI1
+            default -1 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 10 if WT280_S2MI1 || WT280_S2MT1
+            default 10 if LCD01TG_A_SP
+            default 0
+
+        config LCD_RD
+            int "LCD_RD"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 13 if WT154_S2MI1
+            default 15 if LCD01TG_A_SP
+            default -1
+        
+        config LCD_RST
+            int "LCD_RST"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 8 if WT154_S2MI1
+            default 37 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 17 if WT280_S2MI1 || WT280_S2MT1
+            default 18 if LCD01TG_A_SP
+            default 0
+
+        config LCD_BL
+            int "LCD_BL"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 39 if WT154_S2MI1
+            default 0 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 16 if WT280_S2MI1 || WT280_S2MT1
+            default 42 if LCD01TG_A_SP
+            default 0
+
+        config LCD_D0
+            int "LCD_D0"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 35 if WT154_S2MI1
+            default 36 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 35 if WT280_S2MI1 || WT280_S2MT1
+            default 35 if LCD01TG_A_SP
+            default 0
+
+        config LCD_D1
+            int "LCD_D1"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 36 if WT154_S2MI1
+            default 35 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 36 if WT280_S2MI1 || WT280_S2MT1
+            default 36 if LCD01TG_A_SP
+            default 0
+
+        config LCD_D2
+            int "LCD_D2"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 37 if WT154_S2MI1
+            default 34 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 37 if WT280_S2MI1 || WT280_S2MT1
+            default 37 if LCD01TG_A_SP
+            default 0
+
+        config LCD_D3
+            int "LCD_D3"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 38 if WT154_S2MI1
+            default 33 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 34 if WT280_S2MI1 || WT280_S2MT1
+            default 34 if LCD01TG_A_SP
+            default 0
+
+        config LCD_D4
+            int "LCD_D4"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 34 if WT154_S2MI1
+            default 21 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 33 if WT280_S2MI1 || WT280_S2MT1
+            default 33 if LCD01TG_A_SP
+            default 0
+
+        config LCD_D5
+            int "LCD_D5"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 33 if WT154_S2MI1
+            default 18 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 21 if WT280_S2MI1 || WT280_S2MT1
+            default 21 if LCD01TG_A_SP
+            default 0
+
+        config LCD_D6
+            int "LCD_D6"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 21 if WT154_S2MI1
+            default 17 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 14 if WT280_S2MI1 || WT280_S2MT1
+            default 14 if LCD01TG_A_SP
+            default 0
+
+        config LCD_D7
+            int "LCD_D7"
+            range -1 39 if IDF_TARGET_ESP32
+            range -1 43 if IDF_TARGET_ESP32S2
+
+            default 14 if WT154_S2MI1
+            default 16 if WT_86_32_3ZW0 || WT_86_32_3ZW1
+            default 13 if WT280_S2MI1 || WT280_S2MT1
+            default 13 if LCD01TG_A_SP
+            default 0
+    
+    
 
     endmenu
 

@@ -35,18 +35,18 @@ extern "C" {
 
     } lv_board_ext_t;
 
-    int lv_8ms_board_get_index(lv_obj_t* board);
-    void lv_8ms_board_set_cont_color(lv_obj_t* board,lv_color_t bg_color);
-    lv_obj_t* lv_8ms_board_create(lv_obj_t* par, const lv_obj_t* copy);
-    lv_obj_t* lv_8ms_board_add_cont(lv_obj_t* board);
-    void lv_8ms_board_add_prepared_cont(lv_obj_t* board, lv_obj_t* cont);
-    void lv_8ms_board_set_cont_size(lv_obj_t* board,int w,int h);
-    lv_obj_t* lv_8ms_board_get_cont(lv_obj_t* board,int index);
-    void lv_8ms_board_del_cont(lv_obj_t* board);
-    lv_obj_t* lv_8ms_board_get_page(lv_obj_t* board);
-    void lv_8ms_board_clean(lv_obj_t* board);
-    void lv_8ms_board_set_break(lv_obj_t* board,int num);
-    void lv_8ms_board_del_cont_index(lv_obj_t* board, int index);
+    int qmsd_board_get_index(lv_obj_t* board);
+    void qmsd_board_set_cont_color(lv_obj_t* board,lv_color_t bg_color);
+    lv_obj_t* qmsd_board_create(lv_obj_t* par, const lv_obj_t* copy);
+    lv_obj_t* qmsd_board_add_cont(lv_obj_t* board);
+    void qmsd_board_add_prepared_cont(lv_obj_t* board, lv_obj_t* cont);
+    void qmsd_board_set_cont_size(lv_obj_t* board,int w,int h);
+    lv_obj_t* qmsd_board_get_cont(lv_obj_t* board,int index);
+    void qmsd_board_del_cont(lv_obj_t* board);
+    lv_obj_t* qmsd_board_get_page(lv_obj_t* board);
+    void qmsd_board_clean(lv_obj_t* board);
+    void qmsd_board_set_break(lv_obj_t* board,int num);
+    void qmsd_board_del_cont_index(lv_obj_t* board, int index);
 
 #ifdef __cplusplus
 } /* extern "C" */

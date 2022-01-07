@@ -32,6 +32,10 @@ extern "C" {
 #include "FT81x.h"
 #elif defined (CONFIG_LV_TOUCH_CONTROLLER_RA8875)
 #include "ra8875_touch.h"
+#elif defined (CONFIG_WT_86_32_3ZW0)
+#include "../qmsd_tp/gt911/lcd_touch.h"
+#elif defined (CONFIG_WT_86_32_3ZW1)
+#include "../qmsd_tp/gslx680/lcd_touch_gslx680.h"
 #endif
 
 /*********************

@@ -1,4 +1,4 @@
-# 8ms blockly
+# qmsd blockly
 
 COMPONENT_SRCDIRS := . 
 COMPONENT_ADD_INCLUDEDIRS := .
