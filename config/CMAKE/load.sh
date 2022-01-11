@@ -22,6 +22,8 @@ cp $configdir$product"/lib"${component_name[i]}".a" $workdir"/components/"${comp
 echo '--- '${component_name[i]}' done'
 done
 
+mv -f components/qmsd_ui/libqmsd_ui.a components/qmsd_ui/lib/libqmsd_ui.a
+
 cp $configdir${board_name[board-1]}/sdkconfig_${board_name[board-1]} sdkconfig
 echo '--- sdkconfig done'
 echo

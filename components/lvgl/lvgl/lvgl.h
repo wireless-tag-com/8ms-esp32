@@ -37,7 +37,6 @@ extern "C" {
 #include "src/lv_core/lv_disp.h"
 #include "src/lv_core/qmsd_type.h"
 #include "src/lv_core/qmsd_msgque.h"
-#include "src/lv_core/qmsd_lang.h"
 
 #include "src/lv_themes/lv_theme.h"
 

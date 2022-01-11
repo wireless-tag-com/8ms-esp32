@@ -106,8 +106,9 @@ enum {
     LV_EVENT_APPLY,  /**< "Ok", "Apply" or similar specific button has clicked*/
     LV_EVENT_CANCEL, /**< "Close", "Cancel" or similar specific button has clicked*/
     LV_EVENT_DELETE, /**< Object is being deleted */
-    LV_EVENT_SCREEN_CREATE,
+    LV_EVENT_SCREEN_CREATE, /* qmsd start */
     LV_EVENT_SCREEN_DELETE,
+    LV_EVENT_SCREEN_LOAD, /* qmsd end */
     _LV_EVENT_LAST /** Number of events*/
 };
 typedef uint8_t lv_event_t; /**< Type of event being sent to the object. */
@@ -202,6 +203,7 @@ typedef uint8_t lv_state_t;
  * qmsd ctrl callback
  */
 typedef char *(*lv_obj_qmsd_ctrl_cb)(struct _lv_obj_t *obj, const qmsd_ctrl_type type, const cJSON *attr);
+typedef void (*lv_obj_qmsd_cb)(struct _lv_obj_t *obj, lv_event_t event, void *data);
 typedef int (*lv_obj_qmsd_event_cb)(struct _lv_obj_t *obj, lv_event_t event);
 
 typedef struct _lv_obj_t {
@@ -214,6 +216,7 @@ typedef struct _lv_obj_t {
     lv_signal_cb_t signal_cb; /**< Object type specific signal function*/
     lv_design_cb_t design_cb; /**< Object type specific design function*/
     lv_obj_qmsd_ctrl_cb ctrl_cb;
+    lv_obj_qmsd_cb qmsd_cb;
 
     void * ext_attr;            /**< Object type specific extended data*/
     lv_style_list_t style_list;
@@ -1505,6 +1508,15 @@ char *lv_obj_qmsd_call_ctrl_cb(lv_obj_t * obj, const qmsd_ctrl_type type, const 
  */
 void lv_obj_qmsd_set_event_cb(lv_obj_qmsd_event_cb event_cb);
 int lv_obj_qmsd_call_event_cb(lv_obj_t *obj, lv_event_t event);
+
+/**
+ * Set a an qmsd handler function for an object.
+ * Used by the user to react on event which happens with the object.
+ * @param obj pointer to an object
+ * @param ctrl_cb the new event function
+ */
+void lv_obj_qmsd_set_cb(lv_obj_t * obj, lv_obj_qmsd_cb q_cb);
+void lv_obj_qmsd_call_cb(lv_obj_t * obj, lv_event_t event, void *data);
 
 /**
  * @brief Check cJSON and fill the code

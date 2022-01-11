@@ -1224,17 +1224,6 @@ CONFIG_I2C_MS_TO_WAIT=200
 # end of Bus Options
 
 #
-# lv_examples configuration
-#
-# CONFIG_LV_EX_PRINTF is not set
-CONFIG_LV_USE_DEMO_WIDGETS=y
-# CONFIG_LV_USE_DEMO_KEYPAD_AND_ENCODER is not set
-# CONFIG_LV_USE_DEMO_BENCHMARK is not set
-# CONFIG_LV_USE_DEMO_STRESS is not set
-CONFIG_LV_DEMO_WIDGETS_SLIDESHOW=y
-# end of lv_examples configuration
-
-#
 # LVGL configuration
 #
 # CONFIG_LV_ATTRIBUTE_FAST_MEM_USE_IRAM is not set

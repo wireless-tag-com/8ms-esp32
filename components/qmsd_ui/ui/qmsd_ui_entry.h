@@ -7,6 +7,7 @@ extern "C" {
 
 
 #include "lvgl/lvgl.h"
+#include "qmsd_lang.h"
 
 LV_IMG_DECLARE(img1639365041009_png);
 
@@ -21,9 +22,9 @@ extern lv_obj_t* screen_test_img_1;
 extern lv_obj_t *screen_test2;
 extern lv_obj_t* screen_test2_button_1;
 
-void screen_main_build(void);
+int screen_main_build(void);
 void screen_main_delete(void);
-void screen_test_build(void);
+int screen_test_build(void);
 void screen_test_delete(void);
 
 void qmsd_ui_entry(void);
