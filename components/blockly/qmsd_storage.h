@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2021
  * 
  */
-#ifndef __storage_8MS_NVS_H
-#define __storage_8MS_NVS_H
+#ifndef __QMSD_STORAGE_NVS_H
+#define __QMSD_STORAGE_NVS_H
 
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
@@ -39,6 +39,7 @@ esp_err_t qmsd_storage_get_u64(const char*namespace, const char* key, uint64_t *
 esp_err_t qmsd_storage_set_u64(const char*namespace, const char* key,uint64_t input);
 esp_err_t qmsd_storage_get_str_size(const char*namespace, const char* key, size_t *str_size);
 esp_err_t qmsd_storage_get_str(const char*namespace, const char* key,char *output, size_t size);
+esp_err_t qmsd_storage_set_str(const char*namespace, const char* key,char* input);
 
 esp_err_t qmsd_storage_clear_key(const char*namespace, const char* key);
 esp_err_t qmsd_storage_clear_namespace(const char*namespace);

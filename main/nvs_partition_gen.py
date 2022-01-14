@@ -358,7 +358,7 @@ class Page(object):
     """
     def write_varlen_data(self, key, data, encoding, ns_index,nvs_obj):
         # Set size of data
-        datalen = len(data)
+        datalen = len(data.encode('utf-8'))
 
         if datalen > Page.PAGE_PARAMS['max_old_blob_size']:
             if self.version == Page.VERSION1:

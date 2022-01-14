@@ -5,9 +5,11 @@
 extern "C" {
 #endif
 
-
+#include <stdio.h>
+#include <stdlib.h>
 #include "lvgl/lvgl.h"
 #include "qmsd_lang.h"
+#include "qmsd_gui.h"
 
 LV_IMG_DECLARE(img1639365041009_png);
 
@@ -32,10 +34,6 @@ lv_obj_t *qmsd_get_screen(const char *name);
 lv_obj_t *qmsd_get_widget(const char *w_name);
 const char *qmsd_get_obj_name(lv_obj_t *obj);
 lv_img_src_t *qmsd_get_img(const char *w_name);
-
-typedef void (*qmsd_ui_event_cb)(const char *obj_name, lv_obj_t* obj,lv_event_t event);
-void qmsd_set_ui_event_cb(qmsd_ui_event_cb init_cb);
-void qmsd_call_ui_event_cb(const char *obj_name, lv_obj_t* obj,lv_event_t event);
 
 #ifdef __cplusplus
 } /* extern "C" */

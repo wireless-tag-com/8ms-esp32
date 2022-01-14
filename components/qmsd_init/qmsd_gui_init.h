@@ -19,6 +19,10 @@ void qmsd_set_init_cb(qmsd_init_cb init_cb);
 int qmsd_gui_lock(uint32_t timeout);
 void qmsd_gui_unlock(void);
 
+typedef void (*qmsd_ui_event_cb)(const char *obj_name, lv_obj_t* obj,lv_event_t event);
+void qmsd_set_ui_event_cb(qmsd_ui_event_cb init_cb);
+void qmsd_call_ui_event_cb(const char *obj_name, lv_obj_t* obj,lv_event_t event);
+
 #ifdef __cplusplus
 }
 #endif

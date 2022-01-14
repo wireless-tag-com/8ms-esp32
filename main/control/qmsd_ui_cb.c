@@ -5,11 +5,9 @@
 #include "qmsd_ctrl.h"
 #include "qmsd_ui_cb.h"
 #include "qmsd_control.h"
-#include "qmsd_ui_entry.h"
 
 void qmsd_ui_cb(const char *name, lv_obj_t* obj,lv_event_t event)
 {
-    printf("%s %d\n", name, event);
     if (event==LV_EVENT_CLICKED)
     {
         if (!strcmp(name, "test_button_1")) {
