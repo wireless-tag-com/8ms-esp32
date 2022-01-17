@@ -44,6 +44,15 @@ void qmsd_ui_init_cb(void)
 
     qmsd_set_ui_event_cb(qmsd_ui_cb);
     qmsd_ui_entry();
+
+    lv_group_add_obj(qmsd_get_group(), button_light);
+    lv_group_add_obj(qmsd_get_group(), button_curtain);
+    lv_group_add_obj(qmsd_get_group(), button_control);
+    lv_group_add_obj(qmsd_get_group(), button_conditioner);
+    lv_obj_set_style_local_bg_color(button_light, LV_LABEL_PART_MAIN, LV_STATE_FOCUSED, LV_COLOR_BLUE);
+    lv_obj_set_style_local_bg_color(button_curtain, LV_LABEL_PART_MAIN, LV_STATE_FOCUSED, LV_COLOR_BLUE);
+    lv_obj_set_style_local_bg_color(button_conditioner, LV_LABEL_PART_MAIN, LV_STATE_FOCUSED, LV_COLOR_BLUE);
+    lv_obj_set_style_local_bg_color(button_control, LV_LABEL_PART_MAIN, LV_STATE_FOCUSED, LV_COLOR_BLUE);
 }
 
 void app_main(void)

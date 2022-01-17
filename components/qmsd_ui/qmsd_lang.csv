@@ -1,0 +1,27 @@
+# Sample csv file
+key,type,encoding,value
+zh_cn,namespace,,
+label_black,data,string,
+label_weather,data,string,晴
+label_temperature,data,string,28℃
+label_time,data,string,09
+label_date,data,string,9月16日
+label_weekend,data,string,星期三
+button_light,data,string,
+button_curtain,data,string,
+button_conditioner,data,string,
+button_control,data,string,
+label_light,data,string,灯光
+label_conditioner,data,string,温控
+label_contain,data,string,窗帘
+label_control_light,data,string,调色灯
+button_point1,data,string,
+button_point2,data,string,
+button_point4,data,string,
+button_point3,data,string,
+button_point5,data,string,
+label_curtain_data,data,string,50%
+label_condition_data,data,string,26
+label_c544,data,string,℃
+label_3c93,data,string,:
+label_min,data,string,18
