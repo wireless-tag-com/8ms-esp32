@@ -22,6 +22,13 @@
 #include "qmsd_ui_entry.h"
 #include "qmsd_ui_cb.h"
 #include "qmsd_blockly.h"
+#include "qmsd_board_init.h"
+
+#ifndef CUSTOM_DISPLAY_BUFFER_BYTES
+#define QMSD_BOARD_INIT_BUF_SIZE 0
+#else
+#define QMSD_BOARD_INIT_BUF_SIZE CUSTOM_DISPLAY_BUFFER_BYTES
+#endif
 
 /*********************
  *      DEFINES
@@ -48,10 +55,13 @@ void qmsd_ui_init_cb(void)
 
 void app_main(void)
 {
+    printf("MEM%d\n",heap_caps_get_free_size(MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT));
     qmsd_storage_init();
 
     qmsd_set_init_cb(qmsd_ui_init_cb);
-    qmsd_gui_init(0);
+
+    scr_driver_t* driver = qmsd_board_init(QMSD_BOARD_INIT_BUF_SIZE);
+    qmsd_gui_init(driver,QMSD_BOARD_INIT_BUF_SIZE);
 
     qmsd_control_init();
 }

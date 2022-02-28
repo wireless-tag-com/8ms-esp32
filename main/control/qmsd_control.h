@@ -8,23 +8,17 @@ extern "C"
 
 #include "esp_event.h"
 #include <stdbool.h>
+#include "cJSON.h"
 
 const char *QMSD_CTRL_EVENT;
 
 typedef enum {
-    QMSD_CTRL_WIFI_STA_SET_CONFIG,               /* set sta wifi sta config(ssid/password) in nvs */
-    QMSD_CTRL_WIFI_CLEAR_CONFIG,              /* clear wifi config(nvs) */
-    QMSD_CTRL_WIFI_STA_START,              /* start wifi connect */
-    QMSD_CTRL_WIFI_STA_STOP,         /* stop wifi */
-    QMSD_CTRL_WIFI_STA_SCAN,                  /* start wifi scan */
-    QMSD_CTRL_GPIO_ISR,           /* gpio isr */
+    QMSD_CTRL_MOD_CALL,         /* call qmsd */
 } qmsd_ctrl_event_t;
 
 typedef struct {
-    const char *ssid;
-    const char *password;
-    uint8_t enable;
-} qmsd_ctrl_event_wifi_config;
+    cJSON *json;
+} qmsd_ctrl_mod_param;
 
 void qmsd_control_init(void);
 

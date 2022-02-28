@@ -17,7 +17,7 @@ extern "C" {
 #define LVGL_VERSION_MINOR 11
 #define LVGL_VERSION_PATCH 0
 #define LVGL_VERSION_INFO ""
-
+#define QMSD_LVGL_ADDON_VERSION "1.2" 
 /*********************
  *      INCLUDES
  *********************/
@@ -82,6 +82,7 @@ extern "C" {
 #include "src/lv_widgets/lv_clock.h"
 #include "src/lv_widgets/lv_board.h"
 #include "src/lv_widgets/qmsd_menu.h"
+#include "src/lv_widgets/lv_qrcode.h"
 
 #include "src/lv_draw/lv_img_cache.h"
 

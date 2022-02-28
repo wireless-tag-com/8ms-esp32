@@ -5,93 +5,96 @@ menu "LVGL TFT Display controller"
 
     # Predefined display configurations for multiple
     # evaluation/development boards.
-    choice LV_PREDEFINED_DISPLAY
-        prompt "Select predefined display configuration"
-        default LV_PREDEFINED_DISPLAY_NONE
-        help
-            Select predefined display configuration
-
-        config LV_PREDEFINED_DISPLAY_NONE
-            bool "None"
-        config LV_PREDEFINED_DISPLAY_WROVER4
-            bool "ESP-Wrover-KIT v4.1"
-            select LV_TFT_DISPLAY_CONTROLLER_ILI9341
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-        config LV_PREDEFINED_DISPLAY_M5STACK
-            bool "M5Stack"
-            select LV_TFT_DISPLAY_CONTROLLER_ILI9341
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-        config LV_PREDEFINED_DISPLAY_M5STICK
-            bool "M5Stick"
-            select LV_TFT_DISPLAY_CONTROLLER_SH1107
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-            select LV_TFT_DISPLAY_MONOCHROME
-            select LV_THEME_MONO
-        config LV_PREDEFINED_DISPLAY_M5STICKC
-            bool "M5StickC"
-            select LV_TFT_DISPLAY_CONTROLLER_ST7735S
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-        config LV_PREDEFINED_DISPLAY_ERTFT0356
-            bool "ER-TFT035-6"
-            select LV_TFT_DISPLAY_CONTROLLER_ILI9488
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-        config LV_PREDEFINED_DISPLAY_ADA_FEATHERWING
-            bool "Adafruit 3.5 Featherwing"
-            select LV_TFT_DISPLAY_CONTROLLER_HX8357
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-       config LV_PREDEFINED_DISPLAY_RPI_MPI3501
-            bool "RPi MPI3501"
-            select LV_TFT_DISPLAY_CONTROLLER_ILI9486
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-        config LV_PREDEFINED_DISPLAY_WEMOS_LOLIN
-            bool "Wemos Lolin OLED"
-            select LV_TFT_DISPLAY_CONTROLLER_SSD1306
-            select LV_TFT_DISPLAY_PROTOCOL_I2C
-            select LV_TFT_DISPLAY_MONOCHROME
-            select LV_THEME_MONO
-        config LV_PREDEFINED_DISPLAY_ATAG
-            bool "AIRcable ATAGv3"
-            select LV_TFT_DISPLAY_CONTROLLER_IL3820
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-            select LV_TFT_DISPLAY_MONOCHROME
-            select LV_THEME_MONO
-        config LV_PREDEFINED_DISPLAY_RPI_RA8875
-            bool "RAiO RA8875"
-            select LV_TFT_DISPLAY_CONTROLLER_RA8875
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-        config LV_PREDEFINED_DISPLAY_TTGO
-            bool "TTGO T-Display"
-            select LV_TFT_DISPLAY_CONTROLLER_ST7789
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-            select LV_TFT_DISPLAY_OFFSETS
-        config LV_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
-            bool "TTGO Camera Plus"
-            select LV_TFT_DISPLAY_CONTROLLER_ST7789
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-        config LV_PREDEFINED_DISPLAY_WT32_SC01
-            bool "Wireless Tag WT32-SC01"
-            select LV_TFT_DISPLAY_CONTROLLER_ST7796S
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-    endchoice
+    #choice LV_PREDEFINED_DISPLAY
+    #    prompt "Select predefined display configuration"
+    #    default LV_PREDEFINED_DISPLAY_NONE
+    #    help
+    #        Select predefined display configuration
+#
+    #    config LV_PREDEFINED_DISPLAY_NONE
+    #        bool "None"
+    #    config LV_PREDEFINED_DISPLAY_WROVER4
+    #        bool "ESP-Wrover-KIT v4.1"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ILI9341
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    config LV_PREDEFINED_DISPLAY_M5STACK
+    #        bool "M5Stack"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ILI9341
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    config LV_PREDEFINED_DISPLAY_M5STICK
+    #        bool "M5Stick"
+    #        select LV_TFT_DISPLAY_CONTROLLER_SH1107
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #        select LV_TFT_DISPLAY_MONOCHROME
+    #        select LV_THEME_MONO
+    #    config LV_PREDEFINED_DISPLAY_M5STICKC
+    #        bool "M5StickC"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ST7735S
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    config LV_PREDEFINED_DISPLAY_ERTFT0356
+    #        bool "ER-TFT035-6"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ILI9488
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    config LV_PREDEFINED_DISPLAY_ADA_FEATHERWING
+    #        bool "Adafruit 3.5 Featherwing"
+    #        select LV_TFT_DISPLAY_CONTROLLER_HX8357
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #   config LV_PREDEFINED_DISPLAY_RPI_MPI3501
+    #        bool "RPi MPI3501"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ILI9486
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    config LV_PREDEFINED_DISPLAY_WEMOS_LOLIN
+    #        bool "Wemos Lolin OLED"
+    #        select LV_TFT_DISPLAY_CONTROLLER_SSD1306
+    #        select LV_TFT_DISPLAY_PROTOCOL_I2C
+    #        select LV_TFT_DISPLAY_MONOCHROME
+    #        select LV_THEME_MONO
+    #    config LV_PREDEFINED_DISPLAY_ATAG
+    #        bool "AIRcable ATAGv3"
+    #        select LV_TFT_DISPLAY_CONTROLLER_IL3820
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #        select LV_TFT_DISPLAY_MONOCHROME
+    #        select LV_THEME_MONO
+    #    config LV_PREDEFINED_DISPLAY_RPI_RA8875
+    #        bool "RAiO RA8875"
+    #        select LV_TFT_DISPLAY_CONTROLLER_RA8875
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    config LV_PREDEFINED_DISPLAY_TTGO
+    #        bool "TTGO T-Display"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ST7789
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #        select LV_TFT_DISPLAY_OFFSETS
+    #    config LV_PREDEFINED_DISPLAY_TTGO_CAMERA_PLUS
+    #        bool "TTGO Camera Plus"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ST7789
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    config LV_PREDEFINED_DISPLAY_WT32_SC01
+    #        bool "Wireless Tag WT32-SC01"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ST7796S
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #endchoice
     choice WT_BOARD
             prompt "Select borad"
             default WT32_SC01_LANDSCAPE
             config WT32_SC01_LANDSCAPE
                 bool "WT32_SC01_LANDSCAPE"
-                select LV_TFT_DISPLAY_CONTROLLER_ST7796S
+                select LCD_DRIVER_SCREEN_CONTROLLER_ST7796
                 select LV_TFT_DISPLAY_PROTOCOL_SPI
+                select SCR_DIR_TBLR
             config WT32_SC01_PORTRAIT
                 bool "WT32_SC01_PORTRAIT"
-                select LV_TFT_DISPLAY_CONTROLLER_ST7796S
+                select LCD_DRIVER_SCREEN_CONTROLLER_ST7796
                 select LV_TFT_DISPLAY_PROTOCOL_SPI
+                select SCR_DIR_RLTB
             config WT154_S2MI1
                 bool "WT154_S2MI1"
                 select LCD_DRIVER_SCREEN_CONTROLLER_ST7789
                 select SCR_DIR_LRTB
             config WT154_C3SI1
                 bool "WT154_C3SI1"
-                select LV_TFT_DISPLAY_CONTROLLER_ST7789
+                select LCD_DRIVER_SCREEN_CONTROLLER_ST7789
                 select LV_TFT_DISPLAY_PROTOCOL_SPI
+                select SCR_DIR_LRTB
             config WT_86_32_3ZW0
                 bool "WT_86_32_3ZW0"
                 select LCD_DRIVER_SCREEN_CONTROLLER_ILI9488
@@ -114,6 +117,7 @@ menu "LVGL TFT Display controller"
                 select SCR_DIR_TBLR
             config CUSTOM_LCD
                 bool "CUSTOM_LCD"
+                select LV_TFT_DISPLAY_PROTOCOL_SPI
             
     endchoice
     choice WT_SCREEN
@@ -199,9 +203,12 @@ menu "LVGL TFT Display controller"
 
 # end of screen components ic list
     choice SCREEN_DIRECTION
-    #visible if WT_SC_8080 && CUSTOM_LCD
+    #visible if CUSTOM_LCD
         prompt "Select screen direction"
-        depends on WT_SC_8080 && CUSTOM_LCD
+        depends on CUSTOM_LCD
+        default PRE_SCR_DIR_LRTB if WT280_S2MT1 || WT280_S2MI1 || WT154_C3SI1 || WT154_S2MI1
+        default PRE_SCR_DIR_RLTB if WT_86_32_3ZW1 || WT_86_32_3ZW0 || WT32_SC01_PORTRAIT
+        default PRE_SCR_DIR_TBLR if WT32_SC01_LANDSCAPE
         help
             Select display configuration
 
@@ -279,97 +286,6 @@ menu "LVGL TFT Display controller"
         config SCR_SWAP_XY
             bool
 
-    # START of helper symbols.
-    #
-    # Display controller symbols,
-    #
-    # This boolean configuration symbols can be used to know what
-    # display controller has been choosen by the user. When selected
-    # the symbol <symbol_name> is set to y, then in the file sdkconfig.h
-    # the symbol CONFIG_<symbol_name> is set to 1.
-    #
-    # If you add support for a new display controller to the repository
-    # you must add a config option for it on this helper symbols section.
-    config LV_TFT_DISPLAY_CONTROLLER_ILI9341
-        bool
-        help
-            ILI9341 display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_ILI9481
-        bool
-        help
-            ILI9481 display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_ILI9488
-        bool
-        help
-            ILI9488 display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_ILI9486
-        bool
-        help
-            ILI9486 display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_ST7789
-        bool
-        help
-            ST7789 display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_GC9A01
-        bool
-        help
-            GC9A01 display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_ST7735S
-        bool
-        help
-            ST7735S display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_HX8357
-        bool
-        help
-            HX8357 display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_SH1107
-        bool
-        help
-            SH1107 display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_SSD1306
-        bool
-        help
-            SSD1306 display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_FT81X
-        bool
-        help
-            FT81x display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_IL3820
-        bool
-        help
-            IL3820 epaper display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_JD79653A
-        bool
-        help
-            FitiPower JD79653A display controller for GoodDisplay GDEW0154M09 e-paper panel
-
-    config LV_TFT_DISPLAY_CONTROLLER_UC8151D
-        bool
-        help
-            UltraChip UC8151D display controller with GoodDisplay GDEW0154M10 DES e-paper panel
-
-    config LV_TFT_DISPLAY_CONTROLLER_RA8875
-        bool
-        help
-            RA8875 display controller.
-
-    config LV_TFT_DISPLAY_CONTROLLER_ST7796S
-        bool
-        help
-            ST7796S display controller.
-
     # Display controller communication protocol
     #
     # This symbols define the communication protocol used by the
@@ -378,12 +294,21 @@ menu "LVGL TFT Display controller"
     # - Know what peripherals to initialize.
     # - Know if the touch and display controllers share the same peripheral.
     # - Etc.
+
+    config SCREEN_INIT_HOR
+        int "Hor px for screen init"
+        default 320
+
+    config SCREEN_INIT_VER
+        int "Ver px for screen init"
+        default 480
+
     config LV_HOR_RES_MAX
-        int "Maximal horizontal resolution to support by the library."
+        int "Maximal horizontal resolution to output by the library."
         default 480
 
     config LV_VER_RES_MAX
-        int "Maximal vertical resolution to support by the library."
+        int "Maximal vertical resolution to out by the library."
         default 320
 
     choice
@@ -422,21 +347,6 @@ menu "LVGL TFT Display controller"
         bool
         help
             Display controller protocol I2C
-
-    # Used in display init function to send display orientation commands
-    choice DISPLAY_ORIENTATION
-        prompt "Display orientation"
-        default DISPLAY_ORIENTATION_PORTRAIT if !LV_TFT_DISPLAY_CONTROLLER_SSD1306
-        default DISPLAY_ORIENTATION_LANDSCAPE if LV_TFT_DISPLAY_CONTROLLER_SSD1306
-        config DISPLAY_ORIENTATION_PORTRAIT
-            bool "Portrait" if !LV_TFT_DISPLAY_CONTROLLER_SSD1306
-        config DISPLAY_ORIENTATION_PORTRAIT_INVERTED
-            bool "Portrait inverted" if !LV_TFT_DISPLAY_CONTROLLER_SSD1306
-        config DISPLAY_ORIENTATION_LANDSCAPE
-            bool "Landscape"
-        config DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-            bool "Landscape inverted"
-    endchoice
 
     config LV_DISPLAY_ORIENTATION
         int
@@ -494,82 +404,82 @@ menu "LVGL TFT Display controller"
     endchoice
 
     # Select one of the available display controllers.
-    choice
-    depends on WT_SC_SPI
-    prompt "Select a display controller model." if LV_PREDEFINED_DISPLAY_NONE
-        help
-        Select the controller for your display.
-
-    config LV_TFT_DISPLAY_USER_CONTROLLER_ILI9341
-        bool "ILI9341"
-            select LV_TFT_DISPLAY_CONTROLLER_ILI9341
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-    config LV_TFT_DISPLAY_USER_CONTROLLER_ILI9481
-        bool "ILI9481"
-            select LV_TFT_DISPLAY_CONTROLLER_ILI9481
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-    config LV_TFT_DISPLAY_USER_CONTROLLER_ILI9486
-        bool "ILI9486"
-            select LV_TFT_DISPLAY_CONTROLLER_ILI9486
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-    config LV_TFT_DISPLAY_USER_CONTROLLER_ILI9488
-        bool "ILI9488"
-            select LV_TFT_DISPLAY_CONTROLLER_ILI9488
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-    config LV_TFT_DISPLAY_USER_CONTROLLER_ST7789
-        bool "ST7789"
-            select LV_TFT_DISPLAY_CONTROLLER_ST7789
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-    config LV_TFT_DISPLAY_USER_CONTROLLER_ST7796S
-        bool "ST7796S"
-            select LV_TFT_DISPLAY_CONTROLLER_ST7796S
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-    config LV_TFT_DISPLAY_USER_CONTROLLER_GC9A01
-        bool "GC9A01"
-            select LV_TFT_DISPLAY_CONTROLLER_GC9A01
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-        config LV_TFT_DISPLAY_USER_CONTROLLER_ST7735S
-            bool "ST7735S"
-            select LV_TFT_DISPLAY_CONTROLLER_ST7735S
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-    config LV_TFT_DISPLAY_USER_CONTROLLER_HX8357
-        bool "HX8357"
-            select LV_TFT_DISPLAY_CONTROLLER_HX8357
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-    config LV_TFT_DISPLAY_USER_CONTROLLER_SH1107
-        bool "SH1107"
-            select LV_TFT_DISPLAY_CONTROLLER_SH1107
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-            select LV_TFT_DISPLAY_MONOCHROME
-        config LV_TFT_DISPLAY_USER_CONTROLLER_SSD1306
-            bool "SSD1306"
-            select LV_TFT_DISPLAY_CONTROLLER_SSD1306
-            select LV_TFT_DISPLAY_PROTOCOL_I2C
-            select LV_TFT_DISPLAY_MONOCHROME
-        config LV_TFT_DISPLAY_USER_CONTROLLER_FT81X
-            bool "FT81X"
-            select LV_TFT_DISPLAY_CONTROLLER_FT81X
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-        config LV_TFT_DISPLAY_USER_CONTROLLER_IL3820
-            bool "IL3820"
-            select LV_TFT_DISPLAY_CONTROLLER_IL3820
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-            select LV_TFT_DISPLAY_MONOCHROME
-        config LV_TFT_DISPLAY_USER_CONTROLLER_JD79653A
-            bool "JD79653A"
-            select LV_TFT_DISPLAY_CONTROLLER_JD79653A
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-            select LV_TFT_DISPLAY_MONOCHROME
-        config LV_TFT_DISPLAY_USER_CONTROLLER_UC8151D
-            bool "UC8151D"
-            select LV_TFT_DISPLAY_CONTROLLER_UC8151D
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-            select LV_TFT_DISPLAY_MONOCHROME
-        config LV_TFT_DISPLAY_USER_CONTROLLER_RA8875
-            bool "RA8875"
-            select LV_TFT_DISPLAY_CONTROLLER_RA8875
-            select LV_TFT_DISPLAY_PROTOCOL_SPI
-    endchoice
+    #choice
+    #depends on WT_SC_SPI
+    #prompt "Select a display controller model." if LV_PREDEFINED_DISPLAY_NONE
+    #    help
+    #    Select the controller for your display.
+#
+    #config LV_TFT_DISPLAY_USER_CONTROLLER_ILI9341
+    #    bool "ILI9341"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ILI9341
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #config LV_TFT_DISPLAY_USER_CONTROLLER_ILI9481
+    #    bool "ILI9481"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ILI9481
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #config LV_TFT_DISPLAY_USER_CONTROLLER_ILI9486
+    #    bool "ILI9486"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ILI9486
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #config LV_TFT_DISPLAY_USER_CONTROLLER_ILI9488
+    #    bool "ILI9488"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ILI9488
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #config LV_TFT_DISPLAY_USER_CONTROLLER_ST7789
+    #    bool "ST7789"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ST7789
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #config LV_TFT_DISPLAY_USER_CONTROLLER_ST7796S
+    #    bool "ST7796S"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ST7796S
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #config LV_TFT_DISPLAY_USER_CONTROLLER_GC9A01
+    #    bool "GC9A01"
+    #        select LV_TFT_DISPLAY_CONTROLLER_GC9A01
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    config LV_TFT_DISPLAY_USER_CONTROLLER_ST7735S
+    #        bool "ST7735S"
+    #        select LV_TFT_DISPLAY_CONTROLLER_ST7735S
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #config LV_TFT_DISPLAY_USER_CONTROLLER_HX8357
+    #    bool "HX8357"
+    #        select LV_TFT_DISPLAY_CONTROLLER_HX8357
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #config LV_TFT_DISPLAY_USER_CONTROLLER_SH1107
+    #    bool "SH1107"
+    #        select LV_TFT_DISPLAY_CONTROLLER_SH1107
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #        select LV_TFT_DISPLAY_MONOCHROME
+    #    config LV_TFT_DISPLAY_USER_CONTROLLER_SSD1306
+    #        bool "SSD1306"
+    #        select LV_TFT_DISPLAY_CONTROLLER_SSD1306
+    #        select LV_TFT_DISPLAY_PROTOCOL_I2C
+    #        select LV_TFT_DISPLAY_MONOCHROME
+    #    config LV_TFT_DISPLAY_USER_CONTROLLER_FT81X
+    #        bool "FT81X"
+    #        select LV_TFT_DISPLAY_CONTROLLER_FT81X
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    config LV_TFT_DISPLAY_USER_CONTROLLER_IL3820
+    #        bool "IL3820"
+    #        select LV_TFT_DISPLAY_CONTROLLER_IL3820
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #        select LV_TFT_DISPLAY_MONOCHROME
+    #    config LV_TFT_DISPLAY_USER_CONTROLLER_JD79653A
+    #        bool "JD79653A"
+    #        select LV_TFT_DISPLAY_CONTROLLER_JD79653A
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #        select LV_TFT_DISPLAY_MONOCHROME
+    #    config LV_TFT_DISPLAY_USER_CONTROLLER_UC8151D
+    #        bool "UC8151D"
+    #        select LV_TFT_DISPLAY_CONTROLLER_UC8151D
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #        select LV_TFT_DISPLAY_MONOCHROME
+    #    config LV_TFT_DISPLAY_USER_CONTROLLER_RA8875
+    #        bool "RA8875"
+    #        select LV_TFT_DISPLAY_CONTROLLER_RA8875
+    #        select LV_TFT_DISPLAY_PROTOCOL_SPI
+    #endchoice
 
     config CUSTOM_DISPLAY_BUFFER_SIZE
         bool "Use custom display buffer size (bytes)"
@@ -687,53 +597,53 @@ menu "LVGL TFT Display controller"
             bool "EVE_CONNECTEVE"
     endchoice
 
-    choice
-        depends on WT_SC_SPI
-        prompt "TFT SPI Bus." if LV_TFT_DISPLAY_PROTOCOL_SPI && \
-            !LV_PREDEFINED_DISPLAY_TTGO
-        default LV_TFT_DISPLAY_SPI_VSPI if LV_PREDEFINED_DISPLAY_TTGO && \
-            !IDF_TARGET_ESP32S2
-        default LV_TFT_DISPLAY_SPI_FSPI if IDF_TARGET_ESP32S2
-        help
-              Select the SPI Bus the TFT Display is attached to.
-
-        config LV_TFT_DISPLAY_SPI_HSPI
-            bool "HSPI"
-        config LV_TFT_DISPLAY_SPI_VSPI
-            bool "VSPI" if !IDF_TARGET_ESP32S2
-        config LV_TFT_DISPLAY_SPI_FSPI
-            bool "FSPI" if IDF_TARGET_ESP32S2
-    endchoice
-
-    choice
-        depends on WT_SC_SPI
-        prompt "TFT Data Transfer Mode" if LV_TFT_DISPLAY_PROTOCOL_SPI
-        default LV_TFT_DISPLAY_SPI_TRANS_MODE_SIO
-        help
-              Select the SPI SIO/DIO/QIO Transfer Mode for the TFT Display.
-
-        config LV_TFT_DISPLAY_SPI_TRANS_MODE_SIO
-            bool "SIO (MOSI/MISO)"
-        config LV_TFT_DISPLAY_SPI_TRANS_MODE_DIO
-            bool "DIO (2-bit Dual SPI)"
-        config LV_TFT_DISPLAY_SPI_TRANS_MODE_QIO
-            bool "QIO (4-bit Quad SPI)"
-    endchoice
-
-    choice
-        depends on WT_SC_SPI
-        prompt "TFT SPI Duplex Mode" if LV_TFT_DISPLAY_PROTOCOL_SPI
-        default LV_TFT_DISPLAY_SPI_FULL_DUPLEX if LV_PREDEFINED_DISPLAY_RPI_RA8875 || LV_TFT_DISPLAY_CONTROLLER_FT81X
-        default LV_TFT_DISPLAY_SPI_HALF_DUPLEX
-        help
-              Select the SPI Duplex Mode for the TFT Display.
-
-        config LV_TFT_DISPLAY_SPI_HALF_DUPLEX
-            bool "HALF DUPLEX"
-        config LV_TFT_DISPLAY_SPI_FULL_DUPLEX
-            bool "FULL DUPLEX"
-            depends on LV_TFT_DISPLAY_SPI_TRANS_MODE_SIO
-    endchoice
+    #choice
+    #    depends on WT_SC_SPI
+    #    prompt "TFT SPI Bus." if LV_TFT_DISPLAY_PROTOCOL_SPI && \
+    #        !LV_PREDEFINED_DISPLAY_TTGO
+    #    default LV_TFT_DISPLAY_SPI_VSPI if LV_PREDEFINED_DISPLAY_TTGO && \
+    #        !IDF_TARGET_ESP32S2
+    #    default LV_TFT_DISPLAY_SPI_FSPI if IDF_TARGET_ESP32S2
+    #    help
+    #          Select the SPI Bus the TFT Display is attached to.
+#
+    #    config LV_TFT_DISPLAY_SPI_HSPI
+    #        bool "HSPI"
+    #    config LV_TFT_DISPLAY_SPI_VSPI
+    #        bool "VSPI" if !IDF_TARGET_ESP32S2
+    #    config LV_TFT_DISPLAY_SPI_FSPI
+    #        bool "FSPI" if IDF_TARGET_ESP32S2
+    #endchoice
+#
+    #choice
+    #    depends on WT_SC_SPI
+    #    prompt "TFT Data Transfer Mode" if LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    default LV_TFT_DISPLAY_SPI_TRANS_MODE_SIO
+    #    help
+    #          Select the SPI SIO/DIO/QIO Transfer Mode for the TFT Display.
+#
+    #    config LV_TFT_DISPLAY_SPI_TRANS_MODE_SIO
+    #        bool "SIO (MOSI/MISO)"
+    #    config LV_TFT_DISPLAY_SPI_TRANS_MODE_DIO
+    #        bool "DIO (2-bit Dual SPI)"
+    #    config LV_TFT_DISPLAY_SPI_TRANS_MODE_QIO
+    #        bool "QIO (4-bit Quad SPI)"
+    #endchoice
+#
+    #choice
+    #    depends on WT_SC_SPI
+    #    prompt "TFT SPI Duplex Mode" if LV_TFT_DISPLAY_PROTOCOL_SPI
+    #    default LV_TFT_DISPLAY_SPI_FULL_DUPLEX if LV_PREDEFINED_DISPLAY_RPI_RA8875 || LV_TFT_DISPLAY_CONTROLLER_FT81X
+    #    default LV_TFT_DISPLAY_SPI_HALF_DUPLEX
+    #    help
+    #          Select the SPI Duplex Mode for the TFT Display.
+#
+    #    config LV_TFT_DISPLAY_SPI_HALF_DUPLEX
+    #        bool "HALF DUPLEX"
+    #    config LV_TFT_DISPLAY_SPI_FULL_DUPLEX
+    #        bool "FULL DUPLEX"
+    #        depends on LV_TFT_DISPLAY_SPI_TRANS_MODE_SIO
+    #endchoice
 
     choice
         prompt "Display I2C port" if LV_TFT_DISPLAY_PROTOCOL_I2C
@@ -999,7 +909,7 @@ menu "LVGL TFT Display controller"
 
     # menu will be visible only when LV_PREDEFINED_DISPLAY_NONE is y
     menu "Display Pin Assignments"
-    visible if WT_SC_SPI && LV_PREDEFINED_DISPLAY_NONE || LV_PREDEFINED_DISPLAY_RPI_MPI3501 || LV_PREDEFINED_PINS_TKOALA 
+    visible if WT_SC_SPI || LV_PREDEFINED_DISPLAY_RPI_MPI3501 || LV_PREDEFINED_PINS_TKOALA 
 
         config LV_DISP_SPI_MOSI
             int "GPIO for MOSI (Master Out Slave In)" if LV_TFT_DISPLAY_PROTOCOL_SPI
@@ -1180,7 +1090,7 @@ menu "LVGL TFT Display controller"
 
         config LV_ENABLE_BACKLIGHT_CONTROL
             bool "Enable control of the display backlight by using an GPIO." if \
-                ( LV_PREDEFINED_DISPLAY_NONE && ! ( LV_TFT_DISPLAY_CONTROLLER_SH1107 || LV_TFT_DISPLAY_CONTROLLER_SSD1306 ) ) \
+                (  ! ( LV_TFT_DISPLAY_CONTROLLER_SH1107 || LV_TFT_DISPLAY_CONTROLLER_SSD1306 ) ) \
                 || LV_PREDEFINED_DISPLAY_RPI_MPI3501
             default y if LV_PREDEFINED_DISPLAY_M5STACK
             default y if LV_PREDEFINED_DISPLAY_WROVER4

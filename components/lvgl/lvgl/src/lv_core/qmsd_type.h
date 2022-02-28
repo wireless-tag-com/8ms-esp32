@@ -31,6 +31,15 @@ typedef enum {
     QMSD_CTRL_SEND_EVENT
 }qmsd_ctrl_type;
 
+enum {
+    QMSD_EVENT_SCREEN_LOAD,
+    QMSD_EVENT_SCREEN_DELETE,
+    QMSD_EVENT_WIDGET_REFRESH,
+    QMSD_EVENT_FREE_DYNAMIC_IMG,
+    _QMSD_EVENT_LAST /** Number of events*/
+};
+typedef uint8_t qmsd_event;
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

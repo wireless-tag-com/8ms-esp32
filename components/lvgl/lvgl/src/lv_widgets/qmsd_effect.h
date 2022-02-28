@@ -23,7 +23,7 @@ extern "C" {
         QMSD_LEFT,
         QMSD_RIGHT,
     };
-    
+    int qmsd_obj_get_x_ori(lv_obj_t* obj);
     void qmsd_slide_in(lv_obj_t* in, uint16_t way, int time);
     void qmsd_slide_out(lv_obj_t* out, uint16_t way, int time);
     int qmsd_get_gesture();

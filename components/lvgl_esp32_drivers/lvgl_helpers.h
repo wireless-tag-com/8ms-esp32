@@ -15,8 +15,6 @@ extern "C" {
 #include <stdbool.h>
 
 #include "lvgl_spi_conf.h"
-#include "lvgl_tft/disp_driver.h"
-#include "lvgl_touch/touch_driver.h"
 
 /*********************
  *      DEFINES
@@ -40,7 +38,7 @@ extern "C" {
 #define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 40)
 #elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7735S
 #define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 40)
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7796S
+#elif (defined CONFIG_WT32_SC01_LANDSCAPE)||(defined CONFIG_WT32_SC01_PORTRAIT)
 #define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 40)
 #elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_HX8357
 #define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 40)
@@ -76,7 +74,7 @@ extern "C" {
 #elif defined (CONFIG_WT_SC_8080)
 #define DISP_BUF_SIZE 320*40
 #else
-#error "No display controller selected"
+#define DISP_BUF_SIZE 320*40
 #endif
 #endif
 

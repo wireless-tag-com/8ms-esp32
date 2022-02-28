@@ -3,7 +3,6 @@
 
 #include "lvgl.h"
 #include "esp_err.h"
-#include "lvgl_helpers.h"
 #include "screen_driver.h"
 #include "lvgl/src/lv_core/qmsd_type.h"
 #ifdef __cplusplus
@@ -11,7 +10,8 @@ extern "C"
 {
 #endif
 
-esp_err_t qmsd_gui_init(unsigned long custom_fb_size);
+
+esp_err_t qmsd_gui_init(scr_driver_t* driver,unsigned long custom_fb_size);
 
 typedef void (*qmsd_init_cb)(void);
 void qmsd_set_init_cb(qmsd_init_cb init_cb);

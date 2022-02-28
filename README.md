@@ -1,4 +1,4 @@
-# V1.1
+# V1.2
 ## 开发环境
 基于 *[乐鑫esp-idf v4.3.2](https://github.com/espressif/esp-idf/tree/v4.3.2)* 开发 兼容V4.3.1  
 Docker镜像 docker push shukewt/esp-idf:v4.3.1  
@@ -7,17 +7,20 @@ Docker镜像 docker push shukewt/esp-idf:v4.3.1
 使用load.sh加载开发板配置  
  `bash load.sh`  
 当前支持型号  
-1): WT32_SC01_LANDSCAPE  
-2): WT32_SC01_PORTRAIT  
-3): WT154-S2MI1-PERFORMANCE  
-4): WT154-S2MI1-WIFI  
-5): WT154_C3SI1  
-6): WT-86-32-3ZW0-PERFORMANCE  
-7): WT-86-32-3ZW0-WIFI  
-8): WT-86-32-3ZW1-PERFORMANCE  
-9): WT-86-32-3ZW1-WIFI  
-10): WT280-S2MT1  
-11): WT280-S2MI1  
+1): WT32_SC01_LANDSCAPE
+2): WT32_SC01_PORTRAIT
+3): WT154-S2MI1-PERFORMANCE
+4): WT154-S2MI1-WIFI
+5): WT154_C3SI1
+6): WT-86-32-3ZW0-PERFORMANCE
+7): WT-86-32-3ZW0-WIFI
+8): WT-86-32-3ZW1-PERFORMANCE
+9): WT-86-32-3ZW1-WIFI
+10): WT280-S2MT1
+11): WT280-S2MI1
+12): WT240-C3SI1-LANDSCAPE
+13): WT240-C3SI1-PORTRAIT
+14): WT-0-32-21MLW1  
 
 ## 新特性
 - 使用8ms平台进行UI开发的用户请将source.zip内容替换至 components/qmsd\_ui 目录

@@ -21,6 +21,7 @@ typedef struct {
 
     int8_t anime_left;
     int8_t anime_right;
+    int8_t anime_mid;
 } lv_menu_ext_t;
 
 lv_obj_t* qmsd_menu_create(lv_obj_t* par, const lv_obj_t* copy);

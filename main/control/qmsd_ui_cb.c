@@ -12,25 +12,31 @@ void qmsd_ui_cb(const char *name, lv_obj_t* obj,lv_event_t event)
     {
         if (!strcmp(name, "test_button_1")) {
             cJSON *attr;
+            qmsd_ctrl_mod_param mod;
 
             attr = cJSON_CreateObject();
 
             if (attr) {
                 cJSON_AddStringToObject(attr, "action", "switch");
-                qmsd_ctrl_cjson_gui("main", QMSD_CTRL_SET_STATUS, attr);
+                qmsd_ctrl_cjson_gui("screen_main", QMSD_CTRL_SET_STATUS, attr);
 
-                cJSON_Delete(attr);
+                //cJSON_Delete(attr);
+                mod.json = attr;
+                qmsd_ctrl_event_send(QMSD_CTRL_MOD_CALL, &mod, sizeof(mod), portMAX_DELAY);
             }
         } else if (!strcmp(name, "main_button_1")) {
             cJSON *attr;
+            qmsd_ctrl_mod_param mod;
 
             attr = cJSON_CreateObject();
 
             if (attr) {
                 cJSON_AddStringToObject(attr, "action", "switch");
-                qmsd_ctrl_cjson_gui("test", QMSD_CTRL_SET_STATUS, attr);
+                qmsd_ctrl_cjson_gui("screen_test", QMSD_CTRL_SET_STATUS, attr);
 
-                cJSON_Delete(attr);
+                //cJSON_Delete(attr);
+                mod.json = attr;
+                qmsd_ctrl_event_send(QMSD_CTRL_MOD_CALL, &mod, sizeof(mod), portMAX_DELAY);
             }            
         }
     }

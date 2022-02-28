@@ -217,6 +217,7 @@ typedef struct _lv_obj_t {
     lv_design_cb_t design_cb; /**< Object type specific design function*/
     lv_obj_qmsd_ctrl_cb ctrl_cb;
     lv_obj_qmsd_cb qmsd_cb;
+    char qmsd_id[32];
 
     void * ext_attr;            /**< Object type specific extended data*/
     lv_style_list_t style_list;
@@ -1528,6 +1529,55 @@ void lv_obj_qmsd_call_cb(lv_obj_t * obj, lv_event_t event, void *data);
  * @return false 
  */
 bool qmsd_cjson_check(cJSON * item,int* code ,int type);
+/**
+ * @brief Get pointer from img list
+ * 
+ * @param name name of img
+ * @return lv_img_src_t* with same name
+ */
+lv_img_src_t *qmsd_ctrl_get_img(const char *name);
+
+/**
+ * @brief Get pointer from font list
+ * 
+ * @param name name of font
+ * @return lv_font_t* with same name
+ */
+lv_font_t *qmsd_ctrl_get_font(const char *name);
+
+int qmsd_ctrl_style_set(lv_obj_t* obj,int part,int state,cJSON* attr,const char* api,int* code);
+
+/**
+ * @brief Send qmsd event to every chill widget and call qmsd_cb of obj
+ * 
+ * @param obj The basic obj
+ * @param prev Search will start from this obj,set it to NULL to search the whole ll
+ * @param event Event to be sent
+ */
+void qmsd_send_event_to_chill(lv_obj_t* obj, lv_obj_t* prev, qmsd_event event);
+
+/**
+ * @brief get obj pointer with given id
+ * 
+ * @param id ID set by qmsd_obj_set_id.Add screen id before widget with a separate symbol '/' to point out which screen to be search
+ * @return lv_obj_t* 
+ */
+lv_obj_t* qmsd_search_widget(const char *id);
+
+/**
+ * @brief get screen obj with given id
+ * 
+ * @param id id set by qmsd_screen_regist
+ * @return lv_obj_t* 
+ */
+lv_obj_t* qmsd_search_screen(const char *id);
+
+void qmsd_obj_set_id(lv_obj_t* obj,const char *id);
+
+void qmsd_screen_list_init(int max);
+void qmsd_screen_register(lv_obj_t* obj,const char* id);
+void qmsd_screen_remove(const char *id);
+void qmsd_screen_print();
 /**********************
  *      MACROS
  **********************/

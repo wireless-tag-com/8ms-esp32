@@ -24,34 +24,17 @@ static void __qmsd_ctrl_event_handler(void* arg, esp_event_base_t event_base,
     /*
      * it is example for QMSD_CTRL event handle
      */
-#if 0
     switch (event_id) {
-        case QMSD_CTRL_WIFI_STA_SET_CONFIG:
+        case QMSD_CTRL_MOD_CALL:
             {
-                qmsd_ctrl_event_wifi_config *event = (qmsd_ctrl_event_wifi_config*) event_data;
-                qmsd_wifi_set_sta_config(event->ssid, event->password, event->enable);
-            }
-            break;
-        case QMSD_CTRL_WIFI_CLEAR_CONFIG:
-            qmsd_wifi_clear_config();
-            break;
-        case QMSD_CTRL_WIFI_STA_START:
-            qmsd_wifi_start_sta();
-            break;
-        case QMSD_CTRL_WIFI_STA_STOP:
-            qmsd_wifi_stop_sta();
-            break;
-        case QMSD_CTRL_WIFI_STA_SCAN:
-            qmsd_wifi_scan();
-            break;
-        case QMSD_CTRL_GPIO_ISR:
-            {
-                uint32_t *event = (uint32_t *) event_data;
-                printf("GPIO[%d] intr, val: %d\n", *event, qmsd_gpio_read(*event));
+                qmsd_ctrl_mod_param *event = (qmsd_ctrl_mod_param*) event_data;
+                if (event->json) {
+                    printf("%s\n", cJSON_PrintUnformatted(event->json));
+                    cJSON_Delete(event->json);
+                }
             }
             break;
     }
-#endif
 }
 
 int qmsd_ctrl_event_send(int32_t event_id, void *event_data, size_t event_data_size, TickType_t ticks_to_wait)
