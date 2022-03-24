@@ -9,22 +9,11 @@ extern "C"
 #include "esp_event.h"
 #include <stdbool.h>
 #include "cJSON.h"
-
-const char *QMSD_CTRL_EVENT;
-
-typedef enum {
-    QMSD_CTRL_MOD_CALL,         /* call qmsd */
-} qmsd_ctrl_event_t;
-
-typedef struct {
-    cJSON *json;
-} qmsd_ctrl_mod_param;
+#include "qmsd_mod.h"
 
 void qmsd_control_init(void);
-
-int qmsd_ctrl_event_send(int32_t event_id, void *event_data, size_t event_data_size, TickType_t ticks_to_wait);
-int qmsd_ctrl_event_isr_send(int32_t event_id, void *event_data, size_t event_data_size, BaseType_t *task_unblocked);
-
+void qmsd_sync_call_back(cJSON *data);
+void qmsd_asyn_call_back(cJSON *data, asyn_handler_event_t event_id);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

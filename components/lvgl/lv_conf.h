@@ -22,22 +22,13 @@
 
 /* Maximal horizontal and vertical resolution to support by the library.*/
 
-#if defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT)
-    #define LV_VER_RES_MAX          (CONFIG_LV_HOR_RES_MAX)
-    #define LV_HOR_RES_MAX          (CONFIG_LV_VER_RES_MAX)
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LVGL_DISPLAY_ORIENTATION_PORTRAIT_INVERTED)
-    #define LV_VER_RES_MAX          (CONFIG_LV_HOR_RES_MAX)
-    #define LV_HOR_RES_MAX          (CONFIG_LV_VER_RES_MAX)
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE)
-    #define LV_HOR_RES_MAX          (CONFIG_LV_HOR_RES_MAX)
-    #define LV_VER_RES_MAX          (CONFIG_LV_VER_RES_MAX)
-#elif defined (CONFIG_LVGL_PREDEFINED_DISPLAY_NONE) && defined (CONFIG_LVGL_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED)
-    #define LV_HOR_RES_MAX          (CONFIG_LV_HOR_RES_MAX)
-    #define LV_VER_RES_MAX          (CONFIG_LV_VER_RES_MAX)
-#else
-    #define LV_HOR_RES_MAX          (CONFIG_LV_HOR_RES_MAX)
-    #define LV_VER_RES_MAX          (CONFIG_LV_VER_RES_MAX)
-#endif
+
+
+
+#define LV_HOR_RES_MAX          (1024)
+#define LV_VER_RES_MAX          (600)
+    
+
 
 /* Color depth:
  * - 1:  1 byte per pixel
@@ -54,29 +45,7 @@
 
 /* Swap the 2 bytes of RGB565 color.
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
-#if defined CONFIG_LVGL_TFT_DISPLAY_CONTROLLER_ILI9341
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9488
 #define LV_COLOR_16_SWAP   0
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7789
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7796S
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7735S
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_HX8357
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_SH1107
-#define LV_COLOR_16_SWAP   0
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_SSD1306
-#define LV_COLOR_16_SWAP   0
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9486
-#define LV_COLOR_16_SWAP   1
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X
-#define LV_COLOR_16_SWAP   0
-#elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_RA8875
-#define LV_COLOR_16_SWAP   1
-#endif
 
 /* 1: Enable screen transparency.
  * Useful for OSD or other overlapping GUIs.
@@ -256,7 +225,7 @@ typedef void * lv_group_user_data_t;
 
 /* 1: Enable GPU interface*/
 #if defined CONFIG_LVGL_FEATURE_USE_GPU
-    #define LV_USE_GPU              1
+    #define LV_USE_GPU              0
 #else
     #define LV_USE_GPU              0
 #endif

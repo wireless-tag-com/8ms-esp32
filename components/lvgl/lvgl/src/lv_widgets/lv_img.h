@@ -202,6 +202,21 @@ uint16_t lv_img_get_zoom(lv_obj_t * img);
  */
 bool lv_img_get_antialias(lv_obj_t * img);
 
+/**
+ * @brief Load img from flash
+ * 
+ * @param path 
+ * @return lv_img_dsc_t* return pointer of built lv_img_dsc_t
+ */
+lv_img_dsc_t* qmsd_img_data_load(const char* path);
+
+/**
+ * @brief free the mem of qmsd_img_dsc_t
+ * 
+ * @param dsc dsc
+ * @return int 0:success 1:fail
+ */
+int qmsd_img_data_free(qmsd_img_dsc_t* dsc);
 /**********************
  *      MACROS
  **********************/

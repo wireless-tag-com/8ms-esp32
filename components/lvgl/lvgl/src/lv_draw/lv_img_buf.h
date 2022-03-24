@@ -142,6 +142,12 @@ typedef struct {
 } lv_img_dsc_t;
 
 typedef struct {
+    lv_img_header_t header;
+    uint32_t data_size;
+    uint8_t * data;
+} qmsd_img_dsc_t;
+
+typedef struct {
     struct {
         const void * src;           /*image source (array of pixels)*/
         lv_coord_t src_w;           /*width of the image source*/

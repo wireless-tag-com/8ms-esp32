@@ -8,60 +8,86 @@
 #include "esp_freertos_hooks.h"
 #include "freertos/semphr.h"
 #include "esp_system.h"
-#include "esp_event.h"
-#include "lvgl.h"
+#include "esp_log.h"
 #include "qmsd_ctrl.h"
-#include "qmsd_blockly.h"
 #include "qmsd_control.h"
+#include "qmsd_msgque.h"
+#include "qmsd_mod.h"
 
-static esp_event_handler_instance_t g_qmsd_any_id;
-
-const char *QMSD_CTRL_EVENT = "QMSD_CTRL_EVENT";
-
-static void __qmsd_ctrl_event_handler(void* arg, esp_event_base_t event_base,
-                                int32_t event_id, void* event_data)
-{
-    /*
-     * it is example for QMSD_CTRL event handle
-     */
-    switch (event_id) {
-        case QMSD_CTRL_MOD_CALL:
-            {
-                qmsd_ctrl_mod_param *event = (qmsd_ctrl_mod_param*) event_data;
-                if (event->json) {
-                    printf("%s\n", cJSON_PrintUnformatted(event->json));
-                    cJSON_Delete(event->json);
-                }
-            }
-            break;
-    }
-}
-
-int qmsd_ctrl_event_send(int32_t event_id, void *event_data, size_t event_data_size, TickType_t ticks_to_wait)
-{
-    esp_err_t err;
-    err = esp_event_post(QMSD_CTRL_EVENT, event_id, event_data, event_data_size, ticks_to_wait);
-    if (err == ESP_OK) {
-        return 0;
-    } else {
-        return -1;
-    }
-}
-
-int qmsd_ctrl_event_isr_send(int32_t event_id, void *event_data, size_t event_data_size, BaseType_t *task_unblocked)
-{
-    esp_err_t err;
-    err = esp_event_isr_post(QMSD_CTRL_EVENT, event_id, event_data, event_data_size, task_unblocked);
-    if (err == ESP_OK) {
-        return 0;
-    } else {
-        return -1;
-    }
-}
-
+#define TAG "QMSD CTRL"
 void qmsd_control_init(void)
 {
-    esp_event_loop_create_default();
+    while (1) {
+        void *msg;
+        unsigned int msglen;
+        int ret_msg;
+        ret_msg = qmsd_main_msgque_recv((void **)&msg, &msglen, pdMS_TO_TICKS(10));
+        if (ret_msg == 0) {
+            /*
+             * handle ui cb event
+             * qmsd_mod_call()
+             * cmd will be deleted in mod cb
+             */
+            
+            cJSON* cmd = cJSON_Parse(msg);
+            esp_err_t ret;
 
-    esp_event_handler_instance_register(QMSD_CTRL_EVENT, ESP_EVENT_ANY_ID, &__qmsd_ctrl_event_handler, NULL, &g_qmsd_any_id);
+            if (cmd)
+                ret = qmsd_mod_call(cmd);
+            
+            if (ret != ESP_OK)
+            {
+                /* code */
+            }
+
+            free(msg);
+            vTaskDelay(pdMS_TO_TICKS(10));
+        } else {
+            vTaskDelay(pdMS_TO_TICKS(30));
+        }
+    }
+}
+
+void qmsd_sync_call_back(cJSON *data)
+{
+    printf("-----------------------\r\n");
+    char *p = cJSON_Print(data);
+    printf("%s\r\n", p);
+    free(p);
+    cJSON_Delete(data);
+    printf("-----------------------\r\n");
+}
+
+void qmsd_asyn_call_back(cJSON *data, asyn_handler_event_t event_id)
+{
+    printf("-----------------------\r\n");
+    char *p = cJSON_Print(data);
+    switch (event_id)
+    {
+    case ASYN_EVENT_WIFI_SCAN:
+        printf("%s\r\n", p);
+        ESP_LOGI(TAG, "ASYN_EVENT_WIFI_SCAN");
+        break;
+    case ASYN_EVENT_UDP_DATA:
+        printf("%s\r\n", p);
+        ESP_LOGI(TAG, "ASYN_EVENT_UDP_DATA");
+        break;
+    case ASYN_EVENT_TCP_CLIENT:
+        printf("%s\r\n", p);
+        ESP_LOGI(TAG, "ASYN_EVENT_TCP_CLIENT");
+        break;
+    case ASYN_EVENT_TCP_SERVER:
+        printf("%s\r\n", p);
+        ESP_LOGI(TAG, "ASYN_EVENT_TCP_SERVER");
+        break;
+    case ASYN_EVENT_MQTT_DATA:
+        printf("%s\r\n", p);
+        ESP_LOGI(TAG, "ASYN_EVENT_MQTT_DATA");
+        break;
+    default:
+        break;
+    }
+    free(p);
+    cJSON_Delete(data);
+    printf("-----------------------\r\n");
 }

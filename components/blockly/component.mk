@@ -1,4 +1,0 @@
-# qmsd blockly
-
-COMPONENT_SRCDIRS := . 
-COMPONENT_ADD_INCLUDEDIRS := .

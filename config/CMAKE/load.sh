@@ -3,21 +3,18 @@ workdir=$(cd $(dirname $0); pwd)
 configdir=$workdir"/config/"
 
 board_name=(
-    WT32_SC01_LANDSCAPE 
-    WT32_SC01_PORTRAIT 
-    WT154-S2MI1-PERFORMANCE 
-    WT154-S2MI1-WIFI 
+    WT32_SC01
     WT154_C3SI1 
-    WT-86-32-3ZW0-PERFORMANCE 
-    WT-86-32-3ZW0-WIFI 
-    WT-86-32-3ZW1-PERFORMANCE 
-    WT-86-32-3ZW1-WIFI
-    WT280-S2MT1
-    WT280-S2MI1
-    WT240-C3SI1-LANDSCAPE
-    WT240-C3SI1-PORTRAIT
-    WT-0-32-21MLW1)
-component_name=(qmsd_init lvgl blockly lvgl_esp32_drivers bus qmsd_ui)
+    WT154_S2MI1
+    WT_86_32_3ZW1
+    WT280_S2MX1
+    WT240_C3SI1
+    WT_0_S2_240MW1
+    ZX350-S3MI1
+    ZX430-S3RI1
+    ZX430-S3RI2
+    ZX480-S3ZW1)
+component_name=(bus lvgl qmsd_init screen touch_panel)
 for((i=0;i<${#board_name[@]};i++))
 do
 echo $[i+1]"): "${board_name[i]}
@@ -36,9 +33,7 @@ cp $configdir$product"/lib"${component_name[i]}".a" $workdir"/components/"${comp
 echo '--- '${component_name[i]}' done'
 done
 
-mv -f components/qmsd_ui/libqmsd_ui.a components/qmsd_ui/lib/libqmsd_ui.a
-
-cp $configdir${board_name[board-1]}/sdkconfig_${board_name[board-1]} sdkconfig
+cp $configdir${board_name[board-1]}/sdkconfig sdkconfig
 echo '--- sdkconfig done'
 echo
 echo "Done"

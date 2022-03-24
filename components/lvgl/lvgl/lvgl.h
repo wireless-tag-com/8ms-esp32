@@ -17,7 +17,7 @@ extern "C" {
 #define LVGL_VERSION_MINOR 11
 #define LVGL_VERSION_PATCH 0
 #define LVGL_VERSION_INFO ""
-#define QMSD_LVGL_ADDON_VERSION "1.2" 
+#define QMSD_LVGL_ADDON_VERSION "2.0" 
 /*********************
  *      INCLUDES
  *********************/
@@ -36,7 +36,6 @@ extern "C" {
 #include "src/lv_core/lv_refr.h"
 #include "src/lv_core/lv_disp.h"
 #include "src/lv_core/qmsd_type.h"
-#include "src/lv_core/qmsd_msgque.h"
 
 #include "src/lv_themes/lv_theme.h"
 
@@ -78,7 +77,7 @@ extern "C" {
 #include "src/lv_widgets/lv_spinner.h"
 #include "src/lv_widgets/lv_calendar.h"
 #include "src/lv_widgets/lv_spinbox.h"
-#include "src/lv_widgets/qmsd_effect.h"
+#include "src/qmsd_tools/qmsd_tools.h"
 #include "src/lv_widgets/lv_clock.h"
 #include "src/lv_widgets/lv_board.h"
 #include "src/lv_widgets/qmsd_menu.h"

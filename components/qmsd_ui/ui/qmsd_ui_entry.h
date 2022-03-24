@@ -19,13 +19,6 @@ extern lv_obj_t *screen_main;
 extern lv_obj_t* screen_main_button_1;
 extern lv_obj_t* screen_main_label_1;
 
-extern lv_obj_t *screen_test;
-extern lv_obj_t* screen_test_button_1;
-extern lv_obj_t* screen_test_img_1;
-
-extern lv_obj_t *screen_test2;
-extern lv_obj_t* screen_test2_button_1;
-
 int screen_main_build(void);
 void screen_main_delete(void);
 int screen_test_build(void);

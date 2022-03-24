@@ -12,7 +12,7 @@ extern "C"
 #define QMSD_CTRL_ATTR_NAME	"attr"
 #define QMSD_CTRL_EVENT_NAME	"event"
 
-#define QMSD_CTRL_CMD_SET_NAME	"set_statue"
+#define QMSD_CTRL_CMD_SET_NAME	"set_status"
 #define QMSD_CTRL_CMD_SET_STYLE	"set_style"
 #define QMSD_CTRL_CMD_SEND_EVENT	"send_event"
 #define QMSD_CTRL_CMD_GET_NAME	"get"

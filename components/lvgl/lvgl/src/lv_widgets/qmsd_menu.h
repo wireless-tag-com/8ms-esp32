@@ -6,7 +6,7 @@
 #include "lv_page.h"
 #include "lv_cont.h"
 #include "lv_label.h"
-#include "qmsd_effect.h"
+#include "../qmsd_tools/qmsd_tools.h"
 typedef struct {
     /*New data for this type */
     lv_obj_t* icons[32];

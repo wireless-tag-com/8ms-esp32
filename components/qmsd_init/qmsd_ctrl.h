@@ -2,6 +2,7 @@
 #define __QMSD_CTRL_H
 
 #include <stdbool.h>
+#include "lvgl.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -14,21 +15,19 @@ typedef lv_img_src_t *(*__qmsd_get_img)(const char *name);
 typedef lv_font_t *(*__qmsd_get_font)(const char *name);
 
 /*
- * call from other task, sync be false
- * if sync to true, will wait for gui task
+ * call from other task, no wait for gui task, send msg to msgque
  */
-int qmsd_ctrl_str(const char *json_str, bool sync);
+int qmsd_ctrl_str(const char *json_str);
+
+/*
+ * call from other task, wait for gui task
+ */
+char *qmsd_ctrl_str_sync(const char *json_str);
 
 /*
  * call from gui task, no need lock
  */
 char *qmsd_ctrl_str_gui(const char *json_str);
-
-/*
- * call from other task, sync be false
- * if sync to true, will wait for gui task
- */
-int qmsd_ctrl_cjson(const char *wid, qmsd_ctrl_type type, const cJSON *attr, bool sync);
 
 /*
  * call from gui task, no need lock
