@@ -10,10 +10,10 @@ board_name=(
     WT280_S2MX1
     WT240_C3SI1
     WT_0_S2_240MW1
-    ZX350-S3MI1
-    ZX430-S3RI1
-    ZX430-S3RI2
-    ZX480-S3ZW1)
+    ZX210_S3MLW1
+    ZX350_S3MI1
+    ZX430_S3RI1
+    ZX480_S3ZW1)
 component_name=(bus lvgl qmsd_init screen touch_panel)
 for((i=0;i<${#board_name[@]};i++))
 do
