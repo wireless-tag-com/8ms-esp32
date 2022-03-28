@@ -83,7 +83,7 @@ esp_err_t i2c_write_byte(I2CDevice_t i2c_device, uint32_t reg_addr, uint8_t data
 
 esp_err_t i2c_write_bit(I2CDevice_t i2c_device, uint32_t reg_addr, uint8_t data, uint8_t bit_pos);
 
-esp_err_t i2c_bus_scan(I2CDevice_t i2c_device);
+esp_err_t i2c_bus_scan_device(I2CDevice_t i2c_device);
 /*
     Read before bits from 8 bit reg, then update write bits
     1. Read data 0b10101100
