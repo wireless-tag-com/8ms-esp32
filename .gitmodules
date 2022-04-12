@@ -1,0 +1,3 @@
+[submodule "components/qmsd_mod"]
+	path = components/qmsd_mod
+	url = git@gitee.com:qiming-zhixian/qmsd-mod.git

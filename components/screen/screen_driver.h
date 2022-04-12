@@ -48,6 +48,12 @@ extern "C" {
 #define COLOR_FUCHSIA     0xF81F
 #define COLOR_ESP_BKGD    0xD185
 
+#ifdef CONFIG_IDF_TARGET_ESP32C3
+#define DOWNLOAD_PIN 9
+#else 
+#define DOWNLOAD_PIN 0
+#endif
+
 /**
  * @brief Define all screen direction
  *

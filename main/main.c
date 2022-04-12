@@ -24,6 +24,7 @@
 #include "qmsd_ui_storage.h"
 #include "qmsd_msgque.h"
 #include "qmsd_screen_config.h"
+#include "qmsd_version.h"
 #include "qmsd_mod.h"
 
 
@@ -53,7 +54,7 @@ void qmsd_ui_init_cb(void)
 
 void app_main(void)
 {
-    printf("MEM%d\n",heap_caps_get_free_size(MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT));
+    printf("version: %s\n", QMSD_VERSION);
     qmsd_storage_init();
     qmsd_main_msgque_init(16);
     esp_event_loop_create_default();

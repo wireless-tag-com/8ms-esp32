@@ -14,6 +14,8 @@
 
 6.新增自动背光管理  
 
+7.修复86盒tp表现
+
 # V1.2
 
 - 使用8ms平台进行UI开发的用户请将source.zip内容替换至 components/qmsd\_ui 目录
