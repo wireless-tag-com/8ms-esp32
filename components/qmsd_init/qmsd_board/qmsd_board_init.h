@@ -28,6 +28,8 @@ typedef enum {
 #define BOARD_BKL_PIN 39
 #elif (defined CONFIG_WT280_S2MX1)
 #define BOARD_BKL_PIN 16
+#elif (defined CONFIG_ZX3D50CE02S_USRC_4832)
+#define BOARD_BKL_PIN 45
 #else
 #define BOARD_BKL_PIN -1
 #endif

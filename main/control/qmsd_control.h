@@ -12,8 +12,6 @@ extern "C"
 #include "qmsd_mod.h"
 
 void qmsd_control_init(void);
-void qmsd_sync_call_back(cJSON *data);
-void qmsd_asyn_call_back(cJSON *data, asyn_handler_event_t event_id);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

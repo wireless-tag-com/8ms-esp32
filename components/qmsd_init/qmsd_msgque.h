@@ -41,13 +41,13 @@ typedef struct
 }t_qcb;
 
 int qmsd_msgque_init(int msgmax);
-int qmsd_msgque_send(void *msg,unsigned int msglen, portTickType xtime);
-int qmsd_msgque_recv(void **msg,unsigned int *msglen, portTickType xtime);
+int qmsd_msgque_send(void *msg,unsigned int msglen, TickType_t xtime);
+int qmsd_msgque_recv(void **msg,unsigned int *msglen, TickType_t xtime);
 void qmsd_msgque_deinit(void);
 
 int qmsd_main_msgque_init(int msgmax);
-int qmsd_main_msgque_send(void *msg,unsigned int msglen, portTickType xtime);
-int qmsd_main_msgque_recv(void **msg,unsigned int *msglen, portTickType xtime);
+int qmsd_main_msgque_send(void *msg,unsigned int msglen, TickType_t xtime);
+int qmsd_main_msgque_recv(void **msg,unsigned int *msglen, TickType_t xtime);
 void qmsd_main_msgque_deinit(void);
 
 #ifdef __cplusplus

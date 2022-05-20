@@ -19,12 +19,16 @@ menu "Qmsd board select"
             bool "WT240_C3SI1"
         config WT_0_S2_240MW1
             bool "WT-0-S2-240MW1"
-        config ZX430_S3RI1
-            bool "ZX430_S3RI1"
-        config ZX480_S3ZW1
-            bool "ZX480_S3ZW1"
-        config ZX350_S3MI1
-            bool "ZX350_S3MI1"
+        config ZX4D30NE01S_UR_4827
+            bool "ZX4D30NE01S-UR-4827"
+        config ZX3D95CE01S_UR_4848
+            bool "ZX3D95CE01S-UR-4848"
+        config ZX3D95CE01S_AR_4848
+            bool "ZX3D95CE01S-AR-4848"
+        config ZX3D50CE02S_USRC_4832
+            bool "ZX3D50CE02S-USRC-4832"
+        config ZX4D60_AR_4896
+            bool "ZX4D60_AR_4896"
         config ZX210_S3MLW1
             bool "ZX210_S3MLW1"
         config CUSTOM_LCD

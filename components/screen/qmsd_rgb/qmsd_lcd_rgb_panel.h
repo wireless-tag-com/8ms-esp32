@@ -22,6 +22,7 @@ typedef struct {
     int disp_gpio_num; /*!< GPIO used for display control signal, set to -1 if it's not used */
     uint8_t* buf1;
     uint8_t* buf2;
+    int bounce_buffer_size_px;
     struct {
         unsigned int disp_active_low: 1; /*!< If this flag is enabled, a low level of display control signal can turn the screen on; vice versa */
         unsigned int relax_on_idle: 1;   /*!< If this flag is enabled, the host won't refresh the LCD if nothing changed in host's frame buffer (this is usefull for LCD with built-in GRAM) */
