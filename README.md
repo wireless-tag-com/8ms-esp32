@@ -1,4 +1,4 @@
-# V2.0
+# V2.1
 ## 开发环境
 基于4.4的IDF版本，*[获取地址](https://gitee.com/qiming-zhixian/esp-idf)*   
 新增启明智显S3系列开发板支持  
