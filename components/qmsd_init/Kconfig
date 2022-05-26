@@ -27,6 +27,8 @@ menu "Qmsd board select"
             bool "ZX3D95CE01S-AR-4848"
         config ZX3D50CE02S_USRC_4832
             bool "ZX3D50CE02S-USRC-4832"
+        config ZX3D92CE01S_cGS01_AR_3232
+            bool "ZX3D92CE01S-cGS01-AR-3232"
         config ZX4D60_AR_4896
             bool "ZX4D60_AR_4896"
         config ZX210_S3MLW1

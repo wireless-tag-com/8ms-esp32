@@ -34,9 +34,24 @@ void qmsd_sntp_start(const char *ser1, const char *ser2, const char *ser3)
     if (!sntp_enabled())
     {
         sntp_setoperatingmode(SNTP_OPMODE_POLL);
-        sntp_setservername(0, ser1);
-        sntp_setservername(1, ser2);
-        sntp_setservername(2, ser3);
+        if (ser1) {
+            sntp_setservername(0, ser1);
+        } else {
+            sntp_setservername(0, "cn.pool.ntp.org");
+        }
+
+        if (ser2) {
+            sntp_setservername(1, ser2);
+        } else {
+            sntp_setservername(1, "ntp1.aliyun.com");
+        }
+
+        if (ser3) {
+            sntp_setservername(2, ser3);
+        } else {
+            sntp_setservername(2, "pool.ntp.org");
+        }
+    
         sntp_set_time_sync_notification_cb(__qmsd_sntp_sync_cb);
         sntp_init();
     }

@@ -21,6 +21,8 @@
 #define QMSD_STORAGE_PARTITION  "qmsd_storage"
 
 void qmsd_storage_init(void);
+esp_err_t qmsd_storage_get_blob(const char *name, const char *key, void *data, size_t length);
+esp_err_t qmsd_storage_set_blob(const char *name, const char *key, void *data, size_t length);
 esp_err_t qmsd_storage_get_u8(const char *namespace, const char *key, uint8_t *value);
 esp_err_t qmsd_storage_set_u8(const char *namespace, const char* key,uint8_t input);
 esp_err_t qmsd_storage_get_i8(const char *namespace, const char *key, int8_t *value);

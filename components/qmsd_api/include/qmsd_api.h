@@ -5,9 +5,14 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/uart.h"
+#include "lwip/ip4_addr.h"
+#include "esp_smartconfig.h"
+#include "esp_wifi.h"
+#include "mqtt_client.h"
+#include "qmsd_wifi.h"
 #include "qmsd_notifier.h"
 
-/*!< qmsd base */
+/* qmsd base */
 enum
 {
     QMSD_SYSTEM_RESTART_EVENT = 1000,
@@ -19,7 +24,7 @@ esp_err_t qmsd_set_time(uint64_t time_s, uint64_t time_us);
 void qmsd_set_tz(const char *tz);
 char *qmsd_get_tz(void);
 
-/*!< qmsd sntp */
+/* qmsd sntp */
 enum
 {
     QMSD_SNTP_OK = 2000
@@ -28,7 +33,7 @@ void qmsd_obtain_time(uint8_t time_s);
 void qmsd_sntp_start(const char *ser1, const char *ser2, const char *ser3);
 void qmsd_sntp_stop(void);
 
-/*!< qmsd ota */
+/* qmsd ota */
 enum
 {
     QMSD_SYSTEM_OTA_OK = 3000,
@@ -66,7 +71,7 @@ esp_err_t qmsd_nvs_clear_namespace(const char*namespace);
 esp_err_t qmsd_nvs_clear_key(const char*namespace, const char* key);
 esp_err_t qmsd_nvs_clear_all(void);
 
-/*!< qmsd uart */
+/* qmsd uart */
 enum
 {
     QMSD_UART_EVENT_DATA = 4000,
@@ -98,7 +103,7 @@ int qmsd_uart_read(int unum, char *buf, size_t len, int timeout);
 int qmsd_uart_start(int unum, qmsd_uart_config_t *config);
 void qmsd_uart_stop(int unum);
 
-/*!< qmsd gpio */
+/* qmsd gpio */
 typedef enum {
     QMSD_GPIO_OUT = 0,      /**< Output. A Mode can also be set */
     QMSD_GPIO_IN = 1,       /**< Input */
@@ -120,10 +125,68 @@ int qmsd_gpio_get_dir(int pin, int *dir);
 int qmsd_gpio_read(int pin);
 int qmsd_gpio_write(int pin, int value);
 
-/*!< qmsd pwm */
-int qmsd_pwm_start(int timer_num, int channel, int gpio, uint32_t freq_hz, int duty);
-int qmsd_pwm_stop(int channel, int idle_level);
+/* qmsd pwm */
+int qmsd_pwm_start(int timer_num, int channel, int gpio, uint32_t freq_hz, uint32_t duty);
+int qmsd_pwm_stop(int channel, uint32_t idle_level);
 int qmsd_pwm_set_freq(int timer_num, uint32_t freq_hz);
-int qmsd_pwm_set_duty(int channel, int duty);
+int qmsd_pwm_set_duty(int channel, uint32_t duty);
+
+/* qmsd http */
+enum
+{
+    QMSD_HTTP_CONNECTED = 5000,
+    QMSD_HTTP_DATA = 5001,
+    QMSD_HTTP_FINISH = 5002,
+    QMSD_HTTP_DIS = 5003,
+};
+
+struct qmsd_http_get_data
+{
+    char *data;
+    int size;
+};
+
+esp_err_t qmsd_http_get(const char *url, const char *header, const char *user_agent);
+esp_err_t qmsd_http_post(char *url, const char *post_data, int post_len);
+esp_err_t qmsd_http_post_json(char *url, const char *post_data, int post_len);
+esp_err_t qmsd_http_post_img(char *url, const char *post_data, int post_len);
+
+/* qmsd wifi */
+enum
+{
+    QMSD_WIFI_STA_DISCONNECT = 6000,
+    QMSD_WIFI_STA_GOT_IP = 6001,
+    QMSD_WIFI_SCAN_DONE = 6002,
+};
+
+struct qmsd_wifi_scan_res
+{
+    wifi_ap_record_t *ap_info;
+    uint16_t number;
+};
+
+/* qmsd ble */
+enum
+{
+    QMSD_BLUFI_STA_GOT_IP = 7001,
+};
+void qmsd_blufi_start(void);
+void qmsd_blufi_stop(void);
+
+/* qmsd mqtt */
+enum
+{
+    QMSD_MQTT_EVENT_CONNECTED = 8000,
+    QMSD_MQTT_EVENT_DISCONNECTED = 8001,
+    QMSD_MQTT_EVENT_DATA = 8002,
+    QMSD_MQTT_EVENT_ERROR = 8003,
+};
+
+int qmsd_mqtt_status(void);
+int qmsd_mqtt_start(esp_mqtt_client_config_t *config);
+int qmsd_mqtt_stop(void);
+int qmsd_mqtt_pub(const char *topic, const char *data, int len, const int qos, const int retain);
+int qmsd_mqtt_sub(const char *topic, int qos);
+int qmsd_mqtt_unsub(const char *topic);
 
 #endif
