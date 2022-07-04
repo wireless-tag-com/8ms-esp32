@@ -1192,53 +1192,6 @@ CONFIG_I2C_MS_TO_WAIT=200
 # end of Bus Options
 
 #
-# iotkit embedded
-#
-
-#
-# Aliyun linkkit device version
-#
-CONFIG_LINKKIT_FIRMWARE_VERSION="0.0.1"
-# end of Aliyun linkkit device version
-
-#
-# Aliyun linkkit awss config
-#
-CONFIG_AWSS_ENCRYPT_TYPE=3
-CONFIG_AWSS_CONN_ENCRYPT_TYPE=4
-CONFIG_AWSS_TIMEOUT_INTERVAL_MS=180000
-CONFIG_AWSS_CHANNELSCAN_INTERVAL_MS=200
-# end of Aliyun linkkit awss config
-
-#
-# Aliyun linkkit network config
-#
-# CONFIG_SUPPORT_TCP is not set
-CONFIG_TCP_ESTABLISH_TIMEOUT_MS=10000
-CONFIG_TLS_ESTABLISH_TIMEOUT_MS=10000
-# end of Aliyun linkkit network config
-
-#
-# Aliyun linkkit device model config
-#
-# CONFIG_DEVICE_MODEL_GATEWAY is not set
-# end of Aliyun linkkit device model config
-
-#
-# Aliyun SNTP config
-#
-CONFIG_SNTP_RETRY_TIMEOUT=1000
-CONFIG_SNTP_RETRY_MAX=10
-# end of Aliyun SNTP config
-
-CONFIG_HAL_SEM_MAX_COUNT=255
-CONFIG_HAL_SEM_INIT_COUNT=0
-CONFIG_HAL_TLS_HANDSHAKE_TIMEOUT=180
-# CONFIG_HAL_USE_CUSTOMER_AP_SSID is not set
-CONFIG_AP_SSID_KEY="apssid"
-# end of iotkit embedded
-
-#
 # LVGL configuration
 #
 # CONFIG_LV_ATTRIBUTE_FAST_MEM_USE_IRAM is not set

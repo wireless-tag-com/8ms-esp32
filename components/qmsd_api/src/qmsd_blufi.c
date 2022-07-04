@@ -223,6 +223,7 @@ static void example_event_callback(esp_blufi_cb_event_t event, esp_blufi_cb_para
         */
         esp_wifi_disconnect();
         esp_wifi_connect();
+        qmsd_notifier_call_nolock(QMSD_BLUFI_CONNECT_TO_AP, NULL);
         break;
     case ESP_BLUFI_EVENT_REQ_DISCONNECT_FROM_AP:
         BLUFI_INFO("BLUFI requset wifi disconnect from AP\n");
@@ -273,25 +274,14 @@ static void example_event_callback(esp_blufi_cb_event_t event, esp_blufi_cb_para
         sta_config.sta.ssid[param->sta_ssid.ssid_len] = '\0';
         esp_wifi_set_config(WIFI_IF_STA, &sta_config);
         BLUFI_INFO("Recv STA SSID %s\n", sta_config.sta.ssid);
+        qmsd_notifier_call_nolock(QMSD_BLUFI_RCV_STA_SSID, NULL);
         break;
     case ESP_BLUFI_EVENT_RECV_STA_PASSWD:
         strncpy((char *)sta_config.sta.password, (char *)param->sta_passwd.passwd, param->sta_passwd.passwd_len);
         sta_config.sta.password[param->sta_passwd.passwd_len] = '\0';
         esp_wifi_set_config(WIFI_IF_STA, &sta_config);
         BLUFI_INFO("Recv STA PASSWORD %s\n", sta_config.sta.password);
-        break;
-    case ESP_BLUFI_EVENT_RECV_SOFTAP_SSID:
-        strncpy((char *)ap_config.ap.ssid, (char *)param->softap_ssid.ssid, param->softap_ssid.ssid_len);
-        ap_config.ap.ssid[param->softap_ssid.ssid_len] = '\0';
-        ap_config.ap.ssid_len = param->softap_ssid.ssid_len;
-        esp_wifi_set_config(WIFI_IF_AP, &ap_config);
-        BLUFI_INFO("Recv SOFTAP SSID %s, ssid len %d\n", ap_config.ap.ssid, ap_config.ap.ssid_len);
-        break;
-    case ESP_BLUFI_EVENT_RECV_SOFTAP_PASSWD:
-        strncpy((char *)ap_config.ap.password, (char *)param->softap_passwd.passwd, param->softap_passwd.passwd_len);
-        ap_config.ap.password[param->softap_passwd.passwd_len] = '\0';
-        esp_wifi_set_config(WIFI_IF_AP, &ap_config);
-        BLUFI_INFO("Recv SOFTAP PASSWORD %s len = %d\n", ap_config.ap.password, param->softap_passwd.passwd_len);
+        qmsd_notifier_call_nolock(QMSD_BLUFI_RCV_STA_PWD, NULL);
         break;
     case ESP_BLUFI_EVENT_RECV_SOFTAP_MAX_CONN_NUM:
         if (param->softap_max_conn_num.max_conn_num > 4)
@@ -301,24 +291,6 @@ static void example_event_callback(esp_blufi_cb_event_t event, esp_blufi_cb_para
         ap_config.ap.max_connection = param->softap_max_conn_num.max_conn_num;
         esp_wifi_set_config(WIFI_IF_AP, &ap_config);
         BLUFI_INFO("Recv SOFTAP MAX CONN NUM %d\n", ap_config.ap.max_connection);
-        break;
-    case ESP_BLUFI_EVENT_RECV_SOFTAP_AUTH_MODE:
-        if (param->softap_auth_mode.auth_mode >= WIFI_AUTH_MAX)
-        {
-            return;
-        }
-        ap_config.ap.authmode = param->softap_auth_mode.auth_mode;
-        esp_wifi_set_config(WIFI_IF_AP, &ap_config);
-        BLUFI_INFO("Recv SOFTAP AUTH MODE %d\n", ap_config.ap.authmode);
-        break;
-    case ESP_BLUFI_EVENT_RECV_SOFTAP_CHANNEL:
-        if (param->softap_channel.channel > 13)
-        {
-            return;
-        }
-        ap_config.ap.channel = param->softap_channel.channel;
-        esp_wifi_set_config(WIFI_IF_AP, &ap_config);
-        BLUFI_INFO("Recv SOFTAP CHANNEL %d\n", ap_config.ap.channel);
         break;
     case ESP_BLUFI_EVENT_GET_WIFI_LIST:
     {
@@ -359,6 +331,13 @@ static void example_event_callback(esp_blufi_cb_event_t event, esp_blufi_cb_para
     }
 }
 
+static int g_qmsd_blufi_status = 0;
+
+int qmsd_blufi_status(void)
+{
+    return g_qmsd_blufi_status;
+}
+
 void qmsd_blufi_start(void)
 {
     esp_err_t ret;
@@ -396,17 +375,21 @@ void qmsd_blufi_start(void)
         return;
     }
 
+    g_qmsd_blufi_status = 1;
     BLUFI_INFO("BLUFI VERSION %04x\n", esp_blufi_get_version());
 }
 
 void qmsd_blufi_stop(void)
 {
-    esp_blufi_adv_stop();
-    blufi_security_deinit();
-    esp_bt_controller_disable();
-    esp_bt_controller_deinit();
-    esp_event_handler_instance_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, instance_any_wifi);
-    esp_event_handler_instance_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, instance_got_ip);
+    if (g_qmsd_blufi_status == 1) {
+        esp_blufi_adv_stop();
+        blufi_security_deinit();
+        esp_bt_controller_disable();
+        esp_bt_controller_deinit();
+        esp_event_handler_instance_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, instance_any_wifi);
+        esp_event_handler_instance_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, instance_got_ip);
+        g_qmsd_blufi_status = 0;
+    }
 }
 #else
 void qmsd_blufi_start(void)
@@ -417,5 +400,10 @@ void qmsd_blufi_start(void)
 void qmsd_blufi_stop(void)
 {
 
+}
+
+int qmsd_blufi_status(void)
+{
+    return 0;
 }
 #endif /* CONFIG_BT_BLE_BLUFI_ENABLE */

@@ -508,11 +508,12 @@ static esp_err_t __qmsd_wifi_power_on_connect()
         err = esp_wifi_set_mode(WIFI_MODE_STA);
         if (err == ESP_OK) {
             wifi_config_t *wifi_config;
-            char buf[sizeof(wifi_config_t) + 1] = {0};
-            size_t len = sizeof(wifi_config_t) + 1 ;
+            char buf[QMSD_WIFI_CONFIG_LEN] = {0};
+            size_t len = QMSD_WIFI_CONFIG_LEN;
     
             if (__qmsd_get_wifi_config(buf, len) == ESP_OK) {
                 wifi_config = (wifi_config_t *)buf;
+                printf("coonect\n");
                 esp_wifi_set_config(WIFI_IF_STA, wifi_config);
                 __qmsd_wifi_connect();
             }

@@ -23,6 +23,7 @@ int qmsd_get_time(time_t *ts);
 esp_err_t qmsd_set_time(uint64_t time_s, uint64_t time_us);
 void qmsd_set_tz(const char *tz);
 char *qmsd_get_tz(void);
+void qmsd_use_buildtime(void);
 
 /* qmsd sntp */
 enum
@@ -168,10 +169,14 @@ struct qmsd_wifi_scan_res
 /* qmsd ble */
 enum
 {
-    QMSD_BLUFI_STA_GOT_IP = 7001,
+    QMSD_BLUFI_RCV_STA_SSID = 7001,
+    QMSD_BLUFI_RCV_STA_PWD = 7002,
+    QMSD_BLUFI_CONNECT_TO_AP = 7003,
+    QMSD_BLUFI_STA_GOT_IP = 7004,
 };
 void qmsd_blufi_start(void);
 void qmsd_blufi_stop(void);
+int qmsd_blufi_status(void);
 
 /* qmsd mqtt */
 enum

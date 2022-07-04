@@ -12,6 +12,10 @@ extern "C"
 {
 #endif
 
+typedef enum {
+    QMSD_GUI_MODE_PERFORMENCE,
+    QMSD_GUI_MODE_NORMAL,
+} qmsd_gui_mode_t;
 
 esp_err_t qmsd_gui_init(uint32_t custom_fb_size,uint8_t dir);
 
@@ -21,6 +25,9 @@ typedef void (*qmsd_board_init_cus)(qmsd_screen_rotation_t dir);
 
 void qmsd_set_init_cb(qmsd_init_cb init_cb);
 void qmsd_set_board_init_cus(qmsd_board_init_cus init_cus);
+
+void qmsd_gui_set_mode(qmsd_gui_mode_t mode);
+qmsd_gui_mode_t qmsd_gui_get_mode(void);
 
 int qmsd_gui_lock(uint32_t timeout);
 void qmsd_gui_unlock(void);
