@@ -1,5 +1,5 @@
 
-set(TOUCH_DIR "xpt2046" "ft5x06" "ns2016" "gslx680" "button" "hall")
+set(TOUCH_DIR "xpt2046" "ft5x06" "ns2016" "gslx680" "gslx680n" "button" "hall")
 
 idf_component_register(
                         INCLUDE_DIRS "." "${TOUCH_DIR}" "calibration/basic_painter" "calibration/basic_painter/fonts"
