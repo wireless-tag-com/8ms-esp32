@@ -7,11 +7,9 @@
 #include "esp_event.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
-#include "esp_bt.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
-#include "esp_blufi.h"
 static wifi_config_t sta_config;
 static wifi_config_t ap_config;
 #define BLUFI_EXAMPLE_TAG "BLUFI_EXAMPLE"
