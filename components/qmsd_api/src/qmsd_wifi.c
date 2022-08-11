@@ -452,6 +452,8 @@ esp_err_t qmsd_wifi_sta_config(const char *ssid, const char *password, const cha
 
     wifi_config = (wifi_config_t *)buf;
     
+	esp_wifi_set_mode(WIFI_MODE_STA);
+
     if (bssid != NULL)
     {
         wifi_config->sta.bssid_set = true;
