@@ -31,6 +31,15 @@ typedef struct {
     } flags;
 } qmsd_lcd_rgb_panel_config_t;
 
+/**
+ * @brief RGB LCD VSYNC event callback prototype
+ *
+ * @param[in] panel LCD panel handle, returned from `esp_lcd_new_rgb_panel()`
+ * @param[in] user_ctx User data, passed from `esp_lcd_rgb_panel_register_event_callbacks()`
+ * @return Whether a high priority task has been waken up by this function
+ */
+typedef bool (*qmsd_rgb_panel_vsync_cb_t)(void);
+
 esp_err_t qmsd_lcd_new_rgb_panel(const qmsd_lcd_rgb_panel_config_t *rgb_panel_config, esp_lcd_panel_handle_t *ret_panel);
 
 void qmsd_lcd_rgb_panel_get_buffer(esp_lcd_panel_t *panel, uint8_t** buf1, uint8_t** buf2);
@@ -42,6 +51,8 @@ void qmsd_lcd_panel_cache_flush(esp_lcd_panel_t *panel);
 void qmsd_lcd_panel_wait_flush(esp_lcd_panel_t *panel);
 
 void qmsd_lcd_buffer_select(esp_lcd_panel_t *panel, uint8_t* buf);
+esp_err_t qmsd_lcd_rgb_panel_register_vsync(esp_lcd_panel_t *panel, qmsd_rgb_panel_vsync_cb_t on_vsync);
+esp_err_t qsmd_lcd_rgb_panel_refresh(esp_lcd_panel_t *panel);
 
 #ifdef __cplusplus
 }
