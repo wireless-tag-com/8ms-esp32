@@ -16,7 +16,9 @@ board_name=(
     ZX4D30NE01S_UR_4827
     ZX4D60_AR_4896
     ZX2D10ECS_cESCP01
-    ZX3D92CE01S_cGS01_AR_3232)
+    ZX3D92CE01S_cGS01_AR_3232
+    ZX7D00CE01S_UR_8048
+    )
 component_name=(bus lvgl qmsd_init screen touch_panel qmsd_mod)
 for((i=0;i<${#board_name[@]};i++))
 do

@@ -35,6 +35,8 @@ menu "Qmsd board select"
             bool "ZX4D60_AR_4896"
         config ZX210_S3MLW1
             bool "ZX210_S3MLW1"
+        config ZX7D00CE01S_UR_8048
+            bool "ZX7D00CE01S_UR_8048"
         config CUSTOM_LCD
             bool "CUSTOM_LCD"
     endchoice
