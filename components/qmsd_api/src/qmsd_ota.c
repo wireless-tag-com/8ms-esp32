@@ -17,6 +17,7 @@ static const char *TAG = "QMSD_OTA";
 TaskHandle_t g_http_ota_handle;
 static char *g_server_cert_pem;
 static esp_https_ota_handle_t g_ota_handle;
+static char *g_ota_url;
 
 static esp_err_t __qmsd_http_event_handler(esp_http_client_event_t *evt)
 {
@@ -128,8 +129,15 @@ int qmsd_ota_start(const char *url)
         vTaskDelete(g_http_ota_handle);
     }
 
-    if (xTaskCreate(&__qmsd_ota_task, "qmsd_ota_task", 8192, (void *)url, 7, &g_http_ota_handle) != pdPASS) {
-        return -1;
+    if (g_ota_url) {
+        free(g_ota_url);
+    }
+
+    g_ota_url = strdup(url);
+    if (g_ota_url) {
+        if (xTaskCreate(&__qmsd_ota_task, "qmsd_ota_task", 8192, (void *)url, 7, &g_http_ota_handle) != pdPASS) {
+            return -1;
+        }
     }
 
     return 0;
@@ -137,6 +145,10 @@ int qmsd_ota_start(const char *url)
 
 void qmsd_ota_stop(void)
 {
+    if (g_ota_url) {
+        free(g_ota_url);
+    }
+
     if (g_http_ota_handle) {
         vTaskDelete(g_http_ota_handle);
     }
