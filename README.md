@@ -1,41 +1,23 @@
-# qmsd ESP32
+使用到的硬件
 
-qmsd ESP32 project
+LEDC -> 背光:
+    LEDC_TIMER_3，LEDC_LOW_SPEED_MODE，LEDC_CHANNEL_5，LEDC_TIMER_10_BIT
 
-# prepare ESP32 v4.4.1 SDK
+工程下, 运行选择板子
 
-please refr to https://gitee.com/qiming-zhixian/esp-idf
-Or just use docker we provide: docker pull shukewt/qmsd_idf_4_4
+```bash
+idf.py load-board
+```
 
-# build project
+Release sdk, 会在sdk目录下面生成一个release目录, 里面.a文件与cmake文件已替换好
 
-idf.py build
+Release 规则: component目录下如果存在CMakeLists.release, 则会删除该component下.c文件, 替换cmake文件, 从该工程的build目录提取.a文件到component下
 
-# 载入标准品的预设配置
-Ubuntu需要指定bash或关闭dash
-bash load.sh
+```bash
+idf.py release-sdk
+```
 
-./load.sh  
-1): WT32_SC01  
-2): WT154_C3SI1  
-3): WT154_S2MI1  
-4): WT_86_32_3ZW1  
-5): WT280_S2MX1  
-6): WT240_C3SI1  
-7): WT_0_S2_240MW1  
-8): ZX3D50CE02S_USRC_4832  
-9): ZX3D95CE01S_AR_4848  
-10): ZX3D95CE01S_UR_4848  
-11): ZX4D30NE01S_UR_4827  
-12): ZX4D60_AR_4896  
-13): ZX2D10ECS_cESCP01  
-1
-Set to 1-WT32_SC01_LANDSCAPE  
---- _qmsd_init done  
---- lvgl done  
---- blockly done  
---- lvgl_esp32_drivers done  
---- bus done  
---- sdkconfig done  
-  
-Done  
+生成当前工程的打包固件，会在运行目录下生成 firmware_0xXX.bin
+```bash
+idf.py generate-firmware
+```

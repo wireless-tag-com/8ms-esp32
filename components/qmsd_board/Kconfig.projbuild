@@ -1,0 +1,99 @@
+menu "QMSD Hal"
+    choice QMSD_BOARD
+        prompt "QMSD Board"
+        default ZX3D50CE02S_USRC_4832
+        help
+            Select an board to use with the qmsd sdk
+        config QMSD_BOARD_CUSTOM
+            bool "Custom QMSD Board"
+        config ZX3D50CE02S_USRC_4832
+            bool "ZX3D50CE02S_USRC_4832"
+        config ZX3D95CE01S_UR
+            bool "ZX3D95CE01S_UR"
+        config ZX3D95CE01S_AR
+            bool "ZX3D95CE01S_AR"
+        config ZX4D30NS
+            bool "ZX4D30NS"
+    endchoice
+
+    choice QMSD_SCREEN_ROTATION
+        prompt "QMSD Screen Rotation" 
+        default QMSD_SCREEN_ROTATION_0
+        config QMSD_SCREEN_ROTATION_0
+            bool "Rotate 0 Degree"
+        config QMSD_SCREEN_ROTATION_90
+            bool "Rotate 90 Degree"
+        config QMSD_SCREEN_ROTATION_180
+            bool "Rotate 180 Degree"
+        config QMSD_SCREEN_ROTATION_270
+            bool "Rotate 270 Degree"
+    endchoice
+
+    config QMSD_BOARD_TOUCH_EN
+        bool "Enable Touch Initialization"
+        default y
+
+    menu "QMSD Touch Config"
+        depends on QMSD_BOARD_TOUCH_EN
+        config QMSD_TOUCH_I2C_FREQ
+            int "Touch i2c driver speed"
+            default 400000
+        config QMSD_TOUCH_THREAD_EN
+            bool "Touch read in thread"
+            default y
+        config QMSD_TOUCH_THREAD_PRIORITY
+            int "Touch read thread priority"
+            default 5
+        config QMSD_TOUCH_THREAD_CORE
+            int "Touch read thread core"
+            default 0
+    endmenu
+
+    config QMSD_BOARD_GUI_EN
+        bool "Enable Gui initialization"
+        default y
+
+    menu "QMSD Gui Config"
+        depends on QMSD_BOARD_GUI_EN
+        config QMSD_GUI_DOUBLE_BUFFER
+            bool "Gui enable double buffer"
+            default y
+        config QMSD_GUI_BUFFER_IN_PSRAM
+            bool "Gui buffers in psram"
+            default y
+        config QMSD_GUI_BUFFER_SIZE
+            int "Gui buffer size, 0 refers to the full screen buffer"
+            default 0
+        config QMSD_GUI_REFRESH_THREAD_EN
+            bool "Gui enable refresh in thread"
+            default y
+        config QMSD_GUI_REFRESH_THREAD_PRIORITY
+            depends on QMSD_GUI_REFRESH_THREAD_EN
+            int "Gui refresh thread priority"
+            default 5
+        config QMSD_GUI_REFRESH_THREAD_CORE
+            depends on QMSD_GUI_REFRESH_THREAD_EN
+            int "Gui refresh thread core"
+            default 0
+
+        config QMSD_GUI_UPDATE_THREAD_EN
+            bool "Gui enable update thread"
+            default y
+        config QMSD_GUI_UPDATE_THREAD_PRIORITY
+            depends on QMSD_GUI_UPDATE_THREAD_EN
+            int "Gui update thread priority"
+            default 5
+        config QMSD_GUI_UPDATE_THREAD_CORE
+            depends on QMSD_GUI_UPDATE_THREAD_EN
+            int "Gui update thread core"
+            default 0
+    endmenu
+
+    menu "IDF-5.0 Adaptation"
+        config I2S_SUPPRESS_DEPRECATE_WARN
+            bool "I2S disable i2s.h deprecate warn"
+            default y
+    endmenu
+
+endmenu
+ 
