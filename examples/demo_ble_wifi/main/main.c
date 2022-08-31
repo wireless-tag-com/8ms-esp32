@@ -69,9 +69,6 @@ static int __qmsd_nb_func(struct qmsd_notifier_block *nb, unsigned int action, v
     } else if (action == QMSD_MQTT_EVENT_DATA) {
         esp_mqtt_event_handle_t event = data;
         ESP_LOGI(TAG, "mqtt: %s/%s/%d", event->topic, event->data, event->data_len);
-    } else if (action == QMSD_SYSTEM_OTA_STATUS) {
-        struct qmsd_ota_status *ota_status = data;
-        ESP_LOGI(TAG, "ota status %d", ota_status->status);
     } else if (action == QMSD_SYSTEM_OTA_OK) {
         ESP_LOGI(TAG, "ota ok\n");
     } else if (action == QMSD_SNTP_OK) {
