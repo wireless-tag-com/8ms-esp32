@@ -27,6 +27,7 @@
 #include "qmsd_version.h"
 #include "qmsd_mod.h"
 #include "qmsd_api.h"
+#include "sd.h"
 
 #include "mqtt.h"
 
@@ -106,7 +107,7 @@ void app_main(void)
     qmsd_set_init_cb(qmsd_ui_init_cb);
 
     qmsd_test_init();
-
+    sd_card_init();
     qmsd_gui_init(0, DIR_INPUT);
     qmsd_control_init();
 }

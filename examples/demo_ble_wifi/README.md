@@ -6,7 +6,8 @@
 2. BLE GATTS
 3. MQTT
 4. NTP
-4. OTA
+5. OTA
+6. SD卡
 
 # 安装机型库
 
@@ -52,26 +53,5 @@ ota URL
 
 将从URL下载固件进行OTA升级
 
-
-# 8ms
-通过串口输入如下命令：
-```
-8ms json_str
-```
-
-例如：
-1. 跳转到screen_test
-
-```
-8ms {"wid":"screen_test","cmd":"set_status","attr":{"action":"switch"}}
-```
-
-2. 跳转到screen_main
-
-```
-8ms {"wid":"screen_test","cmd":"set_status","attr":{"action":"switch"}}
-```
-
-具体文档请参考：https://doc.8ms.xyz/docs/gui/gui-1d5fb15kvfcoq
 
 
