@@ -2,10 +2,7 @@
 
 qmsd ESP32 project
 
-# prepare ESP32 v4.4.1 SDK
-
-please refr to https://gitee.com/qiming-zhixian/esp-idf
-Or just use docker we provide: docker pull shukewt/qmsd_idf_4_4
+# prepare ESP32 v5.0 SDK
 
 # build project
 

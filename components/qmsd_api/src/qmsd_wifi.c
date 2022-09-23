@@ -5,6 +5,7 @@
 #include "esp_system.h"
 #include "esp_event.h"
 #include "esp_log.h"
+#include "esp_timer.h"
 #include "lwip/err.h"
 #include "lwip/sys.h"
 #include "lwip/sockets.h"
@@ -145,37 +146,35 @@ static void __qmsd_event_handler(void *arg, esp_event_base_t event_base,
                 ESP_LOGW(TAG, "disconnect to the AP %d", reason);
             }
         }
+
+        ESP_LOGW(TAG, "disconnect to the AP");
+        qmsd_notifier_call_nolock(QMSD_WIFI_STA_DISCONNECT, event_data);
+        xEventGroupClearBits(qmsd_wifi_event_group, WIFI_CONNECTED_BIT);
+        xEventGroupSetBits(qmsd_wifi_event_group, WIFI_FAIL_BIT);
+        if (retry_num < QMSD_WIFI_CONNECT_RETRY)
+        {
+            esp_wifi_connect();
+            retry_num++;
+            ESP_LOGI(TAG, "retry to connect to the AP");
+        }
         else
         {
-            ESP_LOGW(TAG, "disconnect to the AP");
+            retry_num = 0;
+            if (wifi_connect_timer != NULL)
+            {
+                esp_timer_stop(wifi_connect_timer);
+                esp_timer_delete(wifi_connect_timer);
+                wifi_connect_timer = NULL;
+            }
+            const esp_timer_create_args_t oneshot_timer_args = {
+                .callback = &__wifi_timer_callback,
+                .name = "wifi retry connect",
+            };
+            esp_timer_create(&oneshot_timer_args, &wifi_connect_timer);
+            esp_timer_start_once(wifi_connect_timer, 8000000);
+            ESP_LOGI(TAG, "retry connect to the AP after 8s");
             qmsd_notifier_call_nolock(QMSD_WIFI_STA_DISCONNECT, event_data);
-            xEventGroupClearBits(qmsd_wifi_event_group, WIFI_CONNECTED_BIT);
             xEventGroupSetBits(qmsd_wifi_event_group, WIFI_FAIL_BIT);
-            if (retry_num < QMSD_WIFI_CONNECT_RETRY)
-            {
-                esp_wifi_connect();
-                retry_num++;
-                ESP_LOGI(TAG, "retry to connect to the AP");
-            }
-            else
-            {
-                retry_num = 0;
-                if (wifi_connect_timer != NULL)
-                {
-                    esp_timer_stop(wifi_connect_timer);
-                    esp_timer_delete(wifi_connect_timer);
-                    wifi_connect_timer = NULL;
-                }
-                const esp_timer_create_args_t oneshot_timer_args = {
-                    .callback = &__wifi_timer_callback,
-                    .name = "wifi retry connect",
-                };
-                esp_timer_create(&oneshot_timer_args, &wifi_connect_timer);
-                esp_timer_start_once(wifi_connect_timer, 8000000);
-                ESP_LOGI(TAG, "retry connect to the AP after 8s");
-                qmsd_notifier_call_nolock(QMSD_WIFI_STA_DISCONNECT, event_data);
-                xEventGroupSetBits(qmsd_wifi_event_group, WIFI_FAIL_BIT);
-            }
         }
     }
     else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP)
@@ -270,14 +269,10 @@ static void __qmsd_event_handler(void *arg, esp_event_base_t event_base,
     else if (event_id == WIFI_EVENT_AP_STACONNECTED)
     {
         wifi_event_ap_staconnected_t *event = (wifi_event_ap_staconnected_t *)event_data;
-        ESP_LOGI(TAG, "station " MACSTR " join, AID=%d",
-                 MAC2STR(event->mac), event->aid);
     }
     else if (event_id == WIFI_EVENT_AP_STADISCONNECTED)
     {
         wifi_event_ap_stadisconnected_t *event = (wifi_event_ap_stadisconnected_t *)event_data;
-        ESP_LOGI(TAG, "station " MACSTR " leave, AID=%d",
-                 MAC2STR(event->mac), event->aid);
     }
 }
 
@@ -523,7 +518,6 @@ static esp_err_t __qmsd_wifi_power_on_connect()
     
             if (__qmsd_get_wifi_config(buf, len) == ESP_OK) {
                 wifi_config = (wifi_config_t *)buf;
-                printf("coonect\n");
                 esp_wifi_set_config(WIFI_IF_STA, wifi_config);
                 __qmsd_wifi_connect();
             }

@@ -5,3 +5,5 @@ idf_component_register(SRCS ${SOURCES}
                        REQUIRES lvgl REQUIRES qmsd_init
                        )
 
+target_compile_options(${COMPONENT_LIB} PRIVATE "-Wno-format")
+

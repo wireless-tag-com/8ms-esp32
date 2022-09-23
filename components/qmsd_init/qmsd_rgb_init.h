@@ -13,7 +13,7 @@ extern "C" {
 
 #if SOC_LCD_RGB_SUPPORTED
 
-void qmsd_rgb_init(qmsd_lcd_rgb_panel_config_t *panel_config);
+void qmsd_rgb_init(esp_lcd_rgb_panel_config_t *panel_config);
 
 #endif
 

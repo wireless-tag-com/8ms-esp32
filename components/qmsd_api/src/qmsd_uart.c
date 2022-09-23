@@ -78,7 +78,7 @@ static void __qmsd_uart_event_task(void *pvParameters)
     }
 
 	for (;;) {
-		if (xQueueReceive(desc->queue, (void *)&event, (portTickType)portMAX_DELAY)) {
+		if (xQueueReceive(desc->queue, (void *)&event, (TickType_t)portMAX_DELAY)) {
 			bzero(desc->rx_buf, desc->rx_size);
 			switch(event.type) {
 			case UART_DATA:

@@ -41,7 +41,9 @@ enum
     QMSD_SYSTEM_OTA_FAIL = 3001
 };
 int qmsd_ota_start(const char *url);
+int qmsd_ota_low_start(const char *url);
 void qmsd_ota_stop(void);
+void qmsd_ota_low_stop(void);
 void qmsd_ota_set_pem(char *pem);
 int qmsd_http_ota_status(void);
 

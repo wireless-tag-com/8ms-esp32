@@ -49,6 +49,8 @@ static esp_err_t __http_event_handler(esp_http_client_event_t *evt)
         qmsd_notifier_call_nolock(QMSD_HTTP_DIS, NULL);
         ESP_LOGI(TAG, "HTTP_EVENT_DISCONNECTED");
         break;
+    case HTTP_EVENT_REDIRECT:
+        break;
     }
 
     return ESP_OK;

@@ -43,6 +43,8 @@ static esp_err_t __qmsd_http_event_handler(esp_http_client_event_t *evt)
     case HTTP_EVENT_DISCONNECTED:
         ESP_LOGD(TAG, "HTTP_EVENT_DISCONNECTED");
         break;
+    case HTTP_EVENT_REDIRECT:
+        break;
     }
     return ESP_OK;
 }
@@ -133,6 +135,120 @@ int qmsd_ota_start(const char *url)
     }
 
     return 0;
+}
+
+#define HTTP_READ_SIZE      (1460)
+#define OTA_WRITE_SIZE      (10)
+
+static char http_read_buf[HTTP_READ_SIZE];
+
+void __qmsd_ota_low_task(void *pvParameter)
+{
+    const char *url = (const char*)pvParameter;
+    esp_err_t err = ESP_FAIL;
+    int ret;
+    const esp_partition_t *app_partition = esp_ota_get_running_partition();
+    const esp_partition_t *ota_partition = esp_ota_get_next_update_partition(NULL);
+    ESP_LOGI(TAG, "partition: cur-(%s), ota-(%s) %s", app_partition->label, ota_partition->label, url);
+
+    esp_http_client_config_t client_config = {
+        .url = url,
+        .timeout_ms = 5000,
+        .cert_pem = NULL,
+        .keep_alive_count = true,
+    };
+
+    esp_http_client_handle_t client_handle = esp_http_client_init(&client_config);
+    if (!client_handle) {
+        ESP_LOGE(TAG, "http client failed");
+        vTaskDelete(NULL);
+        return;
+    }
+
+    err = esp_http_client_open(client_handle, 0);
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to open HTTP connection: %s", esp_err_to_name(err));
+        return;
+    }
+    ret = esp_http_client_fetch_headers(client_handle);
+    if (ret < 0) {
+        goto end;
+    }
+
+    int data_read;
+    int data_read_sum = 0;
+    bool ota_running = false;
+    esp_ota_handle_t ota_handle;
+    int ota_write_amount = HTTP_READ_SIZE / OTA_WRITE_SIZE;
+    int ota_write_rest = HTTP_READ_SIZE % OTA_WRITE_SIZE;
+    ESP_LOGI(TAG, "OTA write amount & rest: %d, %d", ota_write_amount, ota_write_rest);
+    void *write_buf;
+    for (;;) {
+        data_read = esp_http_client_read(client_handle, http_read_buf, HTTP_READ_SIZE);
+        if (data_read > 0) {
+            if (!ota_running) {
+                ota_running = true;
+                if (data_read > sizeof(esp_image_header_t) + sizeof(esp_image_segment_header_t) + sizeof(esp_app_desc_t)) {
+                    const esp_app_desc_t *app_ota = (esp_app_desc_t *)(http_read_buf + sizeof(esp_image_header_t) + sizeof(esp_image_segment_header_t));
+                    const esp_app_desc_t *app_cur = esp_app_get_description();
+                    ESP_LOGI(TAG, "app version: cur-(%s), ota-(%s)", app_cur->version, app_ota->version);
+                    ESP_ERROR_CHECK(esp_ota_begin(ota_partition, OTA_WITH_SEQUENTIAL_WRITES, &ota_handle));
+                    vTaskDelay(pdMS_TO_TICKS(500));
+                }
+                else {
+                    ESP_LOGE(TAG, "http read size samller than image header");
+                    goto end;
+                }
+            }
+            write_buf = http_read_buf;
+            for (int i = 0; i < ota_write_amount; i++) {
+                ESP_ERROR_CHECK(esp_ota_write(ota_handle, write_buf, OTA_WRITE_SIZE));
+                write_buf += OTA_WRITE_SIZE;
+            }
+            if (ota_write_rest) {
+                ESP_ERROR_CHECK(esp_ota_write(ota_handle, write_buf, ota_write_rest));
+            }
+            data_read_sum += data_read;
+        }
+        else if (data_read == 0) {
+            ESP_LOGI(TAG, "http read bytes: %d(%dK)", data_read_sum, data_read_sum / 1024);
+            break;
+        }
+        else {
+            ESP_LOGE(TAG, "http read error");
+            abort();
+        }
+    }
+    /* Slow pclk to prevent dispaly from flickering */
+    vTaskDelay(pdMS_TO_TICKS(100));
+    ESP_ERROR_CHECK(esp_ota_end(ota_handle));
+    esp_ota_set_boot_partition(ota_partition);
+    esp_restart();
+
+end:
+    esp_http_client_close(client_handle);
+    esp_http_client_cleanup(client_handle);
+    vTaskDelete(NULL);
+}
+
+int qmsd_ota_low_start(const char *url)
+{
+    if (g_http_ota_handle) {
+        vTaskDelete(g_http_ota_handle);
+    }
+
+    if (xTaskCreate(&__qmsd_ota_low_task, "qmsd_ota_task", 8192, (void *)url, 5, &g_http_ota_handle) != pdPASS) {
+        return -1;
+    }
+
+    return 0;
+}
+
+void qmsd_ota_low_stop(void)
+{
+    if (g_http_ota_handle) {
+        vTaskDelete(g_http_ota_handle);
+    }
 }
 
 void qmsd_ota_stop(void)
