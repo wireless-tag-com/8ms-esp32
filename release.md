@@ -1,6 +1,11 @@
 # V2.3
 ## 新特性
-支持ESP-IDF 5.0  
+
+1.升级IDF版本到5.0，*[获取地址](https://gitee.com/qiming-zhixian/esp-idf/tree/release%2Fv5.0/)*
+
+2.支持OCT PSRAM 120M CLK，并打开ECC校验，支持高温
+
+3.解决RGB屏幕，OTA时屏幕闪动问题
 
 # V2.2
 
