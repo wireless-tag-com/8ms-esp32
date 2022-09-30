@@ -17,7 +17,7 @@ extern "C" {
 #define LVGL_VERSION_MINOR 11
 #define LVGL_VERSION_PATCH 0
 #define LVGL_VERSION_INFO ""
-#define QMSD_LVGL_ADDON_VERSION "2.0" 
+#define QMSD_LVGL_ADDON_VERSION "2.2" 
 /*********************
  *      INCLUDES
  *********************/
