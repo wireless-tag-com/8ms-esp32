@@ -25,6 +25,8 @@ extern esp_err_t qmsd_storage_get_u8(const char *namespace, const char *key, uin
 extern esp_err_t qmsd_storage_set_u8(const char *namespace, const char* key,uint8_t input);
 extern esp_err_t qmsd_storage_set_blob(const char *name, const char *key, void *data, size_t length);
 extern esp_err_t qmsd_storage_get_blob(const char *name, const char *key, void *data, size_t length);
+extern esp_err_t qmsd_storage_get_str(const char*namespace, const char* key,char *output, size_t size);
+extern esp_err_t qmsd_storage_set_str(const char*namespace, const char* key,char* input);
 
 static esp_err_t __qmsd_wifi_connect(void);
 static const char *TAG = "QMSD_WIFI";
@@ -97,6 +99,91 @@ esp_err_t qmsd_wifi_get_scan_result(uint16_t *number, wifi_ap_record_t *ap_recor
     return err;
 }
 
+void qmsd_wifi_set_dhcpc(void)
+{
+     qmsd_storage_set_u8(QMSD_WIFI_NAME, QMSD_WIFI_PROTO, 0);
+}
+
+void qmsd_wifi_set_static_ip(const char *ip, const char *nm, const char *gw, const char *dns)
+{
+    qmsd_storage_set_u8(QMSD_WIFI_NAME, QMSD_WIFI_PROTO, 1);
+    qmsd_storage_set_str(QMSD_WIFI_NAME, QMSD_WIFI_IP, ip);
+    qmsd_storage_set_str(QMSD_WIFI_NAME, QMSD_WIFI_NETMASK, nm);
+    qmsd_storage_set_str(QMSD_WIFI_NAME, QMSD_WIFI_GATEWAY, gw);
+    qmsd_storage_set_str(QMSD_WIFI_NAME, QMSD_WIFI_DNS, dns);
+}
+
+static void __qmsd_set_static_ip(esp_netif_t *netif)
+{
+    uint8_t val;
+    esp_err_t err;
+    char ip_str[32] = {0};
+    char nm_str[32] = {0};
+    char gw_str[32] = {0};
+    char dns_str[32] = {0};
+    size_t size = 32;
+
+    err = qmsd_storage_get_u8(QMSD_WIFI_NAME, QMSD_WIFI_PROTO, &val);
+
+    if (err != ESP_OK) {
+        esp_netif_dhcpc_start(netif);
+        return;
+    }
+
+    if (val != 1) {
+        printf("dhcp\n");
+        esp_netif_dhcpc_start(netif);
+        return;
+    }
+
+    err = qmsd_storage_get_str(QMSD_WIFI_NAME, QMSD_WIFI_IP, ip_str, size);
+    if (err != ESP_OK) {
+        esp_netif_dhcpc_start(netif);
+        return;
+    }
+
+    err = qmsd_storage_get_str(QMSD_WIFI_NAME, QMSD_WIFI_NETMASK, nm_str, size);
+    if (err != ESP_OK) {
+        esp_netif_dhcpc_start(netif);
+        return;
+    }
+
+    err = qmsd_storage_get_str(QMSD_WIFI_NAME, QMSD_WIFI_GATEWAY, gw_str, size);
+    if (err != ESP_OK) {
+        esp_netif_dhcpc_start(netif);
+        return;
+    }
+    err = qmsd_storage_get_str(QMSD_WIFI_NAME, QMSD_WIFI_DNS, dns_str, size);
+    if (err != ESP_OK) {
+        esp_netif_dhcpc_start(netif);
+        return;
+    }
+
+    if (esp_netif_dhcpc_stop(netif) != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to stop dhcp client");
+        return;
+    }
+
+    esp_netif_ip_info_t ip;
+    esp_netif_dns_info_t dns;
+    memset(&ip, 0 , sizeof(esp_netif_ip_info_t));
+    memset(&dns, 0 , sizeof(esp_netif_dns_info_t));
+    ip.ip.addr = ipaddr_addr(ip_str);
+    ip.netmask.addr = ipaddr_addr(nm_str);
+    ip.gw.addr = ipaddr_addr(gw_str);
+    if (esp_netif_set_ip_info(netif, &ip) != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to set ip info");
+        return;
+    }
+
+    dns.ip.u_addr.ip4.addr = ipaddr_addr(dns_str);
+    dns.ip.type = IPADDR_TYPE_V4;
+    if (esp_netif_set_dns_info(netif, ESP_NETIF_DNS_MAIN, &dns)  != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to set dns info");
+        return;
+    }
+}
+
 static void __qmsd_event_handler(void *arg, esp_event_base_t event_base,
                                  int32_t event_id, void *event_data)
 {
@@ -128,6 +215,7 @@ static void __qmsd_event_handler(void *arg, esp_event_base_t event_base,
                 qmsd_notifier_call_nolock(QMSD_WIFI_STA_DISCONNECT, event_data);
                 xEventGroupSetBits(qmsd_wifi_event_group, WIFI_FAIL_BIT);
                 ESP_LOGW(TAG, "connect to the AP fail");
+                esp_wifi_stop();
             }
         }
         else if (wifi_state == QMSD_WIFI_GOT_IP)
@@ -140,43 +228,26 @@ static void __qmsd_event_handler(void *arg, esp_event_base_t event_base,
             }
             else
             {
+                retry_num = 0;
                 qmsd_notifier_call_nolock(QMSD_WIFI_STA_DISCONNECT, event_data);
                 xEventGroupSetBits(qmsd_wifi_event_group, WIFI_FAIL_BIT);
                 ESP_LOGW(TAG, "disconnect to the AP %d", reason);
             }
         }
-        else
-        {
-            ESP_LOGW(TAG, "disconnect to the AP");
-            qmsd_notifier_call_nolock(QMSD_WIFI_STA_DISCONNECT, event_data);
-            xEventGroupClearBits(qmsd_wifi_event_group, WIFI_CONNECTED_BIT);
-            xEventGroupSetBits(qmsd_wifi_event_group, WIFI_FAIL_BIT);
-            if (retry_num < QMSD_WIFI_CONNECT_RETRY)
-            {
-                esp_wifi_connect();
-                retry_num++;
-                ESP_LOGI(TAG, "retry to connect to the AP");
-            }
-            else
-            {
-                retry_num = 0;
-                if (wifi_connect_timer != NULL)
-                {
-                    esp_timer_stop(wifi_connect_timer);
-                    esp_timer_delete(wifi_connect_timer);
-                    wifi_connect_timer = NULL;
-                }
-                const esp_timer_create_args_t oneshot_timer_args = {
-                    .callback = &__wifi_timer_callback,
-                    .name = "wifi retry connect",
-                };
-                esp_timer_create(&oneshot_timer_args, &wifi_connect_timer);
-                esp_timer_start_once(wifi_connect_timer, 8000000);
-                ESP_LOGI(TAG, "retry connect to the AP after 8s");
-                qmsd_notifier_call_nolock(QMSD_WIFI_STA_DISCONNECT, event_data);
-                xEventGroupSetBits(qmsd_wifi_event_group, WIFI_FAIL_BIT);
-            }
+
+        ESP_LOGW(TAG, "disconnect to the AP");
+        if (wifi_connect_timer == NULL) {
+            const esp_timer_create_args_t oneshot_timer_args = {
+                .callback = &__wifi_timer_callback,
+                .name = "wifi retry connect",
+            };
+            esp_timer_create(&oneshot_timer_args, &wifi_connect_timer);
         }
+
+        esp_timer_start_once(wifi_connect_timer, 10000000);
+        ESP_LOGI(TAG, "retry connect to the AP after 10s");
+        xEventGroupClearBits(qmsd_wifi_event_group, WIFI_CONNECTED_BIT);
+        xEventGroupSetBits(qmsd_wifi_event_group, WIFI_FAIL_BIT);
     }
     else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP)
     {
@@ -197,6 +268,9 @@ static void __qmsd_event_handler(void *arg, esp_event_base_t event_base,
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_SCAN_DONE)
     {
         wifi_event_sta_scan_done_t *event = (wifi_event_sta_scan_done_t *)event_data;
+        char buf[QMSD_WIFI_CONFIG_LEN] = {0};
+        size_t len = QMSD_WIFI_CONFIG_LEN;
+
         if (event->status == 0)
         {
             ESP_LOGI(TAG, "wifi scan number %d", event->number);
@@ -220,10 +294,18 @@ static void __qmsd_event_handler(void *arg, esp_event_base_t event_base,
                     ESP_LOGI(TAG, "wifi scan no memory for scan result");
                 }
             }
+            esp_wifi_scan_stop();
+            if (__qmsd_get_wifi_config(buf, len) != ESP_OK) {
+                esp_wifi_stop();
+            }
         }
         else
         {
             ESP_LOGW(TAG, "scan not found ");
+            esp_wifi_scan_stop();
+            if (__qmsd_get_wifi_config(buf, len) != ESP_OK) {
+                esp_wifi_stop();
+            }
             qmsd_notifier_call_nolock(QMSD_WIFI_SCAN_DONE, NULL);
         }
     }
@@ -385,11 +467,10 @@ esp_err_t qmsd_wifi_disconnect(void)
 static esp_err_t __qmsd_wifi_connect(void)
 {
     esp_err_t err = ESP_FAIL;
-    if (wifi_state == QMSD_WIFI_GOT_IP)
-    {
-        err = qmsd_wifi_disconnect();
-    }
 
+    qmsd_wifi_disconnect();
+    esp_wifi_stop();
+    esp_wifi_start();
     wifi_state = QMSD_WIFI_CONNECTING;
     err = esp_wifi_connect();
     if (err != ESP_OK)
@@ -458,8 +539,6 @@ esp_err_t qmsd_wifi_sta_config(const char *ssid, const char *password, const cha
     wifi_config_t *wifi_config;
     char buf[QMSD_WIFI_CONFIG_LEN] = {0};
 
-    esp_wifi_set_mode(WIFI_MODE_STA);
-
     wifi_config = (wifi_config_t *)buf;
     
     if (bssid != NULL)
@@ -467,6 +546,7 @@ esp_err_t qmsd_wifi_sta_config(const char *ssid, const char *password, const cha
         wifi_config->sta.bssid_set = true;
         memcpy(wifi_config->sta.bssid, bssid, sizeof(wifi_config->sta.bssid));
     }
+    esp_wifi_set_mode(WIFI_MODE_STA);
     memcpy(wifi_config->sta.ssid, ssid, strlen(ssid));
     memcpy(wifi_config->sta.password, password, strlen(password));
     err = esp_wifi_set_config(WIFI_IF_STA, wifi_config);
@@ -523,7 +603,6 @@ static esp_err_t __qmsd_wifi_power_on_connect()
     
             if (__qmsd_get_wifi_config(buf, len) == ESP_OK) {
                 wifi_config = (wifi_config_t *)buf;
-                printf("coonect\n");
                 esp_wifi_set_config(WIFI_IF_STA, wifi_config);
                 __qmsd_wifi_connect();
             }
@@ -602,10 +681,6 @@ esp_err_t qmsd_wifi_init(bool auto_connect)
                                                         &__qmsd_event_handler,
                                                         NULL,
                                                         &instance_any_sc));
-
-    esp_wifi_set_ps(WIFI_PS_NONE);
-
-    ESP_ERROR_CHECK(esp_wifi_start());
 
     if (auto_connect) {
         err = __qmsd_wifi_power_on_connect();
