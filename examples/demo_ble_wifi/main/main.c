@@ -107,7 +107,9 @@ void app_main(void)
     qmsd_set_init_cb(qmsd_ui_init_cb);
 
     qmsd_test_init();
+#ifdef CONFIG_ZX3D50CE02S_USRC_4832
     sd_card_init();
+#endif
     qmsd_gui_init(0, DIR_INPUT);
     qmsd_control_init();
 }
