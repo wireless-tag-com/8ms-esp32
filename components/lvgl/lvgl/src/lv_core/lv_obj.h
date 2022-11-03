@@ -1572,11 +1572,40 @@ lv_obj_t* qmsd_search_widget(const char *id);
  */
 lv_obj_t* qmsd_search_screen(const char *id);
 
+/**
+ * @brief Set internal id for lvgl obj created
+ * 
+ * @param obj obj to be set
+ * @param id string id
+ */
 void qmsd_obj_set_id(lv_obj_t* obj,const char *id);
 
+/**
+ * @brief init screen list
+ * 
+ * @param max max screen amount
+ */
 void qmsd_screen_list_init(int max);
+
+/**
+ * @brief regist screen with id into screen list
+ * 
+ * @param obj pointer to screen obj
+ * @param id ID to be set for screen list
+ */
 void qmsd_screen_register(lv_obj_t* obj,const char* id);
+
+/**
+ * @brief remove screen from screen list
+ * 
+ * @param id screen to be removed
+ */
 void qmsd_screen_remove(const char *id);
+
+/**
+ * @brief print all screen registed
+ * 
+ */
 void qmsd_screen_print();
 /**********************
  *      MACROS

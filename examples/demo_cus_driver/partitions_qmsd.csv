@@ -1,0 +1,9 @@
+# Name,   Type, SubType, Offset,  Size, Flags
+# Note: if you have increased the bootloader size, make sure to update the offsets to avoid overlap,,,,
+nvs,      data, nvs,     ,        0x5000,
+qmsd_ui_data,     data, nvs,     ,        0x1000,
+phy_init, data, phy,     ,        0x1000,
+qmsd_storage,     data, nvs,     ,        0x8000,
+qmsd_factory,     data, nvs,     ,        0x8000,
+qmsd_lang,     data, nvs,     ,   0x8000,
+factory,  app,  factory, ,        0x3cf000,
