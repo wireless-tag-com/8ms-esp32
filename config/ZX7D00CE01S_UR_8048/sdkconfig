@@ -2063,7 +2063,7 @@ CONFIG_LVGL_THEME_DEFAULT_FLAG_LIGHT=y
 #
 # Memory manager settings
 #
-CONFIG_LVGL_MEM_SIZE=32
+CONFIG_LVGL_MEM_SIZE=1024
 # end of Memory manager settings
 
 #
