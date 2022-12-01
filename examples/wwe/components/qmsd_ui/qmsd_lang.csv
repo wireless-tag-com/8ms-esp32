@@ -1,0 +1,27 @@
+# Sample csv file
+key,type,encoding,value
+zh_cn,namespace,,
+label_main_time,data,string,10：58
+label_main_date,data,string,星期三  8月26日
+label_63b0,data,string,日间模式
+label_tile_b1,data,string,客厅
+label_tile_b2,data,string,走廊
+label_st_b1,data,string,关闭
+label_st_b2,data,string,关闭
+label_tile_b3,data,string,卧室
+label_st_b3,data,string,关闭
+label_tile_b4,data,string,厨房
+label_st_b4,data,string,关闭
+label_d51e,data,string,窗帘
+label_0bb8,data,string,晴  21℃
+label_2984,data,string,设置
+list_86ba_0,data,string,WIFI
+list_86ba_1,data,string,灯光设置
+list_86ba_2,data,string,主题设置
+list_86ba_3,data,string,语音助手
+label_0c49,data,string,WIFI
+label_net,data,string,等待配网
+label_226a,data,string,时尚黑
+label_a4ee,data,string,科技蓝
+label_e877,data,string,活力橙
+label_adfc,data,string,主题设置

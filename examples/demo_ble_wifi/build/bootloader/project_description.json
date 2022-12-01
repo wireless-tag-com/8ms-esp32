@@ -1,0 +1,21 @@
+{
+    "project_name":       "bootloader",
+    "project_path":       "/Users/lengjun/gitee/esp-idf/components/bootloader/subproject",
+    "build_dir":          "/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/bootloader",
+    "config_file":        "/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/sdkconfig",
+    "config_defaults":    "",
+    "app_elf":            "bootloader.elf",
+    "app_bin":            "bootloader.bin",
+    "git_revision":       "57835bbf-dirty",
+    "target":             "esp32s3",
+    "rev":                "",
+    "phy_data_partition": "",
+    "monitor_baud" :      "115200",
+    "monitor_toolprefix": "xtensa-esp32s3-elf-",
+    "config_environment" : {
+        "COMPONENT_KCONFIGS" : "/Users/lengjun/gitee/esp-idf/components/efuse/Kconfig;/Users/lengjun/gitee/esp-idf/components/esp32s3/Kconfig;/Users/lengjun/gitee/esp-idf/components/esp_common/Kconfig;/Users/lengjun/gitee/esp-idf/components/esp_hw_support/Kconfig;/Users/lengjun/gitee/esp-idf/components/esp_system/Kconfig;/Users/lengjun/gitee/esp-idf/components/freertos/Kconfig;/Users/lengjun/gitee/esp-idf/components/hal/Kconfig;/Users/lengjun/gitee/esp-idf/components/log/Kconfig;/Users/lengjun/gitee/esp-idf/components/newlib/Kconfig;/Users/lengjun/gitee/esp-idf/components/spi_flash/Kconfig",
+        "COMPONENT_KCONFIGS_PROJBUILD" : "/Users/lengjun/gitee/esp-idf/components/bootloader/Kconfig.projbuild;/Users/lengjun/gitee/esp-idf/components/esp_rom/Kconfig.projbuild;/Users/lengjun/gitee/esp-idf/components/esptool_py/Kconfig.projbuild;/Users/lengjun/gitee/esp-idf/components/partition_table/Kconfig.projbuild"
+    },
+    "build_components" : [ "bootloader", "bootloader_support", "efuse", "esp32s3", "esp_common", "esp_hw_support", "esp_rom", "esp_system", "esptool_py", "freertos", "hal", "log", "main", "micro-ecc", "newlib", "partition_table", "soc", "spi_flash", "xtensa", "" ],
+    "build_component_paths" : [ "/Users/lengjun/gitee/esp-idf/components/bootloader", "/Users/lengjun/gitee/esp-idf/components/bootloader_support", "/Users/lengjun/gitee/esp-idf/components/efuse", "/Users/lengjun/gitee/esp-idf/components/esp32s3", "/Users/lengjun/gitee/esp-idf/components/esp_common", "/Users/lengjun/gitee/esp-idf/components/esp_hw_support", "/Users/lengjun/gitee/esp-idf/components/esp_rom", "/Users/lengjun/gitee/esp-idf/components/esp_system", "/Users/lengjun/gitee/esp-idf/components/esptool_py", "/Users/lengjun/gitee/esp-idf/components/freertos", "/Users/lengjun/gitee/esp-idf/components/hal", "/Users/lengjun/gitee/esp-idf/components/log", "/Users/lengjun/gitee/esp-idf/components/bootloader/subproject/main", "/Users/lengjun/gitee/esp-idf/components/bootloader/subproject/components/micro-ecc", "/Users/lengjun/gitee/esp-idf/components/newlib", "/Users/lengjun/gitee/esp-idf/components/partition_table", "/Users/lengjun/gitee/esp-idf/components/soc", "/Users/lengjun/gitee/esp-idf/components/spi_flash", "/Users/lengjun/gitee/esp-idf/components/xtensa", "" ]
+}

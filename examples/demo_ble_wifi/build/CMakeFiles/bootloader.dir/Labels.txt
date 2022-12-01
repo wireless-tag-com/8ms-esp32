@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/CMakeFiles/bootloader
+/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/CMakeFiles/bootloader.rule
+/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/CMakeFiles/bootloader-complete.rule
+/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/Users/lengjun/esp/8ms-esp32/examples/demo_ble_wifi/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
