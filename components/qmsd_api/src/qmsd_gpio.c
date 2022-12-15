@@ -18,7 +18,7 @@ int qmsd_gpio_init(int pin, int dir, int pull_down_en, int pull_up_en)
         io_conf.mode = GPIO_MODE_INPUT;
     else
         io_conf.mode = GPIO_MODE_OUTPUT;
-    io_conf.pin_bit_mask = (1 << pin);
+    io_conf.pin_bit_mask = ((uint64_t)1 << pin);
     io_conf.pull_down_en = pull_down_en;
     io_conf.pull_up_en = pull_up_en;
     ret = gpio_config(&io_conf);

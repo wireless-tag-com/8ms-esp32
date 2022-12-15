@@ -1,8 +1,0 @@
-# Sample csv file
-key,type,encoding,value
-zh_cn,namespace,,
-main_button_1,data,string,主按钮
-test_button_1,data,string,测按钮
-en,namespace,,
-main_button_1,data,string,BTNM
-test_button_1,data,string,BTNT
