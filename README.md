@@ -40,5 +40,5 @@ Done
     已支持的SPI屏+TP：直接从menuconfig中配置屏幕、tp驱动，调试完成后利用save脚本保存到添加到型号
     已支持的8080屏：参考其他型号添加默认管教配置等，之后同样利用save脚本保存
 
-# SDK问题收集
+# 8ms相关SDK问题反馈
 https://8ms.xyz/supports?contact
