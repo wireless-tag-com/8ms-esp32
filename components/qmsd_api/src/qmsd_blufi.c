@@ -405,7 +405,7 @@ void qmsd_blufi_stop(void)
 
 }
 
-int qmsd_blufi_status(void)
+bool qmsd_blufi_status(void)
 {
     return 0;
 }

@@ -2,14 +2,13 @@
 
 qmsd ESP32 project
 
-# prepare ESP32 v4.4.1 SDK
+# prepare ESP32 v4.4.3 SDK
 
-please refr to https://docs.espressif.com/projects/esp-idf/en/release-v4.4/esp32/index.html
-Or just use docker we provide: docker push shukewt/esp-idf-4.3-release:tagname
+please refr to https://docs.espressif.com/projects/esp-idf/zh_CN/v4.4.3/esp32/get-started/index.html  
 
 # build project
 
-idf.py build  
+idf.py build
 
 # 载入标准品的预设配置
 Ubuntu需要指定bash或关闭dash
@@ -37,9 +36,10 @@ Set to 1-WT32_SC01_LANDSCAPE
 Done  
 
 # How to add new board
-1.在load.sh、save.sh中添加新型号  
-2.在components/lvgl_esp32_drivers/lvgl_tft/Kconfig中添加新型号  
-    已支持的SPI屏+TP：直接从menuconfig中配置屏幕、tp驱动，调试完成后利用save脚本保存到添加到型号  
-    已支持的8080屏：参考其他型号添加默认管教配置等，之后同样利用save脚本保存  
-# 8ms相关SDK问题反馈
-https://8ms.xyz/supports?contact
+1.在load.sh、save.sh中添加新型号
+2.在components/lvgl_esp32_drivers/lvgl_tft/Kconfig中添加新型号
+    已支持的SPI屏+TP：直接从menuconfig中配置屏幕、tp驱动，调试完成后利用save脚本保存到添加到型号
+    已支持的8080屏：参考其他型号添加默认管教配置等，之后同样利用save脚本保存
+
+# 8ms相关SDK问题反馈  
+https://8ms.xyz/supports?contact  
