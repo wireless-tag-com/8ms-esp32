@@ -298,17 +298,24 @@ static void __qmsd_smartconfig_task(void *parm)
     }
 }
 
+static bool g_qmsd_sc_status;
+
 void qmsd_wifi_sc_start(smartconfig_type_t type)
 {
+    if (g_qmsd_sc_status)
+        return;
+
     esp_wifi_set_mode(WIFI_MODE_STA);
     esp_wifi_stop();
     esp_wifi_start();
     xTaskCreate(__qmsd_smartconfig_task, "qmsd_smartconfig_task", 4096, (void *)type, 3, &sc_task_handle);
+    g_qmsd_sc_status = true;
 }
 
 void qmsd_wifi_sc_stop(void)
 {
     xEventGroupSetBits(qmsd_wifi_event_group, SARTCONFIG_DONE_BIT);
+    g_qmsd_sc_status = false;
 }
 
 esp_err_t qmsd_wifi_get_ip(wifi_interface_t interface, char *ip, char *gw, char *netmask)
@@ -592,7 +599,7 @@ esp_err_t qmsd_wifi_init(bool auto_connect)
                                                         NULL,
                                                         &instance_any_sc));
 
-    esp_wifi_set_ps(WIFI_PS_NONE);
+    esp_wifi_set_ps(WIFI_PS_MIN_MODEM);
 
     ESP_ERROR_CHECK(esp_wifi_start());
 
