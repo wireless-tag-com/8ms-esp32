@@ -407,6 +407,6 @@ void qmsd_blufi_stop(void)
 
 bool qmsd_blufi_status(void)
 {
-    return 0;
+    return false;
 }
 #endif /* CONFIG_BT_BLE_BLUFI_ENABLE */

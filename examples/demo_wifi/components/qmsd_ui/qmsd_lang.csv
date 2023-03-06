@@ -1,0 +1,7 @@
+# Sample csv file
+key,type,encoding,value
+zh_cn,namespace,,
+label_554e,data,string,wifi
+button_5cb9,data,string,BLUFI
+button_e490,data,string,SMARTCONFIG
+label_b6b4,data,string,IP

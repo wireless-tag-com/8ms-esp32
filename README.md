@@ -2,9 +2,9 @@
 
 qmsd ESP32 project
 
-# prepare ESP32 v4.4.3 SDK
+# prepare ESP32 v4.4.4 SDK
 
-please refr to https://docs.espressif.com/projects/esp-idf/zh_CN/v4.4.3/esp32/get-started/index.html  
+please refr to https://docs.espressif.com/projects/esp-idf/zh_CN/v4.4.4/esp32/get-started/index.html  
 
 # build project
 

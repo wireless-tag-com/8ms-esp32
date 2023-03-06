@@ -2,7 +2,7 @@
 
 ## 新特性
 
-1.升级至基于4.4.1的IDF版本，*[获取地址](https://gitee.com/qiming-zhixian/esp-idf)*  
+1.升级至基于4.4.4的IDF版本，*[获取地址](https://github.com/espressif/esp-idf.git)*  
 
 2.更新3.95寸屏幕驱动 
 
