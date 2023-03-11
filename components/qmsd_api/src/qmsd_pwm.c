@@ -55,7 +55,7 @@ int qmsd_pwm_set_freq(int timer_num, uint32_t freq_hz)
 
 int qmsd_pwm_set_duty(int channel, uint32_t duty)
 {
-    uint32_t s_duty = ((2 >> 13) - 1) * duty / 100;
+    uint32_t s_duty = ((1 << 13) - 1) * duty / 100;
 
     ledc_set_duty(LEDC_MODE, channel, s_duty);
     return ledc_update_duty(LEDC_MODE, channel);

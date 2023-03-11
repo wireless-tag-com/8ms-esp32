@@ -331,9 +331,9 @@ static void example_event_callback(esp_blufi_cb_event_t event, esp_blufi_cb_para
     }
 }
 
-static int g_qmsd_blufi_status = 0;
+static bool g_qmsd_blufi_status;
 
-int qmsd_blufi_status(void)
+bool qmsd_blufi_status(void)
 {
     return g_qmsd_blufi_status;
 }
@@ -341,6 +341,9 @@ int qmsd_blufi_status(void)
 void qmsd_blufi_start(void)
 {
     esp_err_t ret;
+    if (g_qmsd_blufi_status)
+        return;
+
     ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT,
                                                         ESP_EVENT_ANY_ID,
                                                         &wifi_event_handler,
@@ -375,20 +378,20 @@ void qmsd_blufi_start(void)
         return;
     }
 
-    g_qmsd_blufi_status = 1;
+    g_qmsd_blufi_status = true;
     BLUFI_INFO("BLUFI VERSION %04x\n", esp_blufi_get_version());
 }
 
 void qmsd_blufi_stop(void)
 {
-    if (g_qmsd_blufi_status == 1) {
+    if (g_qmsd_blufi_status) {
         esp_blufi_adv_stop();
         blufi_security_deinit();
         esp_bt_controller_disable();
         esp_bt_controller_deinit();
         esp_event_handler_instance_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, instance_any_wifi);
         esp_event_handler_instance_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, instance_got_ip);
-        g_qmsd_blufi_status = 0;
+        g_qmsd_blufi_status = false;
     }
 }
 #else
@@ -402,8 +405,8 @@ void qmsd_blufi_stop(void)
 
 }
 
-int qmsd_blufi_status(void)
+bool qmsd_blufi_status(void)
 {
-    return 0;
+    return false;
 }
 #endif /* CONFIG_BT_BLE_BLUFI_ENABLE */

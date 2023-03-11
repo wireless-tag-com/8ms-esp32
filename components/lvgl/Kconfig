@@ -569,7 +569,7 @@ menu "LVGL configuration"
 	config LVGL_MEM_SIZE
 	    int
 	    prompt "Size of the memory used by `lv_mem_alloc` in kilobytes (>= 2kB)"
-	    range 2 128
+	    range 2 1024
 	    default 32
     endmenu
 

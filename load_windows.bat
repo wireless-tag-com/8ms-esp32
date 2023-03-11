@@ -17,6 +17,7 @@ set boards[10]=ZX4D30NE01S_UR_4827
 set boards[11]=ZX4D60_AR_4896
 set boards[12]=ZX2D10GE01R_V_4848
 set boards[13]=ZX7D00CE01S_UR_8048
+set boards[14]=ZX7D00CE01S_V12_8048
 
 set components[0]=bus
 set components[1]=lvgl
