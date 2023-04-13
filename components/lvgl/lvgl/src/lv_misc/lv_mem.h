@@ -138,6 +138,10 @@ void _lv_mem_buf_release(void * p);
  */
 void _lv_mem_buf_free_all(void);
 
+void qmsd_lv_mem_size_set(uint32_t mem_size);
+
+uint32_t qmsd_lv_mem_size_get(void);
+
 //! @cond Doxygen_Suppress
 
 #if LV_MEMCPY_MEMSET_STD
