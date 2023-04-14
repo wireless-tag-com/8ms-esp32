@@ -23,6 +23,8 @@ typedef void (*qmsd_init_cb)(void);
 
 typedef void (*qmsd_board_init_cus)(qmsd_screen_rotation_t dir);
 
+typedef void (*qmsd_gui_loop_cb)(void);
+
 void qmsd_set_init_cb(qmsd_init_cb init_cb);
 void qmsd_set_board_init_cus(qmsd_board_init_cus init_cus);
 
@@ -36,6 +38,8 @@ typedef void (*qmsd_ui_event_cb)(const char *obj_name, lv_obj_t* obj,lv_event_t 
 void qmsd_set_ui_event_cb(qmsd_ui_event_cb init_cb);
 void qmsd_call_ui_event_cb(const char *obj_name, lv_obj_t* obj,lv_event_t event);
 lv_group_t *qmsd_create_group(void);
+void qmsd_gui_set_loop_cb(qmsd_gui_loop_cb l_cb);
+void qmsd_gui_set_task_size(uint32_t task_size);
 
 #ifdef __cplusplus
 }

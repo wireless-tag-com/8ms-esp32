@@ -79,10 +79,13 @@ target_model = model_path + '/target'
 if os.path.exists(target_model):
     shutil.rmtree(target_model)
 os.makedirs(target_model)
+# try:
 if wakenet_model != 'null':
     shutil.copytree(model_path + '/wakenet_model/' + wakenet_model, target_model+'/'+wakenet_model)
 if multinet_model != 'null':
     shutil.copytree(model_path + '/multinet_model/' + multinet_model, target_model+'/'+multinet_model)
+# except:
+#     pass
 
 # os.system("cp %s %s" % (wakenet_model+'/_MODEL_INFO_', target_model))
 

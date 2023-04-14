@@ -149,10 +149,11 @@ esp_err_t zx_es8388_start(es_module_t mode)
     }
     es_read_reg(ZX_ES8388_DACCONTROL21, &data);
     if (prev_data != data) {
-        res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CHIPPOWER, 0xF0);   //start state machine
+        // res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CHIPPOWER, 0xF0);   //start state machine
         // res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CONTROL1, 0x16);
         // res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CONTROL2, 0x50);
         res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CHIPPOWER, 0x00);   //start state machine
+        vTaskDelay(pdMS_TO_TICKS(50));
     }
     if (mode == ES_MODULE_ADC || mode == ES_MODULE_ADC_DAC || mode == ES_MODULE_LINE) {
         res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCPOWER, 0x00);   //power up adc and line in
@@ -199,7 +200,7 @@ esp_err_t zx_es8388_stop(es_module_t mode)
         res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_DACCONTROL21, 0x9C);  //disable mclk
 //        res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CONTROL1, 0x00);
 //        res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CONTROL2, 0x58);
-//        res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CHIPPOWER, 0xF3);  //stop state machine
+    //    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CHIPPOWER, 0xF3);  //stop state machine
     }
 
     return res;
@@ -240,16 +241,28 @@ esp_err_t zx_es8388_deinit(void)
 esp_err_t zx_es8388_init(audio_hal_codec_config_t *cfg)
 {
     int res = 0;
+#ifdef CONFIG_ESP_LYRAT_V4_3_BOARD
+    headphone_detect_init(get_headphone_detect_gpio());
+#endif
+
+    // reset all control port register
+    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CONTROL1, 0x86);
+    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CONTROL1, 0x16);
 
     res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_DACCONTROL3, 0x04);  // 0x04 mute/0x00 unmute&ramp;DAC unmute and  disabled digital volume control soft ramp
     /* Chip Control and Power Management */
-    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CONTROL2, 0x50);
-    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CHIPPOWER, 0x00); //normal all and power up all
+    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CONTROL2, 0x60);
+    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CHIPPOWER, 0xf3);
+    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CHIPPOWER, 0xf0);
 
-    // Disable the internal DLL to improve 8K sample rate
+    // Disable the internal DLL to improve 8K sample rate    
+    // res |= es_write_reg(ZX_ES8388_ADDR, 0x35, 0xA0);
+    // res |= es_write_reg(ZX_ES8388_ADDR, 0x37, 0xD0);
+    // res |= es_write_reg(ZX_ES8388_ADDR, 0x39, 0xD0);
     res |= es_write_reg(ZX_ES8388_ADDR, 0x35, 0xA0);
-    res |= es_write_reg(ZX_ES8388_ADDR, 0x37, 0xD0);
-    res |= es_write_reg(ZX_ES8388_ADDR, 0x39, 0xD0);
+    res |= es_write_reg(ZX_ES8388_ADDR, 0x37, 0xC0);
+    res |= es_write_reg(ZX_ES8388_ADDR, 0x39, 0xC0);
+    vTaskDelay(pdMS_TO_TICKS(1));
 
     res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_MASTERMODE, cfg->i2s_iface.mode); //CODEC IN I2S SLAVE MODE
 
@@ -276,7 +289,7 @@ esp_err_t zx_es8388_init(audio_hal_codec_config_t *cfg)
     res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_DACPOWER, tmp);  //0x3c Enable DAC and Enable Lout/Rout/1/2
     /* adc */
     res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCPOWER, 0xFF);
-    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCCONTROL1, 0x88); // MIC Left and Right channel PGA gain
+    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCCONTROL1, 0x44); // MIC Left and Right channel PGA gain
     tmp = 0;
     if (AUDIO_HAL_ADC_INPUT_LINE1 == cfg->adc_input) {
         tmp = ADC_INPUT_LINPUT1_RINPUT1;
@@ -290,13 +303,20 @@ esp_err_t zx_es8388_init(audio_hal_codec_config_t *cfg)
     res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCCONTROL3, 0x02);
     res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCCONTROL4, 0x0d); // Left/Right data, Left/Right justified mode, Bits length, I2S format
     res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCCONTROL5, 0x02);  //ADCFsMode,singel SPEED,RATIO=256
+    // res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCCONTROL6, 0x30);  
     res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCCONTROL6, 0x30 | 0x40);  
-    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCCONTROL10, 0X3F);  
+    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCCONTROL10, 0X3F);
+    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCCONTROL10, 0xC0 | (0b111 << 3) | (0b111));  
+
     //ALC for Microphone
     res |= zx_es8388_set_adc_dac_volume(ES_MODULE_ADC, 0, 0);      // 0db
     res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_ADCPOWER, 0x09); //Power on ADC, Enable LIN&RIN, Power off MICBIAS, set int1lp to low power mode
     /* enable zx_es8388 PA */
     // zx_es8388_pa_power(true);
+    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_CHIPPOWER, 0x00);   //start state machine
+    vTaskDelay(pdMS_TO_TICKS(50));
+    res |= es_write_reg(ZX_ES8388_ADDR, ZX_ES8388_DACPOWER, 0x3c);   //power up dac and line out
+    res |= zx_es8388_set_voice_mute(false);
     ESP_LOGI(ES_TAG, "init,out:%02x, in:%02x", cfg->dac_output, cfg->adc_input);
     return res;
 }

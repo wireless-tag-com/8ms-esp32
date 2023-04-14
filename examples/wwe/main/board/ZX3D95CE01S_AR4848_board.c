@@ -94,7 +94,6 @@ esp_err_t board_codec_init(void)
     ret = audio_hal->audio_codec_initialize(&audio_codec_cfg);
     ret |= audio_hal->audio_codec_config_iface(audio_codec_cfg.codec_mode, &audio_codec_cfg.i2s_iface);
     ret |= audio_hal->audio_codec_set_volume(AUDIO_HAL_VOL_DEFAULT);
-
     audio_hal->handle = audio_hal;
 
     g_audio_init = true;
@@ -117,6 +116,7 @@ esp_err_t board_i2s_init(void)
     i2s_config.use_apll = false;
     ret_val |= i2s_driver_install(BOARD_I2S_NUM, &i2s_config, 0, NULL);
     ret_val |= i2s_set_pin(BOARD_I2S_NUM, &pin_config);
+    ret_val |= i2s_zero_dma_buffer(BOARD_I2S_NUM);
     return ret_val;
 }
 
