@@ -31,10 +31,20 @@ static void qmsd_rs485_init(void)
             .rx_flow_ctrl_thresh = 0,
             .source_clk = UART_SCLK_APB,
         },
+#ifdef CONFIG_ZX3D50CE02S_USRC_4832
         .uart_tx_pin = 42,
         .uart_rx_pin = 1,
         .uart_rts_pin = 2,
         .uart_cts_pin = -1,
+#endif
+
+#ifdef CONFIG_ZX4D30NE01S_UR_4827
+        .uart_tx_pin = 0,
+        .uart_rx_pin = 39,
+        .uart_rts_pin = 38,
+        .uart_cts_pin = -1,
+#endif
+
         .uart_mode = UART_MODE_RS485_HALF_DUPLEX,
     };
     qmsd_uart_start(UART_NUM_1, &uconfig);
