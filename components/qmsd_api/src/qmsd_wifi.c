@@ -599,6 +599,7 @@ esp_err_t qmsd_wifi_init(bool auto_connect)
                                                         NULL,
                                                         &instance_any_sc));
 
+    esp_wifi_set_mode(WIFI_MODE_STA);
     esp_wifi_set_ps(WIFI_PS_MIN_MODEM);
 
     ESP_ERROR_CHECK(esp_wifi_start());
