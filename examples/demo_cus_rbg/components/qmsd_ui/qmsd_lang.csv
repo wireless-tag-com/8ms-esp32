@@ -1,0 +1,15 @@
+# Sample csv file
+key,type,encoding,value
+zh_cn,namespace,,
+label_main_left,data,string,Label
+label_main_rig,data,string,Label
+label_hu_left,data,string,Label
+label_hu_right,data,string,Label
+label_title_t,data,string,温度
+label_title_hu,data,string,湿度
+label_du,data,string,℃
+label_perc,data,string,%
+label_w_title,data,string,水箱
+label_w_title_d,data,string,预计工作时间：33小时
+label_f_title,data,string,滤芯
+label_f_title_d,data,string,上次更换：2023年4月15日
