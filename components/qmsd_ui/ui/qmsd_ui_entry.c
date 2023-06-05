@@ -42,32 +42,6 @@ void qmsd_ui_entry(void)
     qmsd_set_widget(qmsd_search_widget);
     qmsd_set_img(qmsd_get_img);
     qmsd_set_font(qmsd_get_font);
-    screen_main_build();
-    screen_test_build();
-
-    lv_scr_load(screen_main);
-    qmsd_send_event_to_chill(screen_main, NULL,QMSD_EVENT_WIDGET_REFRESH);
-    
-    lv_obj_t* test = qmsd_search_widget("screen_main/screen_main_button_1");
-    if (test)
-    {
-        printf("Found:%s  pointer:%p\n",test->qmsd_id,test);
-    }
-    test = qmsd_search_widget("screen_main/screen_main_label_1");
-    if (test)
-    {
-        printf("Found:%s  pointer:%p\n",test->qmsd_id,test);
-    }
-    test = qmsd_search_widget("screen_main/qr_1");
-    if (test)
-    {
-        printf("Found:%s  pointer:%p\n",test->qmsd_id,test);
-    }
-    test = qmsd_search_widget("screen_test_img_1");
-    if (test)
-    {
-        printf("Found:%s  pointer:%p\n",test->qmsd_id,test);
-    }
 }
 
 lv_img_src_t *qmsd_get_img(const char *w_name)

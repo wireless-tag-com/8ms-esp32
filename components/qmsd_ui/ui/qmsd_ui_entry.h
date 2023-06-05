@@ -15,22 +15,6 @@ LV_FONT_DECLARE(ali_font_16);
 LV_FONT_DECLARE(ali_font_58);
 LV_IMG_DECLARE(img1639365041009_png);
 
-extern lv_obj_t *screen_main;
-extern lv_obj_t* screen_main_button_1;
-extern lv_obj_t* screen_main_label_1;
-
-extern lv_obj_t *screen_test;
-extern lv_obj_t* screen_test_button_1;
-extern lv_obj_t* screen_test_img_1;
-
-extern lv_obj_t *screen_test2;
-extern lv_obj_t* screen_test2_button_1;
-
-int screen_main_build(void);
-void screen_main_delete(void);
-int screen_test_build(void);
-void screen_test_delete(void);
-
 void qmsd_ui_entry(void);
 lv_obj_t *qmsd_get_screen(const char *name);
 lv_obj_t *qmsd_get_widget(const char *w_name);
