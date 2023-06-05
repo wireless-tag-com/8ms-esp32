@@ -1,10 +1,8 @@
-#include <stdbool.h>
+#include "qmsd_ui_entry.h"
+#include "qmsd_gui_init.h"
+#include "qmsd_ui_api.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-#include"qmsd_gui_init.h"
-#include "qmsd_ui_entry.h"
 
 /*
  * ui api
@@ -26,3 +24,4 @@ void screen_test_show(void)
     }
     qmsd_gui_unlock();
 }
+
