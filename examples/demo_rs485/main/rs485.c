@@ -11,7 +11,7 @@
 #include "driver/uart.h"
 #include "qmsd_api.h"
 #include "qmsd_ui_entry.h"
-#include "uiapi.h"
+#include "qmsd_ui_api.h"
 
 extern void qmsd_tp_test_register(void);
 extern void qmsd_lcd_test_register(void);
