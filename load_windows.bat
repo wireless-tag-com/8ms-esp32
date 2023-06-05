@@ -19,12 +19,10 @@ set boards[12]=ZX2D10GE01R_V_4848
 set boards[13]=ZX7D00CE01S_UR_8048
 set boards[14]=ZX7D00CE01S_V12_8048
 
-set components[0]=bus
-set components[1]=lvgl
-set components[2]=qmsd_init
-set components[3]=screen
-set components[4]=touch_panel
-set components[5]=qmsd_mod
+set components[0]=lvgl
+set components[1]=qmsd_init
+set components[2]=screen
+set components[3]=touch_panel
 
 echo "please select board(input 0-13)"
 :input

@@ -19,7 +19,7 @@ board_name=(
     ZX7D00CE01S_UR_8048
     ZX7D00CE01S_V12_8048
     )
-component_name=(bus lvgl qmsd_init screen touch_panel qmsd_mod)
+component_name=(lvgl qmsd_init screen touch_panel)
 for((i=0;i<${#board_name[@]};i++))
 do
 echo $[i+1]"): "${board_name[i]}
