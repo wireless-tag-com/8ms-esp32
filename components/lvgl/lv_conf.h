@@ -250,11 +250,7 @@ typedef void * lv_fs_drv_user_data_t;
 #endif
 
 /*1: Add a `user_data` to drivers and objects*/
-#if defined CONFIG_LVGL_FEATURE_USE_USER_DATA
-    #define LV_USE_USER_DATA        1
-#else
-    #define LV_USE_USER_DATA        0
-#endif
+#define LV_USE_USER_DATA        1
 
 /*1: Show CPU usage and FPS count in the right bottom corner*/
 #if defined CONFIG_LVGL_FEATURE_USE_PERF_MONITOR
