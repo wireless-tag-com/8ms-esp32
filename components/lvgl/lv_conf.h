@@ -60,7 +60,7 @@
 
 /* Default display refresh period.
  * Can be changed in the display driver (`lv_disp_drv_t`).*/
-#define LV_DISP_DEF_REFR_PERIOD      30      /*[ms]*/
+#define LV_DISP_DEF_REFR_PERIOD      10      /*[ms]*/
 
 /* Dot Per Inch: used to initialize default sizes.
  * E.g. a button with width = LV_DPI / 2 -> half inch wide
@@ -130,7 +130,7 @@ typedef int16_t lv_coord_t;
  * Can be changed in the Input device driver (`lv_indev_drv_t`)*/
 
 /* Input device read period in milliseconds */
-#define LV_INDEV_DEF_READ_PERIOD          CONFIG_LVGL_INDEV_DEF_READ_PERIOD
+#define LV_INDEV_DEF_READ_PERIOD          20
 
 /* Drag threshold in pixels */
 #define LV_INDEV_DEF_DRAG_LIMIT           CONFIG_LVGL_INDEV_DEF_DRAG_LIMIT
@@ -249,7 +249,6 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h" */
 typedef void * lv_fs_drv_user_data_t;
 #endif
 
-/*1: Add a `user_data` to drivers and objects*/
 #define LV_USE_USER_DATA        1
 
 /*1: Show CPU usage and FPS count in the right bottom corner*/
