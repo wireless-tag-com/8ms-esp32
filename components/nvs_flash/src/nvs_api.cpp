@@ -13,6 +13,7 @@
 #include "esp_partition.h"
 #include <functional>
 #include "nvs_handle_simple.hpp"
+#include "nvs_memory_management.hpp"
 #include "esp_err.h"
 #include <esp_rom_crc.h>
 #include "nvs_internal.h"
@@ -22,7 +23,7 @@
 #include "esp_log.h"
 static const char* TAG = "nvs";
 
-class NVSHandleEntry : public intrusive_list_node<NVSHandleEntry> {
+class NVSHandleEntry : public intrusive_list_node<NVSHandleEntry>, public ExceptionlessAllocatable {
 public:
     NVSHandleEntry(nvs::NVSHandleSimple *handle, const char* part_name)
         : nvs_handle(handle),
@@ -269,13 +270,13 @@ static esp_err_t nvs_find_ns_handle(nvs_handle_t c_handle, NVSHandleSimple** han
     return ESP_OK;
 }
 
-extern "C" esp_err_t nvs_open_from_partition(const char *part_name, const char* namespace_name, nvs_open_mode_t open_mode, nvs_handle_t *out_handle)
+extern "C" esp_err_t nvs_open_from_partition(const char *part_name, const char* name, nvs_open_mode_t open_mode, nvs_handle_t *out_handle)
 {
     Lock lock;
-    ESP_LOGD(TAG, "%s %s %d", __func__, namespace_name, open_mode);
+    ESP_LOGD(TAG, "%s %s %d", __func__, name, open_mode);
 
     NVSHandleSimple *handle;
-    esp_err_t result = NVSPartitionManager::get_instance()->open_handle(part_name, namespace_name, open_mode, &handle);
+    esp_err_t result = NVSPartitionManager::get_instance()->open_handle(part_name, name, open_mode, &handle);
     if (result == ESP_OK) {
         NVSHandleEntry *entry = new (std::nothrow) NVSHandleEntry(handle, part_name);
         if (entry) {
@@ -290,9 +291,9 @@ extern "C" esp_err_t nvs_open_from_partition(const char *part_name, const char* 
     return result;
 }
 
-extern "C" esp_err_t nvs_open(const char* namespace_name, nvs_open_mode_t open_mode, nvs_handle_t *out_handle)
+extern "C" esp_err_t nvs_open(const char* name, nvs_open_mode_t open_mode, nvs_handle_t *out_handle)
 {
-    return nvs_open_from_partition(NVS_DEFAULT_PART_NAME, namespace_name, open_mode, out_handle);
+    return nvs_open_from_partition(NVS_DEFAULT_PART_NAME, name, open_mode, out_handle);
 }
 
 extern "C" void nvs_close(nvs_handle_t handle)
@@ -718,71 +719,47 @@ static nvs_iterator_t create_iterator(nvs::Storage *storage, nvs_type_t type)
     return it;
 }
 
-// In case of errors except for parameter error, output_iterator is set to nullptr to make releasing iterators easier
-extern "C" esp_err_t nvs_entry_find(const char *part_name, const char *namespace_name, nvs_type_t type, nvs_iterator_t *output_iterator)
+extern "C" nvs_iterator_t nvs_entry_find(const char *part_name, const char *namespace_name, nvs_type_t type)
 {
-    if (part_name == nullptr || output_iterator == nullptr) {
-        return ESP_ERR_INVALID_ARG;
-    }
-
-    esp_err_t lock_result = Lock::init();
-    if (lock_result != ESP_OK) {
-        *output_iterator = nullptr;
-        return lock_result;
-    }
     Lock lock;
     nvs::Storage *pStorage;
 
     pStorage = lookup_storage_from_name(part_name);
     if (pStorage == nullptr) {
-        *output_iterator = nullptr;
-        return ESP_ERR_NVS_NOT_FOUND;
+        return nullptr;
     }
 
     nvs_iterator_t it = create_iterator(pStorage, type);
     if (it == nullptr) {
-        *output_iterator = nullptr;
-        return ESP_ERR_NO_MEM;
+        return nullptr;
     }
 
     bool entryFound = pStorage->findEntry(it, namespace_name);
     if (!entryFound) {
         free(it);
-        *output_iterator = nullptr;
-        return ESP_ERR_NVS_NOT_FOUND;
+        return nullptr;
     }
 
-    *output_iterator = it;
-    return ESP_OK;
+    return it;
 }
 
-extern "C" esp_err_t nvs_entry_next(nvs_iterator_t *iterator)
+extern "C" nvs_iterator_t nvs_entry_next(nvs_iterator_t it)
 {
-    if (iterator == nullptr) {
-        return ESP_ERR_INVALID_ARG;
-    }
-
     Lock lock;
+    NVS_ASSERT_OR_RETURN(it, nullptr);
 
-    bool entryFound = (*iterator)->storage->nextEntry(*iterator);
+    bool entryFound = it->storage->nextEntry(it);
     if (!entryFound) {
-        free(*iterator);
-        *iterator = nullptr;
-        return ESP_ERR_NVS_NOT_FOUND;
+        free(it);
+        return nullptr;
     }
 
-    return ESP_OK;
+    return it;
 }
 
-extern "C" esp_err_t nvs_entry_info(const nvs_iterator_t it, nvs_entry_info_t *out_info)
+extern "C" void nvs_entry_info(nvs_iterator_t it, nvs_entry_info_t *out_info)
 {
-    if (it == nullptr || out_info == nullptr) {
-        return ESP_ERR_INVALID_ARG;
-    }
-
     *out_info = it->entry_info;
-
-    return ESP_OK;
 }
 
 extern "C" void nvs_release_iterator(nvs_iterator_t it)

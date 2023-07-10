@@ -1,8 +1,16 @@
-/*
- * SPDX-FileCopyrightText: 2015-2022 Espressif Systems (Shanghai) CO LTD
- *
- * SPDX-License-Identifier: Apache-2.0
- */
+// Copyright 2015-2016 Espressif Systems (Shanghai) PTE LTD
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 #include "catch.hpp"
 #include "nvs.hpp"
 #include "nvs_test_api.h"
@@ -730,49 +738,6 @@ TEST_CASE("deinit partition doesn't affect other partition's open handles", "[nv
     TEST_ESP_OK(nvs_flash_deinit_partition(OTHER_PARTITION_NAME));
 }
 
-TEST_CASE("nvs iterator nvs_entry_find invalid parameter test", "[nvs]")
-{
-    nvs_iterator_t it = reinterpret_cast<nvs_iterator_t>(0xbeef);
-    CHECK(nvs_entry_find(nullptr, NULL, NVS_TYPE_ANY, &it) == ESP_ERR_INVALID_ARG);
-    CHECK(nvs_entry_find("nvs", NULL, NVS_TYPE_ANY, nullptr) == ESP_ERR_INVALID_ARG);
-}
-
-TEST_CASE("nvs iterator nvs_entry_find doesn't change iterator on parameter error", "[nvs]")
-{
-    nvs_iterator_t it = reinterpret_cast<nvs_iterator_t>(0xbeef);
-    REQUIRE(nvs_entry_find(nullptr, NULL, NVS_TYPE_ANY, &it) == ESP_ERR_INVALID_ARG);
-    CHECK(it == reinterpret_cast<nvs_iterator_t>(0xbeef));
-
-    it = nullptr;
-    REQUIRE(nvs_entry_find(nullptr, NULL, NVS_TYPE_ANY, &it) == ESP_ERR_INVALID_ARG);
-    CHECK(it == nullptr);
-}
-
-TEST_CASE("nvs_entry_next return ESP_ERR_INVALID_ARG on parameter is NULL", "[nvs]")
-{
-    CHECK(nvs_entry_next(nullptr) == ESP_ERR_INVALID_ARG);
-}
-
-TEST_CASE("nvs_entry_info fails with ESP_ERR_INVALID_ARG if a parameter is NULL", "[nvs]")
-{
-    nvs_iterator_t it = reinterpret_cast<nvs_iterator_t>(0xbeef);
-    nvs_entry_info_t info;
-    CHECK(nvs_entry_info(it, nullptr) == ESP_ERR_INVALID_ARG);
-    CHECK(nvs_entry_info(nullptr, &info) == ESP_ERR_INVALID_ARG);
-}
-
-TEST_CASE("nvs_entry_info doesn't change iterator on parameter error", "[nvs]")
-{
-    nvs_iterator_t it = reinterpret_cast<nvs_iterator_t>(0xbeef);
-    nvs_entry_info_t info;
-    REQUIRE(nvs_entry_info(it, nullptr) == ESP_ERR_INVALID_ARG);
-    CHECK(it == reinterpret_cast<nvs_iterator_t>(0xbeef));
-
-    it = nullptr;
-    REQUIRE(nvs_entry_info(it, nullptr) == ESP_ERR_INVALID_ARG);
-    CHECK(it == nullptr);
-}
-
 TEST_CASE("nvs iterators tests", "[nvs]")
 {
     PartitionEmulationFixture f(0, 5);
@@ -815,76 +780,30 @@ TEST_CASE("nvs iterators tests", "[nvs]")
     TEST_ESP_OK(nvs_set_u64(handle_2, "value4", 555));
 
     auto entry_count = [](const char *part, const char *name, nvs_type_t type)-> int {
-        int count = 0;
-        nvs_iterator_t it = nullptr;
-        esp_err_t res = nvs_entry_find(part, name, type, &it);
-        for (count = 0; res == ESP_OK; count++) {
-            res = nvs_entry_next(&it);
+        int count;
+        nvs_iterator_t it = nvs_entry_find(part, name, type);
+        for (count = 0; it != nullptr; count++) {
+            it = nvs_entry_next(it);
         }
-        CHECK(res == ESP_ERR_NVS_NOT_FOUND); // after finishing the loop or if no entry was found to begin with,
-                                             // res has to be ESP_ERR_NVS_NOT_FOUND or some internal error
-                                             // or programming error occurred
-        nvs_release_iterator(it); // unneccessary call but emphasizes the programming pattern
         return count;
     };
 
-    SECTION("No partition found return ESP_ERR_NVS_NOT_FOUND")
-    {
-        CHECK(nvs_entry_find("", NULL, NVS_TYPE_ANY, &it) == ESP_ERR_NVS_NOT_FOUND);
-    }
+   SECTION("Number of entries found for specified namespace and type is correct")
+   {
+        CHECK(nvs_entry_find("", NULL, NVS_TYPE_ANY) == NULL);
+        CHECK(entry_count(NVS_DEFAULT_PART_NAME, NULL, NVS_TYPE_ANY) == 15);
+        CHECK(entry_count(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_ANY) == 11);
+        CHECK(entry_count(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_I32) == 3);
+        CHECK(entry_count(NVS_DEFAULT_PART_NAME, NULL, NVS_TYPE_I32) == 5);
+        CHECK(entry_count(NVS_DEFAULT_PART_NAME, NULL, NVS_TYPE_U64) == 1);
+   }
 
-    SECTION("No matching namespace found return ESP_ERR_NVS_NOT_FOUND")
-    {
-        CHECK(nvs_entry_find(NVS_DEFAULT_PART_NAME, "nonexistent", NVS_TYPE_ANY, &it) == ESP_ERR_NVS_NOT_FOUND);
-    }
-
-    SECTION("nvs_entry_find sets iterator to null if no matching element found")
-    {
-        it = reinterpret_cast<nvs_iterator_t>(0xbeef);
-        REQUIRE(nvs_entry_find(NVS_DEFAULT_PART_NAME, "nonexistent", NVS_TYPE_I16, &it) == ESP_ERR_NVS_NOT_FOUND);
-        CHECK(it == nullptr);
-    }
-
-    SECTION("Finding iterator means iterator is valid")
-    {
-        it = nullptr;
-        CHECK(nvs_entry_find(NVS_DEFAULT_PART_NAME, nullptr, NVS_TYPE_ANY, &it) == ESP_OK);
-        CHECK(it != nullptr);
-        nvs_release_iterator(it);
-    }
-
-    SECTION("Return ESP_ERR_NVS_NOT_FOUND after iterating over last matching element")
-    {
-        it = nullptr;
-        REQUIRE(nvs_entry_find(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_I16, &it) == ESP_OK);
-        REQUIRE(it != nullptr);
-        CHECK(nvs_entry_next(&it) == ESP_ERR_NVS_NOT_FOUND);
-    }
-
-    SECTION("Set iterator to NULL after iterating over last matching element")
-    {
-        it = nullptr;
-        REQUIRE(nvs_entry_find(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_I16, &it) == ESP_OK);
-        REQUIRE(it != nullptr);
-        REQUIRE(nvs_entry_next(&it) == ESP_ERR_NVS_NOT_FOUND);
-        CHECK(it == nullptr);
-    }
-
-    SECTION("Number of entries found for specified namespace and type is correct")
-    {
-         CHECK(entry_count(NVS_DEFAULT_PART_NAME, NULL, NVS_TYPE_ANY) == 15);
-         CHECK(entry_count(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_ANY) == 11);
-         CHECK(entry_count(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_I32) == 3);
-         CHECK(entry_count(NVS_DEFAULT_PART_NAME, NULL, NVS_TYPE_I32) == 5);
-         CHECK(entry_count(NVS_DEFAULT_PART_NAME, NULL, NVS_TYPE_U64) == 1);
-    }
-
-    SECTION("New entry is not created when existing key-value pair is set")
-    {
-         CHECK(entry_count(NVS_DEFAULT_PART_NAME, name_2, NVS_TYPE_ANY) == 4);
-         TEST_ESP_OK(nvs_set_i32(handle_2, "value1", -222));
-         CHECK(entry_count(NVS_DEFAULT_PART_NAME, name_2, NVS_TYPE_ANY) == 4);
-    }
+   SECTION("New entry is not created when existing key-value pair is set")
+   {
+        CHECK(entry_count(NVS_DEFAULT_PART_NAME, name_2, NVS_TYPE_ANY) == 4);
+        TEST_ESP_OK(nvs_set_i32(handle_2, "value1", -222));
+        CHECK(entry_count(NVS_DEFAULT_PART_NAME, name_2, NVS_TYPE_ANY) == 4);
+   }
 
     SECTION("Number of entries found decrease when entry is erased")
     {
@@ -895,34 +814,30 @@ TEST_CASE("nvs iterators tests", "[nvs]")
 
     SECTION("All fields of nvs_entry_info_t structure are correct")
     {
-        it = nullptr;
-        esp_err_t res = nvs_entry_find(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_I32, &it);
-        REQUIRE(res == ESP_OK);
+        it = nvs_entry_find(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_I32);
+        CHECK(it != nullptr);
         string key = "value5";
-        while (res == ESP_OK) {
-            REQUIRE(nvs_entry_info(it, &info) == ESP_OK);
+        do {
+            nvs_entry_info(it, &info);
 
             CHECK(string(name_1) == info.namespace_name);
             CHECK(key == info.key);
             CHECK(info.type == NVS_TYPE_I32);
 
-            res = nvs_entry_next(&it);
+            it = nvs_entry_next(it);
             key[5]++;
-        }
-        CHECK(res == ESP_ERR_NVS_NOT_FOUND); // after finishing the loop, res has to be ESP_ERR_NVS_NOT_FOUND
-                                             // or some internal error or programming error occurred
-        CHECK(key == "value8");
-        nvs_release_iterator(it); // unneccessary call but emphasizes the programming pattern
+        } while (it != NULL);
+        nvs_release_iterator(it);
     }
 
     SECTION("Entry info is not affected by subsequent erase")
     {
         nvs_entry_info_t info_after_erase;
 
-        CHECK(nvs_entry_find(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_ANY, &it) == ESP_OK);
-        REQUIRE(nvs_entry_info(it, &info) == ESP_OK);
+        it = nvs_entry_find(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_ANY);
+        nvs_entry_info(it, &info);
         TEST_ESP_OK(nvs_erase_key(handle_1, "value1"));
-        REQUIRE(nvs_entry_info(it, &info_after_erase) == ESP_OK);
+        nvs_entry_info(it, &info_after_erase);
         CHECK(memcmp(&info, &info_after_erase, sizeof(info)) == 0);
         nvs_release_iterator(it);
     }
@@ -931,10 +846,10 @@ TEST_CASE("nvs iterators tests", "[nvs]")
     {
         nvs_entry_info_t info_after_set;
 
-        CHECK(nvs_entry_find(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_ANY, &it) == ESP_OK);
-        REQUIRE(nvs_entry_info(it, &info) == ESP_OK);
+        it = nvs_entry_find(NVS_DEFAULT_PART_NAME, name_1, NVS_TYPE_ANY);
+        nvs_entry_info(it, &info);
         TEST_ESP_OK(nvs_set_u8(handle_1, info.key, 44));
-        REQUIRE(nvs_entry_info(it, &info_after_set) == ESP_OK);
+        nvs_entry_info(it, &info_after_set);
         CHECK(memcmp(&info, &info_after_set, sizeof(info)) == 0);
         nvs_release_iterator(it);
     }
@@ -952,17 +867,14 @@ TEST_CASE("nvs iterators tests", "[nvs]")
         }
 
         int entries_found = 0;
-        it = nullptr;
-        esp_err_t res = nvs_entry_find(NVS_DEFAULT_PART_NAME, name_3, NVS_TYPE_ANY, &it);
-        while(res == ESP_OK) {
+        it = nvs_entry_find(NVS_DEFAULT_PART_NAME, name_3, NVS_TYPE_ANY);
+        while(it != nullptr) {
             entries_found++;
-            res = nvs_entry_next(&it);
+            it = nvs_entry_next(it);
         }
-        CHECK(res == ESP_ERR_NVS_NOT_FOUND); // after finishing the loop, res has to be ESP_ERR_NVS_NOT_FOUND
-                                             // or some internal error or programming error occurred
         CHECK(entries_created == entries_found);
 
-        nvs_release_iterator(it); // unneccessary call but emphasizes the programming pattern
+        nvs_release_iterator(it);
         nvs_close(handle_3);
     }
 
@@ -1014,7 +926,8 @@ TEST_CASE("Iterator with not matching type iterates correctly", "[nvs]")
     TEST_ESP_OK(nvs_commit(my_handle));
     nvs_close(my_handle);
 
-    CHECK(nvs_entry_find(NVS_DEFAULT_PART_NAME, NAMESPACE, NVS_TYPE_I32, &it) == ESP_ERR_NVS_NOT_FOUND);
+    it = nvs_entry_find(NVS_DEFAULT_PART_NAME, NAMESPACE, NVS_TYPE_I32);
+    CHECK(it == NULL);
 
     // re-init to trigger cleaning up of broken items -> a corrupted string will be erased
     nvs_flash_deinit();
@@ -1022,7 +935,8 @@ TEST_CASE("Iterator with not matching type iterates correctly", "[nvs]")
             NVS_FLASH_SECTOR,
             NVS_FLASH_SECTOR_COUNT_MIN));
 
-    CHECK(nvs_entry_find(NVS_DEFAULT_PART_NAME, NAMESPACE, NVS_TYPE_STR, &it) == ESP_OK);
+    it = nvs_entry_find(NVS_DEFAULT_PART_NAME, NAMESPACE, NVS_TYPE_STR);
+    CHECK(it != NULL);
     nvs_release_iterator(it);
 
     // without deinit it affects "nvs api tests"
@@ -2653,10 +2567,11 @@ static void check_nvs_part_gen_args(SpiFlashEmulator *spi_flash_emulator,
     esp_part.address = 0;
     esp_part.size = size * SPI_FLASH_SEC_SIZE;
     strncpy(esp_part.label, part_name, PART_NAME_MAX_SIZE);
-    shared_ptr<Partition> part;
+    unique_ptr<nvs::Partition> part;
 
     if (is_encr) {
-        NVSEncryptedPartition *enc_part = new NVSEncryptedPartition(&esp_part);
+        nvs::NVSEncryptedPartition *enc_part = new (std::nothrow) nvs::NVSEncryptedPartition(&esp_part);
+        REQUIRE(enc_part != nullptr);
         TEST_ESP_OK(enc_part->init(xts_cfg));
         part.reset(enc_part);
     } else {
@@ -2743,10 +2658,11 @@ static void check_nvs_part_gen_args_mfg(SpiFlashEmulator *spi_flash_emulator,
     esp_part.address = 0;
     esp_part.size = size * SPI_FLASH_SEC_SIZE;
     strncpy(esp_part.label, part_name, PART_NAME_MAX_SIZE);
-    shared_ptr<Partition> part;
+    unique_ptr<nvs::Partition> part;
 
     if (is_encr) {
-        NVSEncryptedPartition *enc_part = new NVSEncryptedPartition(&esp_part);
+        nvs::NVSEncryptedPartition *enc_part = new (std::nothrow) nvs::NVSEncryptedPartition(&esp_part);
+        REQUIRE(enc_part != nullptr);
         TEST_ESP_OK(enc_part->init(xts_cfg));
         part.reset(enc_part);
     } else {

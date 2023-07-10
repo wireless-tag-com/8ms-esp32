@@ -14,7 +14,7 @@ set(srcs "src/nvs_api.cpp"
          "src/nvs_types.cpp")
 
 idf_component_register(SRCS "${srcs}"
-                    REQUIRES spi_flash
+                    REQUIRES "spi_flash"
                     INCLUDE_DIRS "include"
                     PRIV_INCLUDE_DIRS "private_include")
 
@@ -25,13 +25,19 @@ if(${target} STREQUAL "linux")
         message(FATAL_ERROR "NVS currently doesn't support encryption if built for Linux.")
     endif()
     target_compile_options(${COMPONENT_LIB} PUBLIC "-DLINUX_TARGET")
-    target_compile_options(${COMPONENT_LIB} PUBLIC --coverage)
-    target_link_libraries(${COMPONENT_LIB} PUBLIC --coverage)
+else()
+    # TODO: this is a workaround until IDF-2085 is fixed
+    idf_component_get_property(mbedtls_lib mbedtls COMPONENT_LIB)
+    target_link_libraries(${COMPONENT_LIB} PUBLIC ${mbedtls_lib})
 endif()
 
 if(CONFIG_NVS_ENCRYPTION)
     target_sources(${COMPONENT_LIB} PRIVATE "src/nvs_encrypted_partition.cpp")
-    target_link_libraries(${COMPONENT_LIB} PRIVATE idf::mbedtls)
+    idf_component_get_property(mbedtls_lib mbedtls COMPONENT_LIB)
+    target_link_libraries(${COMPONENT_LIB} PUBLIC ${mbedtls_lib})
 endif()
 
-target_compile_options(${COMPONENT_LIB} PRIVATE "-Wno-format")
+if(${target} STREQUAL "linux")
+    target_compile_options(${COMPONENT_LIB} PUBLIC --coverage)
+    target_link_libraries(${COMPONENT_LIB} PUBLIC --coverage)
+endif()

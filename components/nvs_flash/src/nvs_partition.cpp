@@ -14,7 +14,6 @@
 
 #include <cstdlib>
 #include "nvs_partition.hpp"
-#include "stdio.h"
 
 namespace nvs {
 
