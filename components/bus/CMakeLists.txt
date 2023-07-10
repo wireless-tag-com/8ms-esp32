@@ -1,4 +1,5 @@
-idf_component_register( 
-                        INCLUDE_DIRS "include" )
-add_prebuilt_library(libbus "libbus.a" REQUIRES driver)
-target_link_libraries(${COMPONENT_LIB} INTERFACE libbus)
+idf_component_register(SRC_DIRS "." 
+                        INCLUDE_DIRS "include" REQUIRES driver
+                        REQUIRES esp_rom driver)
+
+target_compile_options(${COMPONENT_LIB} PRIVATE "-Wno-format")

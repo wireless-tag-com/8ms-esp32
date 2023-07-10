@@ -2,7 +2,8 @@
 
 qmsd ESP32 project
 
-# prepare ESP32 v5.0 SDK
+# prepare ESP32 v5.1 SDK
+please refr to https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1/esp32/get-started/index.html
 
 # build project
 
