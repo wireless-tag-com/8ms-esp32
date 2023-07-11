@@ -84,13 +84,6 @@ esp_err_t qmsd_http_get_start(const char *url, const char *header, const char *u
                 g_img_file = NULL;
             }
 
-            /*
-             * show png
-             */
-            qmsd_gui_lock(portMAX_DELAY);
-            screen_show_png(QMSD_TEST_PNG_FILE);
-            qmsd_gui_unlock();
-
             break;
         }
         else
@@ -101,6 +94,12 @@ esp_err_t qmsd_http_get_start(const char *url, const char *header, const char *u
     }
 
     esp_http_client_cleanup(client);
+	/*
+	 * show png
+	*/
+	qmsd_gui_lock(portMAX_DELAY);
+	screen_show_png(QMSD_TEST_PNG_FILE);
+        qmsd_gui_unlock();
 
     return err;
 }
