@@ -61,8 +61,11 @@ static void sht20_read_task(void *arg) {
 
 void sht20_init(uint8_t sda, uint8_t scl) {
     sht20_device = i2c_malloc_device(I2C_NUM_0, sda, scl, 400000, SHT20_IIC_ADDR);
+    vTaskDelay(pdMS_TO_TICKS(50));
     i2c_device_set_reg_bits(sht20_device, I2C_NO_REG);
+    vTaskDelay(pdMS_TO_TICKS(10));
     sht20_reset();
+    vTaskDelay(pdMS_TO_TICKS(100));
     sht20_mutex = xSemaphoreCreateBinary();
     xSemaphoreGive(sht20_mutex);
     xTaskCreatePinnedToCore(sht20_read_task, "sht20", 4 * 1024, NULL, 4, NULL, 0);
