@@ -18,6 +18,7 @@ board_name=(
     ZX2D10GE01R_V_4848
     ZX7D00CE01S_UR_8048
     ZX7D00CE01S_V12_8048
+    ZX3D95CE01S_TR_4848
     )
 component_name=(lvgl qmsd_init screen touch_panel)
 for((i=0;i<${#board_name[@]};i++))
