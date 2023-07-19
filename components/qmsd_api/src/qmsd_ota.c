@@ -145,7 +145,7 @@ int qmsd_ota_start(const char *url)
 }
 
 #define HTTP_READ_SIZE      (1460)
-#define OTA_WRITE_SIZE      (20)
+#define OTA_WRITE_SIZE      (8)
 
 static char http_read_buf[HTTP_READ_SIZE];
 
