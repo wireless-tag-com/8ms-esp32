@@ -9,6 +9,7 @@
 #include "lwip/err.h"
 #include "lwip/sys.h"
 #include "lwip/sockets.h"
+#include "nvs_flash.h"
 
 #include "qmsd_api.h"
 #include "qmsd_wifi.h"
@@ -571,12 +572,18 @@ esp_err_t qmsd_wifi_init(bool auto_connect)
     esp_err_t err = ESP_FAIL;
     qmsd_wifi_event_group = xEventGroupCreate();
 
+    err = nvs_flash_init();
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+      ESP_ERROR_CHECK(nvs_flash_erase());
+      err = nvs_flash_init();
+    }
+
     ESP_ERROR_CHECK(esp_netif_init());
     esp_netif_sta = esp_netif_create_default_wifi_sta();
     esp_netif_ap = esp_netif_create_default_wifi_ap();
 
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+    esp_wifi_init(&cfg);
 
     esp_event_handler_instance_t instance_any_wifi;
     esp_event_handler_instance_t instance_got_ip;
@@ -599,7 +606,8 @@ esp_err_t qmsd_wifi_init(bool auto_connect)
 
     esp_wifi_set_ps(WIFI_PS_NONE);
 
-    ESP_ERROR_CHECK(esp_wifi_start());
+    esp_wifi_set_mode(WIFI_MODE_STA);
+    esp_wifi_start();
 
     if (auto_connect) {
         err = __qmsd_wifi_power_on_connect();

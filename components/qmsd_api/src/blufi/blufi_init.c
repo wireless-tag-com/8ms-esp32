@@ -13,7 +13,6 @@
 #endif
 
 #ifdef CONFIG_BT_NIMBLE_ENABLED
-#include "esp_nimble_hci.h"
 #include "nimble/nimble_port.h"
 #include "nimble/nimble_port_freertos.h"
 #include "host/ble_hs.h"
@@ -110,9 +109,14 @@ void bleprph_host_task(void *param)
 
 esp_err_t esp_blufi_host_init(void)
 {
-    ESP_ERROR_CHECK(esp_nimble_hci_init());
-    nimble_port_init();
-    /* Initialize the NimBLE host configuration. */
+    esp_err_t err;
+    err = esp_nimble_init();
+    if (err) {
+        BLUFI_ERROR("%s failed: %s\n", __func__, esp_err_to_name(err));
+        return ESP_FAIL;
+    }
+
+/* Initialize the NimBLE host configuration. */
     ble_hs_cfg.reset_cb = blufi_on_reset;
     ble_hs_cfg.sync_cb = blufi_on_sync;
     ble_hs_cfg.gatts_register_cb = esp_blufi_gatt_svr_register_cb;
@@ -148,7 +152,11 @@ esp_err_t esp_blufi_host_init(void)
 
     esp_blufi_btc_init();
 
-    nimble_port_freertos_init(bleprph_host_task);
+    err = esp_nimble_enable(bleprph_host_task);
+    if (err) {
+        BLUFI_ERROR("%s failed: %s\n", __func__, esp_err_to_name(err));
+        return ESP_FAIL;
+    }
 
     return ESP_OK;
 }
