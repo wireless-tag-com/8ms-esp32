@@ -17,15 +17,10 @@ set boards[10]=ZX4D30NE01S_UR_4827
 set boards[11]=ZX4D60_AR_4896
 set boards[12]=ZX2D10GE01R_V_4848
 set boards[13]=ZX7D00CE01S_UR_8048
+set boards[14]=ZX7D00CE01S_V12_8048
+set boards[15]=ZX3D95CE01S_TR_4848
 
-set components[0]=bus
-set components[1]=lvgl
-set components[2]=qmsd_init
-set components[3]=screen
-set components[4]=touch_panel
-set components[5]=qmsd_mod
-
-echo "please select board(input 0-13)"
+echo "please select board(input 0-15)"
 :input
 set x=0
 
@@ -40,7 +35,7 @@ if defined boards[%x%] (
 set /p board=
 
 if not defined boards[%board%] (
-    echo "please input right board index(0-13)"
+    echo "please input right board index(0-15)"
     GOTO :input
 )
 
@@ -49,8 +44,6 @@ call echo "use %%boards[%board%]%%"
 set "f_name=%cd%\config\!!boards[%board%]!!
 echo "%f_name%"
 copy %f_name%\libqmsd_init.a %cd%\components\qmsd_init\
-copy %f_name%\libbus.a %cd%\components\bus\
-copy %f_name%\libqmsd_mod.a %cd%\components\qmsd_mod
 copy %f_name%\libscreen.a %cd%\components\screen
 copy %f_name%\libtouch_panel.a %cd%\components\touch_panel
 copy %f_name%\liblvgl.a %cd%\components\lvgl
