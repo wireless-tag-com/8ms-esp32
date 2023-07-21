@@ -1,0 +1,9 @@
+# Sample csv file
+key,type,encoding,value
+zh_cn,namespace,,
+labde_trip,data,string,TRIP
+labde_trip_data,data,string,99
+labde_trip_com,data,string,km
+labde_odo,data,string,ODO
+labde_odo_data,data,string,9999
+labde_odo_com,data,string,km
