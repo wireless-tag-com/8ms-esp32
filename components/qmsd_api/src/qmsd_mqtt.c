@@ -153,7 +153,7 @@ int qmsd_mqtt_sub(const char *topic, int qos)
     int msg_id = -1;
     if (g_mqtt_client)
     {
-        msg_id = esp_mqtt_client_subscribe(g_mqtt_client, topic, qos);
+        msg_id = esp_mqtt_client_subscribe_single(g_mqtt_client, topic, qos);
         if (msg_id == -1)
         {
             ESP_LOGE(TAG, "mqtt subscribe(%s) fail!", topic);

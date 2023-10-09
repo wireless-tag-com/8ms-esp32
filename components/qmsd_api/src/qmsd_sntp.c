@@ -53,7 +53,7 @@ void qmsd_sntp_start(const char *ser1, const char *ser2, const char *ser3)
         }
     
         sntp_set_time_sync_notification_cb(__qmsd_sntp_sync_cb);
-        sntp_init();
+        esp_sntp_init();
     }
 }
 

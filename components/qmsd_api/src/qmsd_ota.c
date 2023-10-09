@@ -15,7 +15,7 @@
 
 static const char *TAG = "QMSD_OTA";
 TaskHandle_t g_http_ota_handle;
-static char *g_server_cert_pem;
+static char *g_server_cert_pem = NULL;
 static esp_https_ota_handle_t g_ota_handle;
 static char *g_ota_url;
 
@@ -54,15 +54,19 @@ static int __qmsd_http_ota(const char *url)
 {
     ESP_LOGI(TAG, "Starting HTTP OTA");
 
-    esp_http_client_config_t config = {
-        .url = url,
-        .cert_pem = (char *)g_server_cert_pem,
+    if (!g_ota_url) {
+        return ESP_FAIL;
+    }
+    esp_http_client_config_t client_config = {
+        .url = g_ota_url,
+        .timeout_ms = 8000,
+        .cert_pem = NULL,
         .event_handler = __qmsd_http_event_handler,
-        .keep_alive_enable = true,
+        .keep_alive_count = true,
     };
-
+    
     esp_https_ota_config_t ota_config = {
-        .http_config = &config,
+        .http_config = &client_config,
     };
 
     esp_err_t err = esp_https_ota_begin(&ota_config, &g_ota_handle);
@@ -105,8 +109,9 @@ static void __qmsd_ota_task(void *pvParameter)
         ESP_LOGE(TAG, "Firmware upgrade failed");
     }
 
-    vTaskDelete(NULL);
     g_http_ota_handle = NULL;
+
+    vTaskDelete(NULL);
 }
 
 void qmsd_ota_set_pem(char *pem)
@@ -145,7 +150,7 @@ int qmsd_ota_start(const char *url)
 }
 
 #define HTTP_READ_SIZE      (1460)
-#define OTA_WRITE_SIZE      (8)
+#define OTA_WRITE_SIZE      (20)
 
 static char http_read_buf[HTTP_READ_SIZE];
 
