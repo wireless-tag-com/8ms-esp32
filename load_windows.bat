@@ -43,7 +43,6 @@ call echo "use %%boards[%board%]%%"
 
 set "f_name=%cd%\config\!!boards[%board%]!!
 echo "%f_name%"
-copy %f_name%\libqmsd_init.a %cd%\components\qmsd_init\
 copy %f_name%\libscreen.a %cd%\components\screen
 copy %f_name%\libtouch_panel.a %cd%\components\touch_panel
 copy %f_name%\liblvgl.a %cd%\components\lvgl
